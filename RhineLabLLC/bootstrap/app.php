@@ -15,19 +15,19 @@ $app = Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    });
 
-// Jika berjalan di Vercel, arahkan path storage & cache ke /tmp agar writable
+// Jika berjalan di Vercel, alihkan storage dan bootstrap cache ke direktori /tmp yang writable
 if (isset($_ENV['VERCEL']) || getenv('VERCEL')) {
     $app->useStoragePath('/tmp/storage');
-    
-    // Buat direktori esensial di /tmp jika belum ada
-    $tmpStorage = '/tmp/storage';
-    foreach (['framework/cache/data', 'framework/sessions', 'framework/views', 'logs'] as $dir) {
-        if (!is_dir($tmpStorage . '/' . $dir)) {
-            mkdir($tmpStorage . '/' . $dir, 0755, true);
+    $app->useBootstrapPath('/tmp/bootstrap');
+
+    // Buat direktori esensial di /tmp secara otomatis jika belum ada
+    foreach (['/tmp/storage/framework/cache/data', '/tmp/storage/framework/sessions', '/tmp/storage/framework/views', '/tmp/storage/logs', '/tmp/bootstrap/cache'] as $dir) {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
         }
     }
 }
 
-return $app;
+return $app->create();
