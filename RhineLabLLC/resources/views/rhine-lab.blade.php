@@ -19,10 +19,6 @@
             <div class="rl-hazard rl-hazard-top"></div>
             <div class="rl-hazard rl-hazard-bottom"></div>
 
-            <!-- Crosshair grid -->
-            <div class="rl-gridline rl-gridline-h"></div>
-            <div class="rl-gridline rl-gridline-v"></div>
-
             <!-- HUD corners -->
             <span class="rl-corner rl-c-tl"></span>
             <span class="rl-corner rl-c-tr"></span>
@@ -231,11 +227,14 @@
         }
         .rl-shutter-top { top: 0; }
         .rl-shutter-bottom { bottom: 0; }
+        /* garis tepi shutter hanya muncul saat membuka, supaya tidak memotong logo */
         .rl-shutter-bottom::before, .rl-shutter-top::after {
-            content: ""; position: absolute; left: 0; width: 100%; height: 2px; background: var(--rl-ink);
+            content: ""; position: absolute; left: 0; width: 100%; height: 3px; background: var(--rl-ink);
+            opacity: 0; transition: opacity .2s;
         }
         .rl-shutter-top::after { bottom: 0; }
         .rl-shutter-bottom::before { top: 0; }
+        .rl-loader.rl-open .rl-shutter::before, .rl-loader.rl-open .rl-shutter::after { opacity: 1; }
         .rl-hex {
             position: absolute; inset: 0; opacity: .55;
             background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L20 0 0 11.547v23.094l20 11.547 20-11.547V11.547zM20 45.034L1.155 34.148V12.376L20 1.49l18.845 10.886v21.772L20 45.034z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3Cpath d='M40 46.188L20 34.641 0 46.188v23.094l20 11.547 20-11.547V46.188zM20 79.675L1.155 68.789V47.017L20 36.13l18.845 10.886v21.772L20 79.675z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
@@ -353,7 +352,7 @@
         .rl-dot { width: 10px; height: 10px; background: var(--rl-orange); transform: rotate(45deg); flex: none; animation: rlBlink .7s steps(2, jump-none) infinite; }
         .rl-dot.is-done { background: var(--rl-teal); animation: none; box-shadow: 0 0 10px var(--rl-teal); }
         .rl-status.is-done span:last-child { color: var(--rl-teal); }
-        .rl-console { text-align: right; display: flex; flex-direction: column; font-size: 10px; letter-spacing: .15em; min-width: 0; }
+        .rl-console { text-align: right; display: flex; gap: 2px; flex-direction: column; font-size: 10px; letter-spacing: .15em; min-width: 0; }
         .rl-console span { color: var(--rl-orange); font-weight: 800; }
         .rl-console.is-done span { color: var(--rl-teal); }
         .rl-console small { font-size: 8px; color: var(--rl-mute); }
@@ -375,10 +374,13 @@
         /* Mobile */
         @media (max-width: 900px) {
             .rl-panel { display: none; }
-            .rl-layer { grid-template-columns: 1fr; padding: 48px 16px 20px; }
+            .rl-layer { grid-template-columns: minmax(0, 1fr); padding: 64px 16px 24px; gap: 0; }
             .rl-center { grid-column: 1; }
-            .rl-tag-tl { left: 56px; } .rl-tag-tr { right: 56px; }
-            .rl-bottom { padding: 0 4px 12px; }
+            .rl-tag-tl { left: 56px; } .rl-tag-tr, .rl-c-bl, .rl-c-br { display: none; }
+            .rl-bottom { padding: 0 0 8px; min-width: 0; }
+            .rl-console { display: none; }
+            .rl-brand h1 { letter-spacing: .22em; margin-right: -.22em; }
+            .rl-brand p { letter-spacing: .3em; margin-right: -.3em; font-size: 9px; }
             .rl-bar { grid-template-columns: repeat(32, 1fr); }
             .rl-seg:nth-child(n+33) { display: none; }
         }
