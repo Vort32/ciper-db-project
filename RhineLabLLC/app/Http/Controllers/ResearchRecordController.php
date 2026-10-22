@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -70,17 +71,23 @@ class ResearchRecordController extends Controller
         $divisionId = (int) $data['division_id'];
         $division   = Division::findOrFail($divisionId);
 
-        // Membuat/mencari proyek dengan Judul kustom yang diinputkan
-        $project = ResearchProject::firstOrCreate(
-            [
-                'title'       => $data['title'],
-                'division_id' => $divisionId,
-            ],
-            [
-                'reference_code' => ($division->code ?: 'DIV') . '-PROJ',
+        // Cari atau buat proyek riset baru dengan reference_code unik
+        $project = ResearchProject::where('title', $data['title'])
+            ->where('division_id', $divisionId)
+            ->first();
+
+        if (!$project) {
+            // Generasi reference_code unik dinamis (Contoh: MATH-20261022-849-PROJ)
+            $divCode = strtoupper($division->code ?: 'DIV');
+            $uniqueCode = $divCode . '-' . date('Ymd') . '-' . rand(100, 999) . '-PROJ';
+
+            $project = ResearchProject::create([
+                'title'          => $data['title'],
+                'division_id'    => $divisionId,
+                'reference_code' => $uniqueCode,
                 'status'         => 'aktif',
-            ]
-        );
+            ]);
+        }
 
         $recordCode = $this->generateRecordCode($project);
         
@@ -159,16 +166,21 @@ class ResearchRecordController extends Controller
         $divisionId = (int) $data['division_id'];
         $division   = Division::findOrFail($divisionId);
 
-        $project = ResearchProject::firstOrCreate(
-            [
-                'title'       => $data['title'],
-                'division_id' => $divisionId,
-            ],
-            [
-                'reference_code' => ($division->code ?: 'DIV') . '-PROJ',
+        $project = ResearchProject::where('title', $data['title'])
+            ->where('division_id', $divisionId)
+            ->first();
+
+        if (!$project) {
+            $divCode = strtoupper($division->code ?: 'DIV');
+            $uniqueCode = $divCode . '-' . date('Ymd') . '-' . rand(100, 999) . '-PROJ';
+
+            $project = ResearchProject::create([
+                'title'          => $data['title'],
+                'division_id'    => $divisionId,
+                'reference_code' => $uniqueCode,
                 'status'         => 'aktif',
-            ]
-        );
+            ]);
+        }
 
         $filePath = $researchRecord->file_path;
         if ($request->hasFile('file')) {
@@ -227,9 +239,15 @@ class ResearchRecordController extends Controller
         if (!$researchRecord->file_path) {
             return back()->with('error', 'Berkas dokumen tidak ditemukan.');
         }
+
+        // Jika tersimpan via Supabase Storage (URL HTTP/HTTPS)
+        if (Str::startsWith($researchRecord->file_path, ['http://', 'https://'])) {
+            return redirect($researchRecord->file_path);
+        }
+
         $fullPath = public_path($researchRecord->file_path);
         if (!File::exists($fullPath)) {
-            return back()->with('error', 'Berkas fisik telah dihapus dari server.');
+            return back()->with('error', 'Berkas fisik tidak ditemukan di server.');
         }
         return Response::download($fullPath);
     }
@@ -270,18 +288,55 @@ class ResearchRecordController extends Controller
         return $code;
     }
 
+    /**
+     * Menyimpan file dengan aman di Vercel / Supabase Storage & Localhost PC.
+     */
     protected function storeFile(UploadedFile $file, string $subfolder): string
     {
-        $directory = public_path('uploads/' . $subfolder);
-        if (!File::exists($directory)) File::makeDirectory($directory, 0755, true);
         $filename = uniqid($subfolder . '_', true) . '.' . $file->getClientOriginalExtension();
+        $supabaseUrl = env('SUPABASE_URL');
+        $supabaseKey = env('SUPABASE_SERVICE_ROLE_KEY');
+
+        // 1. Upload ke Supabase Storage jika konfigurasi terisi
+        if (!empty($supabaseUrl) && !empty($supabaseKey)) {
+            $bucket = 'uploads';
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $supabaseKey,
+                'Content-Type'  => $file->getMimeType(),
+            ])->withBody(
+                file_get_contents($file->getRealPath()), $file->getMimeType()
+            )->post("{$supabaseUrl}/storage/v1/object/{$bucket}/{$subfolder}/{$filename}");
+
+            if ($response->successful()) {
+                return "{$supabaseUrl}/storage/v1/object/public/{$bucket}/{$subfolder}/{$filename}";
+            }
+        }
+
+        // 2. Fallback folder /tmp jika berjalan di Vercel
+        if (isset($_ENV['VERCEL']) || getenv('VERCEL') || app()->environment('production')) {
+            $tmpDirectory = '/tmp/uploads/' . $subfolder;
+            if (!File::exists($tmpDirectory)) {
+                File::makeDirectory($tmpDirectory, 0755, true, true);
+            }
+            $file->move($tmpDirectory, $filename);
+
+            return 'uploads/' . $subfolder . '/' . $filename;
+        }
+
+        // 3. Simpan biasa jika berjalan di localhost PC
+        $directory = public_path('uploads/' . $subfolder);
+        if (!File::exists($directory)) {
+            File::makeDirectory($directory, 0755, true);
+        }
         $file->move($directory, $filename);
+
         return 'uploads/' . $subfolder . '/' . $filename;
     }
 
     protected function deleteFile(?string $path): void
     {
-        if (!$path) return;
+        if (!$path || Str::startsWith($path, ['http://', 'https://'])) return;
         $fullPath = public_path($path);
         if (File::exists($fullPath)) File::delete($fullPath);
     }
