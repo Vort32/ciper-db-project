@@ -229,23 +229,26 @@ class AuthController extends Controller
         $supabaseUrl = rtrim(env('SUPABASE_URL'), '/');
         $supabaseKey = env('SUPABASE_SERVICE_ROLE_KEY');
 
-        // 1. Jika URL Supabase & Key terisi, utamakan upload ke Supabase Storage
         if (!empty($supabaseUrl) && !empty($supabaseKey)) {
-            $bucket = 'Uploads'; // Menggunakan kapital 'Uploads' sesuai nama bucket Supabase
+            $bucket = 'Uploads';
+            $objectPath = "profile_photos/{$filename}";
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $supabaseKey,
-                'Content-Type'  => $file->getMimeType(),
-            ])->withBody(
-                file_get_contents($file->getRealPath()), $file->getMimeType()
-            )->post("{$supabaseUrl}/storage/v1/object/{$bucket}/profile_photos/{$filename}");
+                'apikey'        => $supabaseKey,
+                'x-upsert'      => 'true',
+            ])->attach(
+                'file',
+                file_get_contents($file->getRealPath()),
+                $file->getClientOriginalName(),
+                ['Content-Type' => $file->getMimeType()]
+            )->post("{$supabaseUrl}/storage/v1/object/{$bucket}/{$objectPath}");
 
             if ($response->successful()) {
-                return "{$supabaseUrl}/storage/v1/object/public/{$bucket}/profile_photos/{$filename}";
+                return "{$supabaseUrl}/storage/v1/object/public/{$bucket}/{$objectPath}";
             }
         }
 
-        // 2. Jika di Vercel / Production, gunakan direktori sementara /tmp
         if (isset($_ENV['VERCEL']) || getenv('VERCEL') || app()->environment('production')) {
             $tmpDirectory = '/tmp/uploads/profile_photos';
             if (!File::exists($tmpDirectory)) {
@@ -256,7 +259,6 @@ class AuthController extends Controller
             return 'uploads/profile_photos/' . $filename;
         }
 
-        // 3. Jika di localhost PC, simpan biasa ke folder public/
         $directory = public_path('uploads/profile_photos');
         if (!File::exists($directory)) {
             File::makeDirectory($directory, 0755, true);

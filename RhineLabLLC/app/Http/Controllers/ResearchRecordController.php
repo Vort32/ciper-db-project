@@ -293,18 +293,22 @@ class ResearchRecordController extends Controller
         $supabaseKey = env('SUPABASE_SERVICE_ROLE_KEY');
 
         if (!empty($supabaseUrl) && !empty($supabaseKey)) {
-            // Disesuaikan dengan nama bucket di Supabase kamu: 'Uploads'
             $bucket = 'Uploads';
+            $objectPath = "{$subfolder}/{$filename}";
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $supabaseKey,
-                'Content-Type'  => $file->getMimeType(),
-            ])->withBody(
-                file_get_contents($file->getRealPath()), $file->getMimeType()
-            )->post("{$supabaseUrl}/storage/v1/object/{$bucket}/{$subfolder}/{$filename}");
+                'apikey'        => $supabaseKey,
+                'x-upsert'      => 'true',
+            ])->attach(
+                'file',
+                file_get_contents($file->getRealPath()),
+                $file->getClientOriginalName(),
+                ['Content-Type' => $file->getMimeType()]
+            )->post("{$supabaseUrl}/storage/v1/object/{$bucket}/{$objectPath}");
 
             if ($response->successful()) {
-                return "{$supabaseUrl}/storage/v1/object/public/{$bucket}/{$subfolder}/{$filename}";
+                return "{$supabaseUrl}/storage/v1/object/public/{$bucket}/{$objectPath}";
             }
         }
 

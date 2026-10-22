@@ -28,7 +28,6 @@ class MaterialController extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             
-            // Hitung ukuran file otomatis
             $bytes = $file->getSize();
             if ($bytes >= 1048576) {
                 $validated['size'] = number_format($bytes / 1048576, 1) . ' MB';
@@ -93,24 +92,26 @@ class MaterialController extends Controller
         $supabaseUrl = rtrim(env('SUPABASE_URL'), '/');
         $supabaseKey = env('SUPABASE_SERVICE_ROLE_KEY');
 
-        // 1. Upload ke Supabase Storage jika env terisi
         if (!empty($supabaseUrl) && !empty($supabaseKey)) {
             $bucket = 'Uploads';
-            $subfolder = 'materials';
+            $objectPath = "materials/{$filename}";
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $supabaseKey,
-                'Content-Type'  => $file->getMimeType(),
-            ])->withBody(
-                file_get_contents($file->getRealPath()), $file->getMimeType()
-            )->post("{$supabaseUrl}/storage/v1/object/{$bucket}/{$subfolder}/{$filename}");
+                'apikey'        => $supabaseKey,
+                'x-upsert'      => 'true',
+            ])->attach(
+                'file',
+                file_get_contents($file->getRealPath()),
+                $file->getClientOriginalName(),
+                ['Content-Type' => $file->getMimeType()]
+            )->post("{$supabaseUrl}/storage/v1/object/{$bucket}/{$objectPath}");
 
             if ($response->successful()) {
-                return "{$supabaseUrl}/storage/v1/object/public/{$bucket}/{$subfolder}/{$filename}";
+                return "{$supabaseUrl}/storage/v1/object/public/{$bucket}/{$objectPath}";
             }
         }
 
-        // 2. Fallback /tmp jika berjalan di Vercel
         if (isset($_ENV['VERCEL']) || getenv('VERCEL') || app()->environment('production')) {
             $tmpDirectory = '/tmp/images/materials';
             if (!File::exists($tmpDirectory)) {
@@ -121,7 +122,6 @@ class MaterialController extends Controller
             return 'images/materials/' . $filename;
         }
 
-        // 3. Simpan lokal jika di localhost PC
         $directory = public_path('images/materials');
         if (!File::exists($directory)) {
             File::makeDirectory($directory, 0755, true);
