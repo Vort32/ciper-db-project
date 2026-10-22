@@ -221,17 +221,17 @@ class AuthController extends Controller
     }
 
     /**
-     * Store profile photo safely on Serverless Vercel / Supabase Storage & Localhost.
+     * Store profile photo safely on Serverless Vercel / Supabase Storage ('Uploads' Bucket) & Localhost.
      */
     protected function storeProfilePhoto(UploadedFile $file): string
     {
         $filename = uniqid('profile_', true) . '.' . $file->getClientOriginalExtension();
-        $supabaseUrl = env('SUPABASE_URL');
+        $supabaseUrl = rtrim(env('SUPABASE_URL'), '/');
         $supabaseKey = env('SUPABASE_SERVICE_ROLE_KEY');
 
         // 1. Jika URL Supabase & Key terisi, utamakan upload ke Supabase Storage
         if (!empty($supabaseUrl) && !empty($supabaseKey)) {
-            $bucket = 'uploads'; // Nama bucket publik Supabase yang dibuat
+            $bucket = 'Uploads'; // Menggunakan kapital 'Uploads' sesuai nama bucket Supabase
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $supabaseKey,
@@ -245,7 +245,7 @@ class AuthController extends Controller
             }
         }
 
-        // 2. Jika di Vercel / Production, gunakan direktori sementara /tmp untuk cegah error Read-Only
+        // 2. Jika di Vercel / Production, gunakan direktori sementara /tmp
         if (isset($_ENV['VERCEL']) || getenv('VERCEL') || app()->environment('production')) {
             $tmpDirectory = '/tmp/uploads/profile_photos';
             if (!File::exists($tmpDirectory)) {
