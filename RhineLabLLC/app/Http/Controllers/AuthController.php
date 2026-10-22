@@ -10,6 +10,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -96,58 +97,58 @@ class AuthController extends Controller
     }
 
     public function register(Request $request): RedirectResponse
-{
-    $organizations = $this->organizations();
+    {
+        $organizations = $this->organizations();
 
-    // Defaultkan organization ke 'rhine-lab' jika tidak diisi dari form
-    if (!$request->has('organization')) {
-        $request->merge(['organization' => 'rhine-lab']);
+        if (!$request->has('organization')) {
+            $request->merge(['organization' => 'rhine-lab']);
+        }
+
+        $validated = $request->validate([
+            'name'         => ['required', 'string', 'max:255'],
+            'email'        => ['required', 'email', 'max:255', 'unique:users,email'],
+            'password'     => ['required', 'string', 'min:8', 'confirmed'],
+            'division_id'  => ['required', Rule::exists('divisions', 'id')],
+            'organization' => ['required', Rule::in(array_keys($organizations))],
+            'photo'        => ['nullable', 'image', 'max:2048'],
+        ], [
+            'name.required'        => 'Nama lengkap wajib diisi.',
+            'email.required'       => 'Email operatif wajib diisi.',
+            'email.email'          => 'Format email tidak valid.',
+            'email.unique'         => 'Email ini sudah terdaftar di jaringan Rhine Lab.',
+            'password.required'    => 'Kunci akses wajib diisi.',
+            'password.min'         => 'Kunci akses minimal 8 karakter.',
+            'password.confirmed'   => 'Konfirmasi kunci akses tidak cocok.',
+            'division_id.required' => 'Divisi wajib dipilih.',
+        ]);
+
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $this->storeProfilePhoto($request->file('photo'));
+        }
+
+        $selectedOrganization = $organizations[$validated['organization']];
+
+        $user = User::create([
+            'division_id'      => (int) $validated['division_id'],
+            'is_division_head' => false,
+            'name'             => $validated['name'],
+            'email'            => $validated['email'],
+            'password'         => Hash::make($validated['password']),
+            'photo_path'       => $photoPath,
+            'affiliation'      => $selectedOrganization['name'],
+            'position'         => 'Operative',
+        ]);
+
+        Auth::login($user);
+
+        $request->session()->regenerate();
+        $request->session()->put('selected_division_id', (int) $validated['division_id']);
+        $request->session()->put('selected_organization_key', $validated['organization']);
+
+        return redirect()->route('research-records.index')->with('status', 'Registrasi berhasil. Selamat datang di Rhine Lab.');
     }
 
-    $validated = $request->validate([
-        'name'        => ['required', 'string', 'max:255'],
-        'email'       => ['required', 'email', 'max:255', 'unique:users,email'],
-        'password'    => ['required', 'string', 'min:8', 'confirmed'],
-        'division_id' => ['required', Rule::exists('divisions', 'id')],
-        'organization'=> ['required', Rule::in(array_keys($organizations))],
-        'photo'       => ['nullable', 'image', 'max:2048'],
-    ], [
-        'name.required'        => 'Nama lengkap wajib diisi.',
-        'email.required'       => 'Email operatif wajib diisi.',
-        'email.email'          => 'Format email tidak valid.',
-        'email.unique'         => 'Email ini sudah terdaftar di jaringan Rhine Lab.',
-        'password.required'    => 'Kunci akses wajib diisi.',
-        'password.min'         => 'Kunci akses minimal 8 karakter.',
-        'password.confirmed'   => 'Konfirmasi kunci akses tidak cocok.',
-        'division_id.required' => 'Divisi wajib dipilih.',
-    ]);
-
-    $photoPath = null;
-    if ($request->hasFile('photo')) {
-        $photoPath = $this->storeProfilePhoto($request->file('photo'));
-    }
-
-    $selectedOrganization = $organizations[$validated['organization']];
-
-    $user = User::create([
-        'division_id'      => (int) $validated['division_id'],
-        'is_division_head' => false,
-        'name'             => $validated['name'],
-        'email'            => $validated['email'],
-        'password'         => Hash::make($validated['password']),
-        'photo_path'       => $photoPath,
-        'affiliation'      => $selectedOrganization['name'],
-        'position'         => 'Operative',
-    ]);
-
-    Auth::login($user);
-
-    $request->session()->regenerate();
-    $request->session()->put('selected_division_id', (int) $validated['division_id']);
-    $request->session()->put('selected_organization_key', $validated['organization']);
-
-    return redirect()->route('research-records.index')->with('status', 'Registrasi berhasil. Selamat datang di Rhine Lab.');
-}
     public function showLogoutView(Request $request): View
     {
         $divisions = Division::orderBy('name')->get(['id', 'name', 'code', 'photo_path']);
@@ -219,15 +220,47 @@ class AuthController extends Controller
         return null;
     }
 
+    /**
+     * Store profile photo safely on Serverless Vercel / Supabase Storage & Localhost.
+     */
     protected function storeProfilePhoto(UploadedFile $file): string
     {
-        $directory = public_path('uploads/profile_photos');
+        $filename = uniqid('profile_', true) . '.' . $file->getClientOriginalExtension();
+        $supabaseUrl = env('SUPABASE_URL');
+        $supabaseKey = env('SUPABASE_SERVICE_ROLE_KEY');
 
+        // 1. Jika URL Supabase & Key terisi, utamakan upload ke Supabase Storage
+        if (!empty($supabaseUrl) && !empty($supabaseKey)) {
+            $bucket = 'uploads'; // Nama bucket publik Supabase yang dibuat
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $supabaseKey,
+                'Content-Type'  => $file->getMimeType(),
+            ])->withBody(
+                file_get_contents($file->getRealPath()), $file->getMimeType()
+            )->post("{$supabaseUrl}/storage/v1/object/{$bucket}/profile_photos/{$filename}");
+
+            if ($response->successful()) {
+                return "{$supabaseUrl}/storage/v1/object/public/{$bucket}/profile_photos/{$filename}";
+            }
+        }
+
+        // 2. Jika di Vercel / Production, gunakan direktori sementara /tmp untuk cegah error Read-Only
+        if (isset($_ENV['VERCEL']) || getenv('VERCEL') || app()->environment('production')) {
+            $tmpDirectory = '/tmp/uploads/profile_photos';
+            if (!File::exists($tmpDirectory)) {
+                File::makeDirectory($tmpDirectory, 0755, true, true);
+            }
+            $file->move($tmpDirectory, $filename);
+
+            return 'uploads/profile_photos/' . $filename;
+        }
+
+        // 3. Jika di localhost PC, simpan biasa ke folder public/
+        $directory = public_path('uploads/profile_photos');
         if (!File::exists($directory)) {
             File::makeDirectory($directory, 0755, true);
         }
-
-        $filename = uniqid('profile_', true) . '.' . $file->getClientOriginalExtension();
         $file->move($directory, $filename);
 
         return 'uploads/profile_photos/' . $filename;
