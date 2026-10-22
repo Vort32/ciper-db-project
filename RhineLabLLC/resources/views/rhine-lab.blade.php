@@ -4,16 +4,16 @@
 
 @section('content')
     <!-- ==============================================
-         RHINE LAB // ULTRA-CLEAN BOOT LOADER
+         RHINE LAB // ASYMMETRIC ULTRA-CLEAN BOOT LOADER
          ============================================== -->
     <div id="pageLoader" class="rl-clean-loader" role="status" aria-live="polite">
 
-        <!-- Shutter Panel (Transisi Terbuka Atas & Bawah) -->
+        <!-- Shutter Panel (Transisi Terbuka Atas & Bawah Halus) -->
         <div class="rl-shutter rl-shutter-top"><div class="rl-hex"></div></div>
         <div class="rl-shutter rl-shutter-bottom"><div class="rl-hex"></div></div>
 
         <!-- Layer Konten UI Minimalis -->
-        <div class="rl-layer flex flex-col justify-between items-center h-full w-full p-8 sm:p-12 pointer-events-none select-none">
+        <div class="rl-layer flex flex-col justify-between items-center h-full w-full p-8 sm:p-14 pointer-events-none select-none relative z-10">
 
             <!-- Frame Sudut Minimalis -->
             <span class="rl-corner rl-c-tl"></span>
@@ -21,80 +21,85 @@
             <span class="rl-corner rl-c-bl"></span>
             <span class="rl-corner rl-c-br"></span>
 
-            <!-- Top HUD Header -->
-            <header class="w-full max-w-4xl flex justify-between items-center z-10 font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-gray-500 uppercase">
-                <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 bg-[#EA7645]"></span>
-                    <span class="font-bold text-[#1c1c1c] tracking-[0.3em]">RHINE LAB OS</span>
+            <!-- Top Header (HUD Minimalis) -->
+            <header class="w-full max-w-5xl flex justify-between items-center font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-gray-500 uppercase">
+                <div class="flex items-center gap-3">
+                    <span class="w-2 h-2 bg-[#EA7645] rounded-xs"></span>
+                    <span class="font-black text-[#1c1c1c] tracking-[0.3em]">RHINE LAB</span>
+                    <span class="text-gray-400">// SYS_BOOT v3.0</span>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-gray-400">SEC_STATUS:</span>
-                    <span class="font-bold text-[#EA7645] tracking-widest">CLASSIFIED</span>
+                <div class="flex items-center gap-2 bg-white/40 px-3 py-1 rounded-full border border-white/60 shadow-xs">
+                    <span class="text-gray-400">CLEARANCE:</span>
+                    <span class="font-bold text-[#EA7645] tracking-widest">LEVEL-4</span>
                 </div>
             </header>
 
-            <!-- Center Core Area -->
-            <main class="relative z-10 flex flex-col items-center justify-center my-auto">
+            <!-- Center Layout (Asimetris: Left Brand, Right Circular Ring & Console) -->
+            <main class="w-full max-w-5xl my-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-6">
                 
-                <!-- Title & Subtitle -->
-                <div class="text-center mb-8 sm:mb-10">
-                    <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-[0.35em] text-[#1c1c1c] uppercase leading-none">
+                <!-- Kiri (Col 7): Title & Branding -->
+                <div class="md:col-span-7 flex flex-col items-center md:items-start text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 mb-3">
+                        <span class="h-[1px] w-6 bg-[#EA7645]"></span>
+                        <span class="text-[9px] font-mono font-bold tracking-[0.35em] text-[#EA7645] uppercase">ARCHIVE PROTOCOL</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-[0.25em] text-[#1c1c1c] uppercase leading-none">
                         RHINE LAB
                     </h1>
-                    <p class="text-[8px] sm:text-[10px] font-semibold tracking-[0.5em] text-gray-400 uppercase mt-2.5">
+                    <p class="text-[9px] sm:text-[11px] font-mono font-semibold tracking-[0.45em] text-gray-400 uppercase mt-3">
                         SYNTHESIZE INFORMATION OS
                     </p>
                 </div>
 
-                <!-- Clean Circular Progress & Logo -->
-                <div class="relative w-40 h-40 sm:w-52 sm:h-52 flex items-center justify-center">
+                <!-- Kanan (Col 5): Circular Ring & Dynamic Console Status -->
+                <div class="md:col-span-5 flex flex-col items-center md:items-end justify-center relative">
                     
-                    <!-- Circular SVG Ring -->
-                    <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
-                        <!-- Ring Track -->
-                        <circle cx="100" cy="100" r="88" stroke="#d5d2cc" stroke-width="1.5" fill="none" />
-                        <!-- Active Ring Fill -->
-                        <circle id="rlRingFill" cx="100" cy="100" r="88" 
-                                class="stroke-[#EA7645] transition-all duration-100 ease-linear" 
-                                stroke-width="2.5" 
-                                stroke-dasharray="552.92" 
-                                stroke-dashoffset="552.92" 
-                                stroke-linecap="round"
-                                fill="none" />
-                    </svg>
+                    <div class="relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center">
+                        <!-- Smooth Circular SVG Ring -->
+                        <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
+                            <circle cx="100" cy="100" r="86" stroke="#d5d2cc" stroke-width="1.5" fill="none" />
+                            <circle id="rlRingFill" cx="100" cy="100" r="86" 
+                                    class="stroke-[#EA7645] transition-all duration-150 ease-out" 
+                                    stroke-width="3" 
+                                    stroke-dasharray="540.35" 
+                                    stroke-dashoffset="540.35" 
+                                    stroke-linecap="round"
+                                    fill="none" />
+                        </svg>
 
-                    <!-- Minimalist Logo Wrapper -->
-                    <div class="w-24 h-24 sm:w-32 sm:h-32 p-5 bg-white/50 backdrop-blur-md rounded-full border border-white/80 shadow-sm flex items-center justify-center z-10">
-                        <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain" />
+                        <!-- Inner Floating Logo -->
+                        <div class="w-24 h-24 sm:w-28 sm:h-28 p-4 bg-white/60 backdrop-blur-md rounded-full border border-white shadow-sm flex items-center justify-center z-10 rl-float">
+                            <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain filter contrast-125" />
+                        </div>
+
+                        <!-- Persentase Angka di Pojok Ring -->
+                        <div class="absolute -bottom-2 -right-2 bg-[#1c1c1c] text-white px-2.5 py-1 rounded-md font-mono text-xs font-bold tracking-widest shadow-md">
+                            <span id="akProgressText">0</span>%
+                        </div>
                     </div>
-                </div>
 
-                <!-- Counter Percentage -->
-                <div class="mt-6 font-mono text-xl sm:text-2xl font-bold tracking-[0.2em] text-[#1c1c1c] flex items-baseline">
-                    <span id="akProgressText">0</span><span class="text-xs text-gray-400 ml-0.5">%</span>
-                </div>
-
-                <!-- Stamp ACCESS GRANTED -->
-                <div id="rlStamp" class="rl-stamp">
-                    ACCESS GRANTED
+                    <!-- Stamp ACCESS GRANTED -->
+                    <div id="rlStamp" class="rl-stamp">
+                        ACCESS GRANTED
+                    </div>
                 </div>
             </main>
 
-            <!-- Bottom Console Line -->
-            <footer class="w-full max-w-4xl z-10 flex flex-col gap-2 font-mono">
+            <!-- Bottom Terminal Bar -->
+            <footer class="w-full max-w-5xl z-10 flex flex-col gap-2.5 font-mono">
                 <div class="flex justify-between items-center text-[9px] sm:text-[10px] tracking-[0.2em] text-gray-500 uppercase">
                     <div class="flex items-center gap-2">
-                        <span id="akStatusDot" class="w-1.5 h-1.5 bg-[#EA7645] rounded-full animate-pulse"></span>
-                        <span id="akStatusText" class="font-semibold text-gray-700">INITIALIZING...</span>
+                        <span id="akStatusDot" class="w-2 h-2 bg-[#EA7645] rounded-full animate-pulse"></span>
+                        <span id="akStatusText" class="font-semibold text-gray-700">INITIALIZING SYSTEM...</span>
                     </div>
-                    <div id="akConsoleOutput" class="text-[#EA7645] font-semibold text-right">
-                        SYSTEM_BOOT
+                    <div id="akConsoleOutput" class="text-[#EA7645] font-bold text-right">
+                        BOOT_SEQ
                     </div>
                 </div>
 
-                <!-- Thin Modern Loading Bar -->
-                <div class="w-full h-[2px] bg-gray-300/80 rounded-full overflow-hidden">
-                    <div id="akProgressBar" class="h-full bg-[#1c1c1c] w-0 transition-all duration-100 ease-linear"></div>
+                <!-- Thin Smooth Progress Line -->
+                <div class="w-full h-[2px] bg-gray-300/70 rounded-full overflow-hidden">
+                    <div id="akProgressBar" class="h-full bg-[#1c1c1c] w-0 transition-all duration-150 ease-out"></div>
                 </div>
             </footer>
 
@@ -200,7 +205,7 @@
 
     <style>
         /* =========================================
-           RHINE LAB // ULTRA-CLEAN LOADER STYLING
+           RHINE LAB // ASYMMETRIC CLEAN STYLING
            ========================================= */
         .rl-clean-loader {
             position: fixed; inset: 0; z-index: 50; overflow: hidden;
@@ -208,20 +213,20 @@
             font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
         }
 
-        /* Shutter Opening Animation */
+        /* Smooth Shutter Opening Animation (Exponential Ease-Out) */
         .rl-shutter {
             position: absolute; left: 0; width: 100%; height: 50.2%;
             background: #ECE8E5; overflow: hidden;
-            transition: transform 0.85s cubic-bezier(.77, 0, .18, 1);
+            transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 0;
         }
         .rl-shutter-top { top: 0; }
         .rl-shutter-bottom { bottom: 0; }
         
-        /* Thin Accent Line at the Shutter Boundary */
+        /* Subtle Accent Line on Shutter Border */
         .rl-shutter-bottom::before, .rl-shutter-top::after {
             content: ""; position: absolute; left: 0; width: 100%; height: 2px; background: #1c1c1c;
-            opacity: 0; transition: opacity .2s;
+            opacity: 0; transition: opacity .3s ease;
         }
         .rl-shutter-top::after { bottom: 0; }
         .rl-shutter-bottom::before { top: 0; }
@@ -229,32 +234,40 @@
         .rl-clean-loader.rl-open .rl-shutter::before, 
         .rl-clean-loader.rl-open .rl-shutter::after { opacity: 1; }
 
-        /* Subtle Hex Pattern */
+        /* Subtle Hex Pattern Background */
         .rl-hex {
-            position: absolute; inset: 0; opacity: 0.25;
+            position: absolute; inset: 0; opacity: 0.2;
             background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L20 0 0 11.547v23.094l20 11.547 20-11.547V11.547zM20 45.034L1.155 34.148V12.376L20 1.49l18.845 10.886v21.772L20 45.034z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3Cpath d='M40 46.188L20 34.641 0 46.188v23.094l20 11.547 20-11.547V46.188zM20 79.675L1.155 68.789V47.017L20 36.13l18.845 10.886v21.772L20 79.675z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
             background-size: 60px 103.923px;
         }
 
-        /* Shutter Slide Out */
+        /* Shutter Slide Out Trigger */
         .rl-clean-loader.rl-open .rl-shutter-top { transform: translateY(-101%); }
         .rl-clean-loader.rl-open .rl-shutter-bottom { transform: translateY(101%); }
-        .rl-clean-loader.rl-open .rl-layer { opacity: 0; transition: opacity .3s ease; }
+        .rl-clean-loader.rl-open .rl-layer { opacity: 0; transition: opacity .4s ease; }
+
+        /* Subtle Floating Logo Animation */
+        @keyframes rlFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .rl-float { animation: rlFloat 4s ease-in-out infinite; }
 
         /* Minimal Corner Accents */
-        .rl-corner { position: absolute; width: 24px; height: 24px; border: 0 solid rgba(28,28,28,.3); z-index: 10; }
-        .rl-c-tl { top: 20px; left: 20px; border-top-width: 2px; border-left-width: 2px; }
-        .rl-c-tr { top: 20px; right: 20px; border-top-width: 2px; border-right-width: 2px; }
-        .rl-c-bl { bottom: 20px; left: 20px; border-bottom-width: 2px; border-left-width: 2px; }
-        .rl-c-br { bottom: 20px; right: 20px; border-bottom-width: 2px; border-right-width: 2px; }
+        .rl-corner { position: absolute; width: 22px; height: 22px; border: 0 solid rgba(28,28,28,.25); z-index: 10; }
+        .rl-c-tl { top: 24px; left: 24px; border-top-width: 2px; border-left-width: 2px; }
+        .rl-c-tr { top: 24px; right: 24px; border-top-width: 2px; border-right-width: 2px; }
+        .rl-c-bl { bottom: 24px; left: 24px; border-bottom-width: 2px; border-left-width: 2px; }
+        .rl-c-br { bottom: 24px; right: 24px; border-bottom-width: 2px; border-right-width: 2px; }
 
         /* ACCESS GRANTED Stamp */
         .rl-stamp {
-            position: absolute; padding: 4px 16px; border: 2px solid #48AA8C; color: #48AA8C;
-            font-weight: 900; letter-spacing: 0.35em; font-size: 13px; background: rgba(236,232,229,0.95);
-            transform: rotate(-4deg) scale(1.5); opacity: 0; pointer-events: none; z-index: 20;
+            position: absolute; padding: 4px 14px; border: 2px solid #48AA8C; color: #48AA8C;
+            font-weight: 900; letter-spacing: 0.35em; font-size: 12px; background: rgba(236,232,229,0.95);
+            transform: rotate(-4deg) scale(1.4); opacity: 0; pointer-events: none; z-index: 20;
+            bottom: -10px;
         }
-        .rl-stamp.is-show { animation: rlStamp .4s cubic-bezier(.2,.9,.3,1.2) forwards; }
+        .rl-stamp.is-show { animation: rlStamp .45s cubic-bezier(.16, 1, 0.3, 1) forwards; }
 
         @keyframes rlStamp { to { opacity: 1; transform: rotate(-4deg) scale(1); } }
 
@@ -322,7 +335,7 @@
         }
 
         /* =========================================
-           ULTRA-CLEAN LOADER LOGIC
+           ASYMMETRIC LOADER LOGIC
            ========================================= */
         if (loader) {
             const $ = (id) => document.getElementById(id);
@@ -334,14 +347,14 @@
             const statusDot = $('akStatusDot');
             const stampEl = $('rlStamp');
 
-            const CIRCUMFERENCE = 552.92; // 2 * PI * 88
+            const CIRCUMFERENCE = 540.35; // 2 * PI * 86
 
             const consoleMessages = [
-                "SYSTEM_BOOT",
-                "VERIFYING_AUTH",
-                "DECRYPTING_DATA",
-                "MOUNTING_DB",
-                "ESTABLISHING_LINK"
+                "BOOT_SEQ",
+                "VERIFY_AUTH",
+                "DECRYPT_CORE",
+                "MOUNT_ARTS_DB",
+                "SYNC_UI"
             ];
 
             let progressValue = 0;
@@ -357,14 +370,14 @@
                     consoleOutput.textContent = consoleMessages[msgIdx];
                     msgIdx++;
                 }
-            }, 500);
+            }, 450);
 
             function renderProgress(val) {
                 const rounded = Math.round(val);
                 if (progressText) progressText.textContent = rounded;
                 if (progressBar) progressBar.style.width = `${val}%`;
 
-                // Ring Bar Stroke Fill Calculation
+                // Ring Bar Fill
                 if (ringFill) {
                     const offset = CIRCUMFERENCE - (val / 100) * CIRCUMFERENCE;
                     ringFill.style.strokeDashoffset = offset;
@@ -396,15 +409,15 @@
                     stampEl.classList.add('is-show');
                 }
 
-                // Shutter Open Delay
+                // Smooth Shutter Open Delay
                 setTimeout(() => {
                     loader.classList.add('rl-open');
-                    setTimeout(revealMain, 380);
-                    setTimeout(() => loader.remove(), 950);
-                }, 800);
+                    setTimeout(revealMain, 450);
+                    setTimeout(() => loader.remove(), 1100);
+                }, 750);
             }
 
-            // Smooth Progress Step
+            // Smooth Progress Interval
             const progressTimer = setInterval(() => {
                 const cap = pageReady ? 100 : 92;
                 let step = Math.floor(Math.random() * 5) + 2;
@@ -416,7 +429,7 @@
                     clearInterval(progressTimer);
                     finishLoading();
                 }
-            }, 50);
+            }, 55);
 
             renderProgress(0);
 
