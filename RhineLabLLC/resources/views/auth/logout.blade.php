@@ -7,38 +7,50 @@
     $showLoginOverlay = session()->has('status');
 @endphp
 
-{{-- OVERLAY VALIDASI KREDENSIAL --}}
-@if ($user &&$showLoginOverlay)
-    <div id="loginCompletionOverlay"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-[#ECE8E5]/80 backdrop-blur-md transition-opacity duration-700 opacity-0">
-        <div class="login-overlay-card">
-            <div class="login-overlay-meta">
-                <span class="login-overlay-chip">
-                    <span class="h-1.5 w-1.5 rounded-full bg-[#EA7645] animate-ping"></span>
-                    Rhine Lab · Access Node
-                </span>
-                <span class="login-overlay-status font-bold" data-overlay-status>Memvalidasi kredensial...</span>
+{{-- ==============================================
+     OVERLAY "ID CONFIRMED" (setelah login)
+     ============================================== --}}
+@if ($user && $showLoginOverlay)
+    <div id="loginCompletionOverlay" class="ov" role="status" aria-live="polite"
+         aria-label="ID confirmed: {{ $user->name }}"
+         data-name="{{ $user->name }}">
+
+        <div class="ov-photo" style="background-image: url('{{ asset('images/Rhine_Lab_HQ1.png') }}');"></div>
+        <div class="ov-hex hex-bg"></div>
+
+        <!-- Header kiri atas -->
+        <div class="ov-head">
+            <div class="ov-h1">RHINE LAB</div>
+            <div class="ov-h2">SYNTHESIZE INFORMATION</div>
+            <div class="ov-h3"><span>ANALYSIS</span><b>OS</b></div>
+        </div>
+
+        <!-- Logo + ID -->
+        <div class="ov-stage">
+            <div class="ov-logo">
+                <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab">
             </div>
-            <div class="login-overlay-body">
-                <div class="login-overlay-avatar relative group">
-                    <img src="{{ asset($user->photo_path ?? 'images/users/Silence.png') }}" alt="Foto {{ $user->name }}"
-                        class="h-full w-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            <div class="ov-text">
+                <div class="ov-line">
+                    <span class="ov-dash"></span>
+                    <span class="ov-label">ID CONFIRMED :</span>
+                    <span class="ov-name" data-overlay-name></span><span class="ov-caret"></span>
                 </div>
-                <div class="login-overlay-text">
-                    <span class="login-overlay-greeting">Selamat Datang</span>
-                    <h3 class="login-overlay-name font-black">{{ $user->name }}</h3>
-                    <span class="login-overlay-role font-semibold">{{ $user->position ?? ($user->is_division_head ? 'Kepala Divisi' : 'Operatif') }}</span>
-                </div>
-            </div>
-            <div class="login-overlay-progress">
-                <span class="login-overlay-progress-bar" data-overlay-progress></span>
-            </div>
-            <div class="flex justify-between items-center text-[9px] font-mono tracking-widest text-gray-500 uppercase">
-                <span>SYSTEM SYNCING</span>
-                <span class="login-overlay-progress-value" data-overlay-progress-value>0%</span>
+                <div class="ov-role">{{ $user->position ?? ($user->is_division_head ? 'Kepala Divisi' : 'Operatif') }}</div>
             </div>
         </div>
+
+        <!-- Status kiri bawah -->
+        <div class="ov-status">
+            <span class="ov-dot" data-overlay-dot></span>
+            <span data-overlay-status>VERIFYING CREDENTIALS</span>
+        </div>
+
+        <!-- Footer kanan bawah -->
+        <div class="ov-foot">POWERED BY <b>RHINE LAB</b><span class="ov-foot-dash"></span></div>
+
+        <!-- Garis progress tipis -->
+        <div class="ov-progress"><i data-overlay-progress></i></div>
     </div>
 @endif
 
@@ -199,120 +211,103 @@
         background-size: 60px 103.923px;
     }
 
-    .login-overlay-card {
-        position: relative;
-        width: min(90%, 420px);
-        padding: 1.75rem;
-        border-radius: 28px;
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.85), rgba(236, 232, 229, 0.75));
-        box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), 0 30px 60px -20px rgba(0,0,0,0.15);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-        transform: scale(0.94);
-        opacity: 0;
-        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+    /* =========================================
+       OVERLAY: ID CONFIRMED
+       ========================================= */
+    .ov {
+        position: fixed; inset: 0; z-index: 50; overflow: hidden;
+        background: #ECE8E5; color: #1c1c1c;
+        font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+        clip-path: inset(0 0 0 0);
+        transition: clip-path .9s cubic-bezier(.77, 0, .18, 1);
+    }
+    .ov.is-out { clip-path: inset(0 0 100% 0); }
+
+    .ov-photo { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .06; }
+    .ov-hex { position: absolute; inset: 0; opacity: .7; }
+
+    /* Header kiri atas */
+    .ov-head {
+        position: absolute; top: clamp(24px, 6vh, 60px); left: clamp(20px, 5vw, 72px);
+        display: flex; flex-direction: column; width: max-content; line-height: 1;
+    }
+    .ov-h1, .ov-h2, .ov-h3 { opacity: 0; animation: ovSlide .8s cubic-bezier(.16, 1, .3, 1) forwards; }
+    .ov-h1 { font-size: clamp(22px, 2.2vw, 30px); font-weight: 800; letter-spacing: .01em; animation-delay: .15s; }
+    .ov-h2 { font-size: clamp(7.5px, .68vw, 9.5px); font-weight: 500; letter-spacing: .02em; margin-top: 3px; text-align-last: justify; animation-delay: .3s; }
+    .ov-h3 { display: flex; justify-content: space-between; gap: .6em; margin-top: 3px; font-size: clamp(17px, 1.7vw, 23px); font-weight: 400; letter-spacing: .02em; animation-delay: .45s; }
+    .ov-h3 b { font-weight: 800; }
+
+    /* Logo + ID */
+    .ov-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 24px; }
+    .ov-logo { flex: none; width: clamp(150px, 18vw, 230px); animation: ovWipe 1.1s .45s cubic-bezier(.65, 0, .2, 1) both; }
+    .ov-logo img { display: block; width: 100%; height: auto; }
+
+    .ov-text {
+        max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap; padding-left: 0;
+        transition: max-width 1s cubic-bezier(.65, 0, .2, 1), padding-left 1s cubic-bezier(.65, 0, .2, 1), opacity .5s .2s ease;
+    }
+    .ov.is-id .ov-text { max-width: min(640px, 70vw); opacity: 1; padding-left: clamp(28px, 4vw, 56px); }
+
+    .ov-line { display: flex; align-items: center; gap: 10px; font-size: clamp(13px, 1.25vw, 16px); letter-spacing: .04em; }
+    .ov-dash { width: 8px; height: 2px; background: #1c1c1c; flex: none; }
+    .ov-label { color: #4a4743; }
+    .ov-name { font-weight: 700; }
+    .ov-caret { width: 2px; height: 1.15em; background: #EA7645; animation: ovBlink .8s steps(2, jump-none) infinite; transition: opacity .3s; }
+    .ov.is-done .ov-caret { opacity: 0; animation: none; }
+
+    .ov-role {
+        margin: 8px 0 0 18px; font-size: 10px; letter-spacing: .32em; font-weight: 700; text-transform: uppercase; color: #7a766f;
+        opacity: 0; transform: translateY(4px); transition: opacity .6s ease, transform .6s ease;
+    }
+    .ov.is-done .ov-role { opacity: 1; transform: none; }
+
+    /* Status kiri bawah */
+    .ov-status {
+        position: absolute; left: clamp(20px, 5vw, 72px); bottom: clamp(20px, 4vh, 40px);
+        display: flex; align-items: center; gap: 10px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 9px; letter-spacing: .3em; font-weight: 700; color: #7a766f; opacity: 0;
+        animation: ovFade .8s .9s ease forwards;
+    }
+    .ov-dot { width: 7px; height: 7px; background: #EA7645; transform: rotate(45deg); animation: ovBlink .7s steps(2, jump-none) infinite; transition: background .3s; }
+    .ov-dot.is-done { background: #48AA8C; animation: none; box-shadow: 0 0 8px #48AA8C; }
+
+    /* Footer kanan bawah */
+    .ov-foot {
+        position: absolute; right: clamp(20px, 5vw, 72px); bottom: clamp(20px, 4vh, 40px);
+        display: flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: .03em; opacity: 0;
+        animation: ovFade .8s 1s ease forwards;
+    }
+    .ov-foot b { font-weight: 800; }
+    .ov-foot-dash { display: block; height: 4px; width: 0; background: #1c1c1c; animation: ovGrow .7s 1.4s cubic-bezier(.16, 1, .3, 1) forwards; }
+
+    /* Garis progress tipis */
+    .ov-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(28, 28, 28, .08); }
+    .ov-progress i { position: absolute; inset: 0; background: #1c1c1c; transform-origin: left; transform: scaleX(0); transition: transform .6s cubic-bezier(.16, 1, .3, 1), background .4s; }
+    .ov-progress i.is-done { background: #48AA8C; }
+
+    @media (max-width: 640px) {
+        .ov-stage { flex-direction: column; }
+        .ov-text { max-width: none; max-height: 0; white-space: normal; text-align: center; transition: max-height .8s cubic-bezier(.65, 0, .2, 1), padding-top .8s cubic-bezier(.65, 0, .2, 1), opacity .5s .2s ease; }
+        .ov.is-id .ov-text { max-width: none; max-height: 100px; padding-left: 0; padding-top: 22px; }
+        .ov-line { justify-content: center; flex-wrap: wrap; }
+        .ov-role { margin-left: 0; }
+        .ov-foot { display: none; }
     }
 
-    .login-overlay-card.is-active {
-        opacity: 1;
-        transform: scale(1);
+    @keyframes ovSlide { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: none; } }
+    @keyframes ovWipe { from { opacity: 0; clip-path: inset(0 100% 0 0); transform: scale(.96); } to { opacity: 1; clip-path: inset(0 0 0 0); transform: none; } }
+    @keyframes ovFade { to { opacity: 1; } }
+    @keyframes ovBlink { 50% { opacity: .25; } }
+    @keyframes ovGrow { to { width: 18px; } }
+    @media (prefers-reduced-motion: reduce) {
+        .ov-h1, .ov-h2, .ov-h3, .ov-logo { animation-duration: .01s; animation-delay: 0s; }
+        .ov, .ov-text { transition-duration: .01s; }
     }
 
-    .login-overlay-meta {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .login-overlay-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.35rem 0.85rem;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.9);
-        background: rgba(255, 255, 255, 0.6);
-        font-size: 0.62rem;
-        letter-spacing: 0.25em;
-        text-transform: uppercase;
-        color: #333;
-        font-weight: 800;
-    }
-
-    .login-overlay-status {
-        font-size: 0.65rem;
-        letter-spacing: 0.25em;
-        text-transform: uppercase;
-        color: #EA7645;
-    }
-
-    .login-overlay-body {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-    }
-
-    .login-overlay-avatar {
-        height: 80px;
-        width: 80px;
-        border-radius: 20px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.9);
-        background: rgba(255, 255, 255, 0.4);
-        box-shadow: 0 12px 25px -10px rgba(0,0,0,0.15);
-    }
-
-    .login-overlay-text {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .login-overlay-greeting {
-        font-size: 0.65rem;
-        letter-spacing: 0.35em;
-        text-transform: uppercase;
-        color: #666;
-        font-weight: 700;
-    }
-
-    .login-overlay-name {
-        font-size: 1.15rem;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: #1f1f1f;
-    }
-
-    .login-overlay-role {
-        font-size: 0.65rem;
-        letter-spacing: 0.25em;
-        text-transform: uppercase;
-        color: #EA7645;
-    }
-
-    .login-overlay-progress {
-        position: relative;
-        height: 6px;
-        border-radius: 999px;
-        background: rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.8);
-    }
-
-    .login-overlay-progress-bar {
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: linear-gradient(90deg, #EA7645, #48AA8C);
-        transform-origin: left;
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
-    }
-
+    /* =========================================
+       HALAMAN UTAMA
+       ========================================= */
     @keyframes fadeUp {
         0% { opacity: 0; transform: translateY(20px); }
         100% { opacity: 1; transform: translateY(0); }
@@ -386,10 +381,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         const wrapper = document.getElementById('pageWrapper');
         const overlay = document.getElementById('loginCompletionOverlay');
-        const overlayCard = overlay?.querySelector('.login-overlay-card');
-        const overlayStatus = overlay?.querySelector('[data-overlay-status]');
-        const overlayProgress = overlay?.querySelector('[data-overlay-progress]');
-        const overlayProgressValue = overlay?.querySelector('[data-overlay-progress-value]');
         const animatedElems = Array.from(document.querySelectorAll('.pre-animate'));
         const headlineText = 'SESSION TERMINATION';
         const headlineElem = document.getElementById('logoutHeadline');
@@ -427,44 +418,51 @@
             requestAnimationFrame(() => wrapper.classList.add('opacity-100'));
         };
 
-        const runOverlaySequence = () => {
-            if (!overlay || !overlayCard) {
+        /* =========================================
+           OVERLAY SEQUENCE: logo -> ID CONFIRMED -> access granted -> wipe
+           ========================================= */
+        const runOverlaySequence = async () => {
+            if (!overlay) {
                 revealPage();
                 activateAnimatedElems();
                 return;
             }
 
-            overlay.classList.remove('opacity-0');
-            overlay.classList.add('opacity-100');
-            requestAnimationFrame(() => overlayCard.classList.add('is-active'));
+            const nameEl = overlay.querySelector('[data-overlay-name]');
+            const statusEl = overlay.querySelector('[data-overlay-status]');
+            const dotEl = overlay.querySelector('[data-overlay-dot]');
+            const barEl = overlay.querySelector('[data-overlay-progress]');
+            const name = (overlay.dataset.name || '').toUpperCase();
 
-            let progress = 0;
-            const progressTimer = setInterval(() => {
-                progress = Math.min(progress + 10, 100);
-                if (overlayProgress) {
-                    overlayProgress.style.transform = `scaleX(${progress / 100})`;
-                }
-                if (overlayProgressValue) {
-                    overlayProgressValue.textContent = `${progress}%`;
-                }
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const wait = (ms) => new Promise((r) => setTimeout(r, reduce ? ms * 0.3 : ms));
+            const setProgress = (p) => { if (barEl) barEl.style.transform = `scaleX(${p})`; };
+            const setStatus = (t) => { if (statusEl) statusEl.textContent = t; };
 
-                if (progress >= 100) {
-                    clearInterval(progressTimer);
-                    if (overlayStatus) {
-                        overlayStatus.textContent = 'Akses Disetujui';
-                    }
+            setProgress(0.15);
+            await wait(1100);                       // logo selesai "menyapu" masuk
 
-                    setTimeout(() => {
-                        overlay.classList.remove('opacity-100');
-                        overlay.classList.add('opacity-0');
-                        overlayCard.classList.remove('is-active');
-                        overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
+            overlay.classList.add('is-id');         // blok teks melebar, logo bergeser ke kiri
+            setStatus('ID CONFIRMED');
+            setProgress(0.45);
+            await wait(750);
 
-                        revealPage();
-                        activateAnimatedElems();
-                    }, 500);
-                }
-            }, 100);
+            for (let k = 1; k <= name.length; k++) { // nama diketik
+                if (nameEl) nameEl.textContent = name.slice(0, k);
+                setProgress(0.45 + 0.4 * (k / name.length));
+                await wait(65);
+            }
+
+            overlay.classList.add('is-done');       // role muncul, kursor hilang
+            setStatus('ACCESS GRANTED');
+            dotEl?.classList.add('is-done');
+            barEl?.classList.add('is-done');
+            setProgress(1);
+            await wait(1100);
+
+            overlay.classList.add('is-out');        // overlay tersapu ke atas
+            setTimeout(() => { revealPage(); activateAnimatedElems(); }, 350);
+            setTimeout(() => overlay.remove(), 1100);
         };
 
         runOverlaySequence();
