@@ -4,102 +4,120 @@
 
 @section('content')
     <!-- ==============================================
-         RHINE LAB // ASYMMETRIC ULTRA-CLEAN BOOT LOADER
+         RHINE LAB // PV "ACCESS" ACCURATE BOOT LOADER
          ============================================== -->
-    <div id="pageLoader" class="rl-clean-loader" role="status" aria-live="polite">
+    <div id="pageLoader" class="rl-pv-loader" role="status" aria-live="polite">
 
-        <!-- Shutter Panel (Transisi Terbuka Atas & Bawah Halus) -->
-        <div class="rl-shutter rl-shutter-top"><div class="rl-hex"></div></div>
-        <div class="rl-shutter rl-shutter-bottom"><div class="rl-hex"></div></div>
+        <!-- Shutter Panel Terbelah 2 (Atas & Bawah) -->
+        <div class="rl-shutter rl-shutter-top">
+            <div class="rl-grid-bg"></div>
+        </div>
+        <div class="rl-shutter rl-shutter-bottom">
+            <div class="rl-grid-bg"></div>
+        </div>
 
-        <!-- Layer Konten UI Minimalis -->
-        <div class="rl-layer flex flex-col justify-between items-center h-full w-full p-8 sm:p-14 pointer-events-none select-none relative z-10">
+        <!-- Overlapping Shutter Center Line -->
+        <div class="rl-shutter-line"></div>
 
-            <!-- Frame Sudut Minimalis -->
+        <!-- Layer Konten UI HUD -->
+        <div class="rl-layer flex flex-col justify-between items-center h-full w-full p-6 sm:p-12 pointer-events-none select-none relative z-10">
+
+            <!-- HUD Corners (Aksen Sudut Khas Arknights) -->
             <span class="rl-corner rl-c-tl"></span>
             <span class="rl-corner rl-c-tr"></span>
             <span class="rl-corner rl-c-bl"></span>
             <span class="rl-corner rl-c-br"></span>
 
-            <!-- Top Header (HUD Minimalis) -->
-            <header class="w-full max-w-5xl flex justify-between items-center font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-gray-500 uppercase">
-                <div class="flex items-center gap-3">
-                    <span class="w-2 h-2 bg-[#EA7645] rounded-xs"></span>
-                    <span class="font-black text-[#1c1c1c] tracking-[0.3em]">RHINE LAB</span>
-                    <span class="text-gray-400">// SYS_BOOT v3.0</span>
+            <!-- Top Header Status HUD -->
+            <header class="w-full max-w-5xl flex justify-between items-start font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-[#2c2c2c] uppercase">
+                <div class="flex flex-col gap-1">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#EA7645] inline-block"></span>
+                        <span class="font-black text-[#1c1c1c] tracking-[0.3em]">RHINE LAB LLC.</span>
+                    </div>
+                    <span class="text-gray-500 text-[8px] pl-4">DATABASE PORTAL // REF. PV-ACCESS</span>
                 </div>
-                <div class="flex items-center gap-2 bg-white/40 px-3 py-1 rounded-full border border-white/60 shadow-xs">
-                    <span class="text-gray-400">CLEARANCE:</span>
-                    <span class="font-bold text-[#EA7645] tracking-widest">LEVEL-4</span>
+                <div class="text-right flex flex-col items-end gap-1">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-gray-500">SYS_STATUS:</span>
+                        <span id="rlTopStatus" class="font-bold text-[#EA7645]">PROCESSING</span>
+                    </div>
+                    <span class="text-[8px] text-gray-400 font-mono">LOCATION: COLUMBIA / TRIMOUNTS</span>
                 </div>
             </header>
 
-            <!-- Center Layout (Asimetris: Left Brand, Right Circular Ring & Console) -->
-            <main class="w-full max-w-5xl my-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-6">
+            <!-- Middle Core Interface (Logo & Precision Reticle Ring) -->
+            <main class="w-full max-w-4xl my-auto flex flex-col items-center justify-center relative">
                 
-                <!-- Kiri (Col 7): Title & Branding -->
-                <div class="md:col-span-7 flex flex-col items-center md:items-start text-center md:text-left">
-                    <div class="inline-flex items-center gap-2 mb-3">
-                        <span class="h-[1px] w-6 bg-[#EA7645]"></span>
-                        <span class="text-[9px] font-mono font-bold tracking-[0.35em] text-[#EA7645] uppercase">ARCHIVE PROTOCOL</span>
+                <!-- Rotating Reticle & Ring Stack -->
+                <div class="relative w-52 h-52 sm:w-64 sm:h-64 flex items-center justify-center">
+                    
+                    <!-- Outer Rotating Crosshair Ring -->
+                    <svg class="absolute inset-0 w-full h-full animate-spin-slow opacity-40" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="95" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="4 8" fill="none" />
+                        <circle cx="100" cy="100" r="85" stroke="#1c1c1c" stroke-width="0.5" stroke-dasharray="40 10 20 10" fill="none" />
+                    </svg>
+
+                    <!-- Inner Active Gauge Progress Fill -->
+                    <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="76" stroke="#d5d2cc" stroke-width="2" fill="none" />
+                        <circle id="rlRingFill" cx="100" cy="100" r="76" 
+                                class="stroke-[#EA7645] transition-all duration-100 ease-out" 
+                                stroke-width="3" 
+                                stroke-dasharray="477.52" 
+                                stroke-dashoffset="477.52" 
+                                stroke-linecap="butt"
+                                fill="none" />
+                    </svg>
+
+                    <!-- Logo Center Wrapper -->
+                    <div class="w-28 h-28 sm:w-36 sm:h-36 p-4 bg-white/70 backdrop-blur-md rounded-full border border-white shadow-lg flex items-center justify-center z-10 rl-core-glow">
+                        <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain filter contrast-125" />
                     </div>
-                    <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-[0.25em] text-[#1c1c1c] uppercase leading-none">
-                        RHINE LAB
-                    </h1>
-                    <p class="text-[9px] sm:text-[11px] font-mono font-semibold tracking-[0.45em] text-gray-400 uppercase mt-3">
-                        SYNTHESIZE INFORMATION OS
-                    </p>
+
+                    <!-- HUD Reticle Cross Markings -->
+                    <div class="absolute inset-0 flex items-center justify-between px-1 pointer-events-none opacity-30">
+                        <div class="w-2 h-[1px] bg-[#1c1c1c]"></div>
+                        <div class="w-2 h-[1px] bg-[#1c1c1c]"></div>
+                    </div>
+                    <div class="absolute inset-0 flex flex-col items-center justify-between py-1 pointer-events-none opacity-30">
+                        <div class="h-2 w-[1px] bg-[#1c1c1c]"></div>
+                        <div class="h-2 w-[1px] bg-[#1c1c1c]"></div>
+                    </div>
                 </div>
 
-                <!-- Kanan (Col 5): Circular Ring & Dynamic Console Status -->
-                <div class="md:col-span-5 flex flex-col items-center md:items-end justify-center relative">
-                    
-                    <div class="relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center">
-                        <!-- Smooth Circular SVG Ring -->
-                        <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
-                            <circle cx="100" cy="100" r="86" stroke="#d5d2cc" stroke-width="1.5" fill="none" />
-                            <circle id="rlRingFill" cx="100" cy="100" r="86" 
-                                    class="stroke-[#EA7645] transition-all duration-150 ease-out" 
-                                    stroke-width="3" 
-                                    stroke-dasharray="540.35" 
-                                    stroke-dashoffset="540.35" 
-                                    stroke-linecap="round"
-                                    fill="none" />
-                        </svg>
-
-                        <!-- Inner Floating Logo -->
-                        <div class="w-24 h-24 sm:w-28 sm:h-28 p-4 bg-white/60 backdrop-blur-md rounded-full border border-white shadow-sm flex items-center justify-center z-10 rl-float">
-                            <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain filter contrast-125" />
-                        </div>
-
-                        <!-- Persentase Angka di Pojok Ring -->
-                        <div class="absolute -bottom-2 -right-2 bg-[#1c1c1c] text-white px-2.5 py-1 rounded-md font-mono text-xs font-bold tracking-widest shadow-md">
-                            <span id="akProgressText">0</span>%
-                        </div>
+                <!-- Text Log Typing Output (Sesuai Trailer PV) -->
+                <div class="mt-8 text-center flex flex-col items-center font-mono">
+                    <div id="rlLogLine" class="text-sm sm:text-base font-black tracking-[0.25em] text-[#1c1c1c] uppercase min-h-[1.5rem]">
+                        ACCESS PERMISSION REQUIRED
                     </div>
-
-                    <!-- Stamp ACCESS GRANTED -->
-                    <div id="rlStamp" class="rl-stamp">
-                        ACCESS GRANTED
+                    <div class="flex items-center gap-2 mt-2 text-[10px] font-bold tracking-[0.3em] text-gray-500 uppercase">
+                        <span>PROGRESS:</span>
+                        <span id="akProgressText" class="text-[#EA7645] font-black">0</span>%
                     </div>
+                </div>
+
+                <!-- Stamp "PERMISSION AUTHORIZED / ACCESS GRANTED" -->
+                <div id="rlStamp" class="rl-stamp">
+                    PERMISSION AUTHORIZED
                 </div>
             </main>
 
-            <!-- Bottom Terminal Bar -->
-            <footer class="w-full max-w-5xl z-10 flex flex-col gap-2.5 font-mono">
-                <div class="flex justify-between items-center text-[9px] sm:text-[10px] tracking-[0.2em] text-gray-500 uppercase">
+            <!-- Bottom Console HUD -->
+            <footer class="w-full max-w-5xl z-10 flex flex-col gap-2 font-mono">
+                <div class="flex justify-between items-center text-[9px] sm:text-[10px] tracking-[0.2em] text-gray-600 uppercase">
                     <div class="flex items-center gap-2">
-                        <span id="akStatusDot" class="w-2 h-2 bg-[#EA7645] rounded-full animate-pulse"></span>
-                        <span id="akStatusText" class="font-semibold text-gray-700">INITIALIZING SYSTEM...</span>
+                        <span id="akStatusDot" class="w-2 h-2 bg-[#EA7645] inline-block animate-ping"></span>
+                        <span id="akStatusText" class="font-bold text-[#1c1c1c]">REQUEST RECEIVED</span>
                     </div>
                     <div id="akConsoleOutput" class="text-[#EA7645] font-bold text-right">
-                        BOOT_SEQ
+                        ID_CONFIRMED
                     </div>
                 </div>
 
-                <!-- Thin Smooth Progress Line -->
-                <div class="w-full h-[2px] bg-gray-300/70 rounded-full overflow-hidden">
-                    <div id="akProgressBar" class="h-full bg-[#1c1c1c] w-0 transition-all duration-150 ease-out"></div>
+                <!-- Thin Segmented Progress Line -->
+                <div class="w-full h-[3px] bg-gray-300/80 rounded-full overflow-hidden relative">
+                    <div id="akProgressBar" class="h-full bg-[#1c1c1c] w-0 transition-all duration-100 ease-out"></div>
                 </div>
             </footer>
 
@@ -205,71 +223,69 @@
 
     <style>
         /* =========================================
-           RHINE LAB // ASYMMETRIC CLEAN STYLING
+           RHINE LAB // PV ACCESS ACCURATE STYLING
            ========================================= */
-        .rl-clean-loader {
+        .rl-pv-loader {
             position: fixed; inset: 0; z-index: 50; overflow: hidden;
             background: #ECE8E5; color: #1c1c1c;
             font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
         }
 
-        /* Smooth Shutter Opening Animation (Exponential Ease-Out) */
+        /* Ultra-smooth Shutter Opening Transisi */
         .rl-shutter {
-            position: absolute; left: 0; width: 100%; height: 50.2%;
+            position: absolute; left: 0; width: 100%; height: 50.1%;
             background: #ECE8E5; overflow: hidden;
-            transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 0;
         }
         .rl-shutter-top { top: 0; }
         .rl-shutter-bottom { bottom: 0; }
-        
-        /* Subtle Accent Line on Shutter Border */
-        .rl-shutter-bottom::before, .rl-shutter-top::after {
-            content: ""; position: absolute; left: 0; width: 100%; height: 2px; background: #1c1c1c;
-            opacity: 0; transition: opacity .3s ease;
-        }
-        .rl-shutter-top::after { bottom: 0; }
-        .rl-shutter-bottom::before { top: 0; }
-        
-        .rl-clean-loader.rl-open .rl-shutter::before, 
-        .rl-clean-loader.rl-open .rl-shutter::after { opacity: 1; }
 
-        /* Subtle Hex Pattern Background */
-        .rl-hex {
-            position: absolute; inset: 0; opacity: 0.2;
-            background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L20 0 0 11.547v23.094l20 11.547 20-11.547V11.547zM20 45.034L1.155 34.148V12.376L20 1.49l18.845 10.886v21.772L20 45.034z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3Cpath d='M40 46.188L20 34.641 0 46.188v23.094l20 11.547 20-11.547V46.188zM20 79.675L1.155 68.789V47.017L20 36.13l18.845 10.886v21.772L20 79.675z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-            background-size: 60px 103.923px;
+        /* Aksen Garis Pemisah Tengah Shutter */
+        .rl-shutter-line {
+            position: absolute; top: 50%; left: 0; right: 0; height: 1px;
+            background: #1c1c1c; z-index: 2; transform: translateY(-50%);
+            transition: opacity 0.3s ease;
         }
 
-        /* Shutter Slide Out Trigger */
-        .rl-clean-loader.rl-open .rl-shutter-top { transform: translateY(-101%); }
-        .rl-clean-loader.rl-open .rl-shutter-bottom { transform: translateY(101%); }
-        .rl-clean-loader.rl-open .rl-layer { opacity: 0; transition: opacity .4s ease; }
+        .rl-pv-loader.rl-open .rl-shutter-line { opacity: 0; }
+        .rl-pv-loader.rl-open .rl-shutter-top { transform: translateY(-101%); }
+        .rl-pv-loader.rl-open .rl-shutter-bottom { transform: translateY(101%); }
+        .rl-pv-loader.rl-open .rl-layer { opacity: 0; transition: opacity .4s ease; }
 
-        /* Subtle Floating Logo Animation */
-        @keyframes rlFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+        /* Grid Background Pattern khas Trailer PV */
+        .rl-grid-bg {
+            position: absolute; inset: 0; opacity: 0.18;
+            background-image: 
+                linear-gradient(to right, #1c1c1c 1px, transparent 1px),
+                linear-gradient(to bottom, #1c1c1c 1px, transparent 1px);
+            background-size: 40px 40px;
         }
-        .rl-float { animation: rlFloat 4s ease-in-out infinite; }
 
-        /* Minimal Corner Accents */
-        .rl-corner { position: absolute; width: 22px; height: 22px; border: 0 solid rgba(28,28,28,.25); z-index: 10; }
-        .rl-c-tl { top: 24px; left: 24px; border-top-width: 2px; border-left-width: 2px; }
-        .rl-c-tr { top: 24px; right: 24px; border-top-width: 2px; border-right-width: 2px; }
-        .rl-c-bl { bottom: 24px; left: 24px; border-bottom-width: 2px; border-left-width: 2px; }
-        .rl-c-br { bottom: 24px; right: 24px; border-bottom-width: 2px; border-right-width: 2px; }
+        /* HUD Frame Corners */
+        .rl-corner { position: absolute; width: 28px; height: 28px; border: 0 solid rgba(28,28,28,.4); z-index: 10; }
+        .rl-c-tl { top: 20px; left: 20px; border-top-width: 2px; border-left-width: 2px; }
+        .rl-c-tr { top: 20px; right: 20px; border-top-width: 2px; border-right-width: 2px; }
+        .rl-c-bl { bottom: 20px; left: 20px; border-bottom-width: 2px; border-left-width: 2px; }
+        .rl-c-br { bottom: 20px; right: 20px; border-bottom-width: 2px; border-right-width: 2px; }
 
-        /* ACCESS GRANTED Stamp */
+        /* Core Glow */
+        .rl-core-glow {
+            box-shadow: 0 0 35px rgba(234, 118, 69, 0.18), inset 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Stamp PERMISSION AUTHORIZED */
         .rl-stamp {
-            position: absolute; padding: 4px 14px; border: 2px solid #48AA8C; color: #48AA8C;
-            font-weight: 900; letter-spacing: 0.35em; font-size: 12px; background: rgba(236,232,229,0.95);
-            transform: rotate(-4deg) scale(1.4); opacity: 0; pointer-events: none; z-index: 20;
-            bottom: -10px;
+            position: absolute; padding: 6px 20px; border: 2px solid #48AA8C; color: #48AA8C;
+            font-weight: 900; letter-spacing: 0.35em; font-size: 13px; background: rgba(236,232,229,0.96);
+            transform: rotate(-3deg) scale(1.4); opacity: 0; pointer-events: none; z-index: 20;
+            top: 55%;
         }
         .rl-stamp.is-show { animation: rlStamp .45s cubic-bezier(.16, 1, 0.3, 1) forwards; }
 
-        @keyframes rlStamp { to { opacity: 1; transform: rotate(-4deg) scale(1); } }
+        @keyframes rlStamp { to { opacity: 1; transform: rotate(-3deg) scale(1); } }
+        @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .animate-spin-slow { animation: spinSlow 30s linear infinite; }
 
         /* Standard Page Animations */
         @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
@@ -335,7 +351,7 @@
         }
 
         /* =========================================
-           ASYMMETRIC LOADER LOGIC
+           PV "ACCESS" ACCURATE LOADER LOGIC
            ========================================= */
         if (loader) {
             const $ = (id) => document.getElementById(id);
@@ -346,15 +362,17 @@
             const statusText = $('akStatusText');
             const statusDot = $('akStatusDot');
             const stampEl = $('rlStamp');
+            const logLine = $('rlLogLine');
+            const topStatus = $('rlTopStatus');
 
-            const CIRCUMFERENCE = 540.35; // 2 * PI * 86
+            const CIRCUMFERENCE = 477.52; // 2 * PI * 76
 
-            const consoleMessages = [
-                "BOOT_SEQ",
-                "VERIFY_AUTH",
-                "DECRYPT_CORE",
-                "MOUNT_ARTS_DB",
-                "SYNC_UI"
+            // Sequence log persis sesuai percakapan suara trailer PV Rhine Lab Access
+            const pvSequence = [
+                { progress: 20, log: "ACCESS PERMISSION REQUIRED", console: "ID_CHECK", status: "PROCESSING PERMISSION" },
+                { progress: 45, log: "ID CONFIRMED // JOYCE MOORE", console: "ID_CONFIRMED", status: "CREDENTIALS VERIFIED" },
+                { progress: 75, log: "REQUEST RECEIVED // START PROCESSING", console: "PROCESSING", status: "AUTHORIZING ACCESS" },
+                { progress: 100, log: "PERMISSION AUTHORIZED", console: "WELCOME_RHINE_LAB", status: "ACCESS GRANTED" }
             ];
 
             let progressValue = 0;
@@ -363,42 +381,49 @@
 
             window.addEventListener('load', () => { pageReady = true; });
 
-            // Terminal Console Message Rotator
-            let msgIdx = 0;
-            const consoleTimer = setInterval(() => {
-                if (consoleOutput && msgIdx < consoleMessages.length) {
-                    consoleOutput.textContent = consoleMessages[msgIdx];
-                    msgIdx++;
-                }
-            }, 450);
-
             function renderProgress(val) {
                 const rounded = Math.round(val);
                 if (progressText) progressText.textContent = rounded;
                 if (progressBar) progressBar.style.width = `${val}%`;
 
-                // Ring Bar Fill
                 if (ringFill) {
                     const offset = CIRCUMFERENCE - (val / 100) * CIRCUMFERENCE;
                     ringFill.style.strokeDashoffset = offset;
+                }
+
+                // Update teks log sesuai persentase
+                if (val < 25) {
+                    if (logLine) logLine.textContent = pvSequence[0].log;
+                    if (consoleOutput) consoleOutput.textContent = pvSequence[0].console;
+                    if (statusText) statusText.textContent = pvSequence[0].status;
+                } else if (val < 60) {
+                    if (logLine) logLine.textContent = pvSequence[1].log;
+                    if (consoleOutput) consoleOutput.textContent = pvSequence[1].console;
+                    if (statusText) statusText.textContent = pvSequence[1].status;
+                } else if (val < 95) {
+                    if (logLine) logLine.textContent = pvSequence[2].log;
+                    if (consoleOutput) consoleOutput.textContent = pvSequence[2].console;
+                    if (statusText) statusText.textContent = pvSequence[2].status;
+                } else {
+                    if (logLine) logLine.textContent = pvSequence[3].log;
+                    if (consoleOutput) consoleOutput.textContent = pvSequence[3].console;
+                    if (statusText) statusText.textContent = pvSequence[3].status;
                 }
             }
 
             function finishLoading() {
                 finished = true;
-                clearInterval(consoleTimer);
 
-                // UI Update on Success
-                if (statusText) {
-                    statusText.textContent = 'ACCESS GRANTED';
-                    statusText.classList.add('text-[#48AA8C]');
+                if (topStatus) {
+                    topStatus.textContent = 'AUTHORIZED';
+                    topStatus.classList.remove('text-[#EA7645]');
+                    topStatus.classList.add('text-[#48AA8C]');
                 }
                 if (statusDot) {
-                    statusDot.classList.remove('bg-[#EA7645]', 'animate-pulse');
+                    statusDot.classList.remove('bg-[#EA7645]', 'animate-ping');
                     statusDot.classList.add('bg-[#48AA8C]');
                 }
                 if (consoleOutput) {
-                    consoleOutput.textContent = 'OS_READY';
                     consoleOutput.classList.remove('text-[#EA7645]');
                     consoleOutput.classList.add('text-[#48AA8C]');
                 }
@@ -409,15 +434,14 @@
                     stampEl.classList.add('is-show');
                 }
 
-                // Smooth Shutter Open Delay
+                // Ultra-smooth Shutter Open
                 setTimeout(() => {
                     loader.classList.add('rl-open');
-                    setTimeout(revealMain, 450);
+                    setTimeout(revealMain, 400);
                     setTimeout(() => loader.remove(), 1100);
-                }, 750);
+                }, 850);
             }
 
-            // Smooth Progress Interval
             const progressTimer = setInterval(() => {
                 const cap = pageReady ? 100 : 92;
                 let step = Math.floor(Math.random() * 5) + 2;
@@ -459,7 +483,7 @@
             }
         }
 
-        // BFCache Navigation Handling
+        // BFCache Navigation Fix
         window.addEventListener('pageshow', function (event) {
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                 const activeLoader = document.getElementById('pageLoader');
