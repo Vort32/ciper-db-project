@@ -4,74 +4,48 @@
 
 @section('content')
     <!-- ==============================================
-         RHINE LAB // EXACT REPLICA BOOT LOADER (00:18)
+         RHINE LAB // BOOT SEQUENCE LOADER
          ============================================== -->
-    <div id="pageLoader" class="fixed inset-0 z-50 overflow-hidden bg-[#ECE8E5] font-sans text-[#1c1c1c] select-none flex items-center justify-center">
-        
-        <!-- Latar Belakang & Watermark DNA Samar -->
-        <div class="absolute inset-0 z-0 opacity-10 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, #d3cfc9 0px, #d3cfc9 1px, transparent 1px, transparent 40px);"></div>
-        <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
-            <!-- DNA Helix Abstract Shape -->
-            <svg viewBox="0 0 100 100" class="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px]" fill="none" stroke="#000" stroke-width="2">
-                <path d="M 20 10 Q 50 50 80 90 M 80 10 Q 50 50 20 90" stroke-dasharray="4 4" />
-            </svg>
-        </div>
+    <div id="pageLoader" class="rl-loader" role="status" aria-live="polite" aria-label="Memuat Rhine Lab OS">
 
-        <!-- Shutter Panel (Efek Pintu Terbuka) -->
-        <div id="shutterTop" class="absolute top-0 left-0 w-full h-[50%] bg-[#ECE8E5] z-10 transition-transform duration-[1100ms] cubic-bezier-shutter"></div>
-        <div id="shutterBottom" class="absolute bottom-0 left-0 w-full h-[50%] bg-[#ECE8E5] z-10 transition-transform duration-[1100ms] cubic-bezier-shutter"></div>
+        <!-- Shutter (dua panel yang membuka saat selesai) -->
+        <div class="rl-shutter rl-shutter-top"><div class="rl-hex"></div></div>
+        <div class="rl-shutter rl-shutter-bottom"><div class="rl-hex"></div></div>
 
-        <!-- Layer UI Utama (Teks & Cincin) -->
-        <div id="loaderUI" class="absolute inset-0 z-20 flex flex-col justify-center items-center transition-opacity duration-500">
-            
-            <!-- Top Left Typography (Sesuai Referensi Gambar) -->
-            <div class="absolute top-10 left-10 sm:top-12 sm:left-14 flex flex-col">
-                <h1 class="text-3xl sm:text-4xl font-black tracking-widest text-[#1c1c1c] leading-none mb-1">RHINE LAB</h1>
-                <p class="text-[7.5px] sm:text-[9px] font-bold tracking-[0.25em] text-[#1c1c1c] uppercase leading-none mb-0.5">SYNTHESIZE INFORMATION</p>
-                <p class="text-lg sm:text-xl font-light tracking-[0.25em] text-[#1c1c1c] uppercase leading-none">ANALYSIS <span class="font-bold">OS</span></p>
-            </div>
+        <div class="rl-layer">
+            <div class="rl-hazard"></div>
+            <span class="rl-corner rl-c-tl"></span>
+            <span class="rl-corner rl-c-tr"></span>
+            <span class="rl-corner rl-c-bl"></span>
+            <span class="rl-corner rl-c-br"></span>
 
-            <!-- Pusat: Cincin Minimalis Berputar -->
-            <div class="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] flex items-center justify-center">
-                
-                <!-- SVG Rings -->
-                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 300 300">
-                    
-                    <!-- 1. Inner Broken Black Arcs (Berputar Berlawanan Arah Jarum Jam) -->
-                    <g class="origin-[150px_150px] animate-[spin_12s_linear_infinite_reverse]">
-                        <circle cx="150" cy="150" r="55" fill="none" stroke="#1c1c1c" stroke-width="1.2" stroke-dasharray="90 82.7" stroke-linecap="butt"/>
-                    </g>
-
-                    <!-- 2. Middle Solid White Circle -->
-                    <circle cx="150" cy="150" r="92" fill="none" stroke="#ffffff" stroke-width="3.5" class="opacity-95" />
-
-                    <!-- 3. Outer Black Arc dengan Titik (Berputar Searah Jarum Jam) -->
-                    <g class="origin-[150px_150px] animate-[spin_15s_linear_infinite]">
-                        <!-- Garis busur (sekitar 270 derajat) -->
-                        <path d="M 72 228 A 110 110 0 1 1 258 130" fill="none" stroke="#1c1c1c" stroke-width="1.2" stroke-linecap="round"/>
-                        <!-- Titik hitam di ujung busur -->
-                        <circle cx="258" cy="130" r="3.5" fill="#1c1c1c" />
-                    </g>
-
-                    <!-- 4. Floating Orange Dots -->
-                    <g class="origin-[150px_150px] animate-[spin_20s_linear_infinite]">
-                        <circle cx="105" cy="195" r="4.5" fill="#EA7645" />
-                        <circle cx="205" cy="110" r="4.5" fill="#EA7645" />
-                    </g>
-                </svg>
-
-                <!-- Teks Di Tengah Cincin (Berganti Secara Dinamis) -->
-                <div id="centerText" class="absolute inset-0 flex items-center justify-center text-[9px] sm:text-[10px] font-medium tracking-[0.25em] text-[#1c1c1c] text-center px-6 transition-opacity duration-300 opacity-0 uppercase">
-                    ACCESS PERMISSION REQUIRED
+            <main class="rl-center">
+                <div class="rl-brand">
+                    <h1>RHINE LAB</h1>
+                    <p>SYNTHESIZE INFORMATION OS</p>
                 </div>
-            </div>
 
-            <!-- Bottom Right Typography -->
-            <div class="absolute bottom-10 right-10 sm:bottom-12 sm:right-14 flex items-center gap-3">
-                <span class="text-[7.5px] sm:text-[9px] font-bold tracking-[0.2em] uppercase text-[#1c1c1c]">POWERED BY RHINE LAB</span>
-                <span class="w-4 h-[2px] bg-[#1c1c1c]"></span>
-            </div>
+                <div class="rl-ring-wrap">
+                    <svg class="rl-ring" viewBox="0 0 300 300" aria-hidden="true">
+                        <circle class="rl-ring-ticks rl-spin-slow" cx="150" cy="150" r="141" />
+                        <circle class="rl-ring-track" cx="150" cy="150" r="118" />
+                        <circle id="rlRingFill" class="rl-ring-fill" cx="150" cy="150" r="118" />
+                    </svg>
+                    <div class="rl-logo-core">
+                        <img src="{{ asset('images/logo.png') }}" alt="" />
+                    </div>
+                </div>
 
+                <div class="rl-meter">
+                    <div class="rl-status">
+                        <span id="akStatusDot" class="rl-dot"></span>
+                        <span id="akStatusText">CONNECTING TO SERVER</span>
+                    </div>
+                    <div class="rl-percent"><span id="akProgressText">0</span><small>%</small></div>
+                </div>
+
+                <div id="akProgressBar" class="rl-bar" aria-hidden="true"></div>
+            </main>
         </div>
     </div>
 
@@ -174,19 +148,92 @@
 
     <style>
         /* =========================================
-           CUSTOM CSS ANIMATIONS & STYLES
+           RHINE LAB BOOT LOADER (minimal)
            ========================================= */
-        
-        /* Exponential Ease Out Shutter Curve (Halus banget) */
-        .cubic-bezier-shutter {
-            transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        .rl-loader {
+            --rl-paper: #ECE8E5; --rl-ink: #1c1c1c; --rl-mute: #7a766f;
+            --rl-orange: #EA7645; --rl-teal: #48AA8C; --rl-lime: #C4FF00;
+            position: fixed; inset: 0; z-index: 50; overflow: hidden;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            color: var(--rl-ink);
         }
 
-        /* Trigger Animasi Shutter Terbuka */
-        .shutter-open-top { transform: translateY(-100%); }
-        .shutter-open-bottom { transform: translateY(100%); }
+        /* Shutter */
+        .rl-shutter { position: absolute; left: 0; width: 100%; height: 50.2%; background: var(--rl-paper);
+            overflow: hidden; transition: transform 0.9s cubic-bezier(.77,0,.18,1); z-index: 0; }
+        .rl-shutter-top { top: 0; }
+        .rl-shutter-bottom { bottom: 0; }
+        /* garis tepi hanya muncul saat membuka, supaya tidak memotong logo */
+        .rl-shutter::after { content: ""; position: absolute; left: 0; width: 100%; height: 3px; background: var(--rl-ink); opacity: 0; transition: opacity .2s; }
+        .rl-shutter-top::after { bottom: 0; }
+        .rl-shutter-bottom::after { top: 0; }
+        .rl-hex { position: absolute; inset: 0; opacity: .55;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L20 0 0 11.547v23.094l20 11.547 20-11.547V11.547zM20 45.034L1.155 34.148V12.376L20 1.49l18.845 10.886v21.772L20 45.034z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3Cpath d='M40 46.188L20 34.641 0 46.188v23.094l20 11.547 20-11.547V46.188zM20 79.675L1.155 68.789V47.017L20 36.13l18.845 10.886v21.772L20 79.675z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            background-size: 60px 103.923px; }
+        .rl-shutter-bottom .rl-hex { background-position: 0 -51.9px; }
 
-        /* Standard Page Animations */
+        .rl-loader.rl-open .rl-shutter-top { transform: translateY(-101%); }
+        .rl-loader.rl-open .rl-shutter-bottom { transform: translateY(101%); }
+        .rl-loader.rl-open .rl-shutter::after { opacity: 1; }
+        .rl-loader.rl-open .rl-layer { opacity: 0; transition: opacity .35s ease; }
+
+        /* Layer */
+        .rl-layer { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; padding: 24px 20px; }
+        .rl-hazard { position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: repeating-linear-gradient(-45deg, var(--rl-ink) 0 8px, var(--rl-lime) 8px 16px); }
+        .rl-corner { position: absolute; width: 28px; height: 28px; border: 0 solid rgba(28,28,28,.5); }
+        .rl-c-tl { top: 18px; left: 18px; border-top-width: 2px; border-left-width: 2px; }
+        .rl-c-tr { top: 18px; right: 18px; border-top-width: 2px; border-right-width: 2px; }
+        .rl-c-bl { bottom: 18px; left: 18px; border-bottom-width: 2px; border-left-width: 2px; }
+        .rl-c-br { bottom: 18px; right: 18px; border-bottom-width: 2px; border-right-width: 2px; }
+
+        /* Center column */
+        .rl-center { width: min(100%, 460px); display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 3.2vh, 28px); }
+        .rl-brand { text-align: center; }
+        .rl-brand h1 { margin: 0; font-family: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+            font-weight: 900; font-size: clamp(26px, 8vw, 48px); letter-spacing: .28em; margin-right: -.28em; line-height: 1; }
+        .rl-brand p { margin: 8px -.4em 0 0; font-size: clamp(8px, 2.2vw, 10px); letter-spacing: .4em; color: var(--rl-mute); font-weight: 800; }
+
+        .rl-ring-wrap { position: relative; width: clamp(140px, 30vh, 220px); aspect-ratio: 1; }
+        .rl-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+        .rl-ring circle { fill: none; transform-origin: 150px 150px; }
+        .rl-ring-ticks { stroke: rgba(28,28,28,.5); stroke-width: 8; stroke-dasharray: 1.5 13.8; }
+        .rl-ring-track { stroke: rgba(28,28,28,.14); stroke-width: 6; }
+        .rl-ring-fill { stroke: var(--rl-orange); stroke-width: 6; stroke-dasharray: 741.4; stroke-dashoffset: 741.4;
+            transform: rotate(-90deg); transition: stroke-dashoffset .12s linear, stroke .3s;
+            filter: drop-shadow(0 0 4px rgba(234,118,69,.6)); }
+        .rl-spin-slow { animation: rlSpin 40s linear infinite; }
+        .rl-logo-core { position: absolute; inset: 25%; display: grid; place-items: center; }
+        .rl-logo-core img { width: 100%; height: 100%; object-fit: contain; animation: rlLogoIn 1s ease-out both; }
+
+        /* Status + persen */
+        .rl-meter { width: 100%; display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+        .rl-status { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: clamp(9px, 2.6vw, 11px); letter-spacing: .2em; min-width: 0; padding-bottom: 4px; }
+        .rl-status span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .rl-dot { width: 9px; height: 9px; background: var(--rl-orange); transform: rotate(45deg); flex: none; animation: rlBlink .7s steps(2, jump-none) infinite; }
+        .rl-dot.is-done { background: var(--rl-teal); animation: none; box-shadow: 0 0 10px var(--rl-teal); }
+        .rl-status.is-done span:last-child { color: var(--rl-teal); }
+        .rl-percent { font-weight: 900; font-size: clamp(32px, 9vw, 44px); line-height: 1; letter-spacing: .04em; font-variant-numeric: tabular-nums; display: flex; align-items: baseline; flex: none; }
+        .rl-percent small { font-size: .38em; margin-left: 3px; color: var(--rl-mute); }
+
+        /* Bar segmen */
+        .rl-bar { width: 100%; display: grid; grid-template-columns: repeat(40, 1fr); gap: 3px; height: 16px; padding: 3px; border: 2px solid var(--rl-ink); background: rgba(255,255,255,.4); margin-top: -8px; }
+        .rl-seg { background: rgba(28,28,28,.12); transform: skewX(-24deg); transition: background .1s; }
+        .rl-seg.on { background: var(--rl-ink); }
+        .rl-seg.head { background: var(--rl-orange); box-shadow: 0 0 8px var(--rl-orange); }
+        .rl-bar.is-done .rl-seg { background: var(--rl-teal); box-shadow: none; }
+
+        @media (max-width: 480px) { .rl-bar { grid-template-columns: repeat(28, 1fr); } .rl-seg:nth-child(n+29) { display: none; } }
+        @media (max-height: 520px) { .rl-brand p { display: none; } }
+
+        @keyframes rlSpin { to { transform: rotate(360deg); } }
+        @keyframes rlBlink { 50% { opacity: .25; } }
+        @keyframes rlLogoIn { from { opacity: 0; transform: scale(.7); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+        @media (prefers-reduced-motion: reduce) { .rl-spin-slow, .rl-dot { animation: none; } .rl-shutter { transition-duration: .01s; } }
+
+        /* =========================================
+           STANDARD PAGE ANIMATIONS
+           ========================================= */
         @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
         .animate-fade-up { animation: fadeUp 0.8s forwards; }
 
@@ -215,6 +262,7 @@
 
         let i = 0;
 
+        // Typewriter untuk WELCOME TO
         function typeWriter() {
             if (!welcomeElem) return;
             welcomeElem.textContent = '';
@@ -232,6 +280,7 @@
         }
         window.addEventListener('DOMContentLoaded', typeWriter);
 
+        // Transisi saat link navigasi diklik
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -241,6 +290,7 @@
             });
         });
 
+        // Tampilkan halaman utama
         function revealMain() {
             if (wrapper) {
                 wrapper.classList.remove('opacity-0');
@@ -250,76 +300,92 @@
         }
 
         /* =========================================
-           EXACT PV ANIMATION SEQUENCE LOGIC
+           RHINE LAB BOOT SEQUENCE
            ========================================= */
         if (loader) {
-            const centerText = document.getElementById('centerText');
-            const loaderUI = document.getElementById('loaderUI');
-            const sTop = document.getElementById('shutterTop');
-            const sBottom = document.getElementById('shutterBottom');
-            
-            const username = "{{ auth()->check() ? auth()->user()->name : 'OPERATIVE' }}".toUpperCase();
+            const $ = (id) => document.getElementById(id);
+            const barEl = $('akProgressBar');
+            const ringFill = $('rlRingFill');
+            const percentEl = $('akProgressText');
+            const statusText = $('akStatusText');
+            const statusDot = $('akStatusDot');
+            const statusBox = statusDot.parentElement;
 
-            // Urutan teks yang akan muncul di tengah cincin
-            const sequence = [
-                "ACCESS PERMISSION REQUIRED",
-                `ID CONFIRMED // ${username}`,
-                "PERMISSION AUTHORIZED"
+            const SEGMENTS = 40;
+            const RING_LEN = 741.4; // 2 * PI * 118
+
+            const stages = [
+                { at: 0,  status: 'CONNECTING TO SERVER' },
+                { at: 20, status: 'VERIFYING OPERATOR' },
+                { at: 40, status: 'MOUNTING DATABASE' },
+                { at: 60, status: 'DECRYPTING ARCHIVE' },
+                { at: 80, status: 'SECURING CHANNEL' }
             ];
 
-            let step = 0;
+            const segs = [];
+            for (let n = 0; n < SEGMENTS; n++) {
+                const d = document.createElement('div');
+                d.className = 'rl-seg';
+                barEl.appendChild(d);
+                segs.push(d);
+            }
 
-            function animateTextSequence() {
-                if (step < sequence.length) {
-                    // Ganti teks dan munculkan (fade in)
-                    centerText.textContent = sequence[step];
-                    centerText.classList.remove('opacity-0');
-                    centerText.classList.add('opacity-100');
-                    
-                    // Tahan teks selama 1.2 detik, lalu pudarkan (kecuali teks terakhir)
-                    setTimeout(() => {
-                        if (step < sequence.length - 1) {
-                            centerText.classList.remove('opacity-100');
-                            centerText.classList.add('opacity-0');
-                            
-                            // Lanjut ke teks berikutnya setelah pudar
-                            setTimeout(() => {
-                                step++;
-                                animateTextSequence();
-                            }, 400); 
-                        } else {
-                            // Teks terakhir selesai ditahan, mulai transisi shutter terbuka
-                            triggerShutterOpen();
-                        }
-                    }, 1200);
+            let progress = 0;
+            let stageIdx = 0;
+            let pageReady = document.readyState === 'complete';
+            let finished = false;
+            window.addEventListener('load', () => { pageReady = true; });
+
+            function render() {
+                percentEl.textContent = Math.round(progress);
+                ringFill.style.strokeDashoffset = RING_LEN * (1 - progress / 100);
+                const filled = Math.floor((progress / 100) * SEGMENTS);
+                for (let n = 0; n < SEGMENTS; n++) {
+                    segs[n].classList.toggle('on', n < filled);
+                    segs[n].classList.toggle('head', n === filled && progress < 100);
+                }
+                while (stageIdx + 1 < stages.length && progress >= stages[stageIdx + 1].at) {
+                    stageIdx++;
+                    statusText.textContent = stages[stageIdx].status;
                 }
             }
 
-            function triggerShutterOpen() {
-                // 1. Pudarkan seluruh UI (Cincin & Teks)
-                loaderUI.classList.remove('opacity-100');
-                loaderUI.classList.add('opacity-0');
+            function finish() {
+                finished = true;
+                statusText.textContent = 'ACCESS GRANTED';
+                statusBox.classList.add('is-done');
+                statusDot.classList.add('is-done');
+                barEl.classList.add('is-done');
+                ringFill.style.stroke = '#48AA8C';
+                ringFill.style.filter = 'drop-shadow(0 0 5px rgba(72,170,140,.7))';
 
-                // 2. Buka pintu shutter ke atas & bawah
                 setTimeout(() => {
-                    sTop.classList.add('shutter-open-top');
-                    sBottom.classList.add('shutter-open-bottom');
-                    
-                    // 3. Tampilkan halaman utama di balik shutter
-                    setTimeout(revealMain, 400);
-                    
-                    // 4. Hapus elemen loader dari DOM
-                    setTimeout(() => loader.remove(), 1200);
-                }, 400);
+                    loader.classList.add('rl-open');
+                    setTimeout(revealMain, 450);
+                    setTimeout(() => loader.remove(), 1100);
+                }, 800);
             }
 
-            // Mulai sequence teks
-            setTimeout(animateTextSequence, 300);
+            const timer = setInterval(() => {
+                // Tahan di 92% sampai semua aset halaman selesai dimuat
+                const cap = pageReady ? 100 : 92;
+                if (Math.random() > 0.14) {
+                    progress = Math.min(progress + (Math.random() * 3.6 + 0.6), cap);
+                }
+                render();
+                if (progress >= 100 && !finished) {
+                    clearInterval(timer);
+                    finish();
+                }
+            }, 70);
+
+            render();
 
         } else if (wrapper) {
             revealMain();
         }
 
+        // Animasi elemen halaman utama setelah loading selesai
         function triggerDelayedAnimations() {
             if (!delayedAnimateElems.length) return;
             delayedAnimateElems.forEach((elem, index) => {
@@ -342,7 +408,7 @@
             }
         }
 
-        // Fix Stuck BFCache Navigation (Tombol Back Browser)
+        // Perbaikan stuck loading saat tombol Back browser (BFCache)
         window.addEventListener('pageshow', function (event) {
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                 const activeLoader = document.getElementById('pageLoader');
