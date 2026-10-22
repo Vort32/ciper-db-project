@@ -4,103 +4,102 @@
 
 @section('content')
     <!-- ==============================================
-         RHINE LAB // BOOT SEQUENCE LOADER
+         RHINE LAB // MINIMALIST BOOT SEQUENCE LOADER
          ============================================== -->
-    <div id="pageLoader" class="rl-loader" role="status" aria-live="polite" aria-label="Memuat Rhine Lab OS">
+    <div id="pageLoader" class="rl-clean-loader" role="status" aria-live="polite">
 
-        <!-- Shutter (dua panel yang membuka saat ACCESS GRANTED) -->
+        <!-- Shutter Panel (Efek Terbuka Atas & Bawah) -->
         <div class="rl-shutter rl-shutter-top"><div class="rl-hex"></div></div>
         <div class="rl-shutter rl-shutter-bottom"><div class="rl-hex"></div></div>
 
-        <!-- Lapisan konten -->
+        <!-- Layer Konten UI Minimalis -->
         <div class="rl-layer">
 
-            <!-- Hazard strip atas & bawah -->
-            <div class="rl-hazard rl-hazard-top"></div>
-            <div class="rl-hazard rl-hazard-bottom"></div>
-
-            <!-- HUD corners -->
+            <!-- Corner Frame minimalis -->
             <span class="rl-corner rl-c-tl"></span>
             <span class="rl-corner rl-c-tr"></span>
             <span class="rl-corner rl-c-bl"></span>
             <span class="rl-corner rl-c-br"></span>
 
-            <!-- Info sudut -->
-            <div class="rl-tag rl-tag-tl">
-                <b>RHL-ALPHA</b>
-                <span>BUILD 0.9.4 // INTERNAL</span>
-            </div>
-            <div class="rl-tag rl-tag-tr">
-                <b>SEC_LEVEL</b>
-                <span class="rl-blink-text">CLASSIFIED</span>
-            </div>
-
-            <!-- Panel kiri: boot log -->
-            <aside class="rl-panel rl-panel-left" aria-hidden="true">
-                <div class="rl-panel-head"><i></i>BOOT_LOG</div>
-                <ul id="rlLog" class="rl-log"></ul>
-            </aside>
-
-            <!-- Panel kanan: modul -->
-            <aside class="rl-panel rl-panel-right" aria-hidden="true">
-                <div class="rl-panel-head"><i></i>MODULES</div>
-                <ul id="rlModules" class="rl-modules"></ul>
-                <div class="rl-barcode">
-                    <span style="height:100%;width:2px"></span><span style="height:60%;width:1px"></span><span style="height:100%;width:3px"></span><span style="height:45%;width:1px"></span><span style="height:80%;width:2px"></span><span style="height:100%;width:4px"></span><span style="height:60%;width:1px"></span>
-                    <em>RL-ARCHIVE-XX</em>
+            <!-- Info Kiri-Kanan Atas HUD -->
+            <div class="rl-hud-top flex justify-between items-center w-full px-8 pt-6 absolute top-0 left-0 right-0 z-10 font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-gray-500 uppercase">
+                <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-3 bg-[#EA7645]"></span>
+                    <span class="font-bold text-[#1c1c1c]">RHL-OS</span>
+                    <span class="text-gray-400">// BOOT_SEQ v2.4</span>
                 </div>
-            </aside>
+                <div class="flex items-center gap-2">
+                    <span class="text-gray-400">SEC_LEVEL:</span>
+                    <span class="font-bold text-[#EA7645] animate-pulse">CLASSIFIED</span>
+                </div>
+            </div>
 
-            <!-- Pusat: logo + ring -->
-            <main class="rl-center">
-                <div class="rl-brand">
-                    <h1>RHINE LAB</h1>
-                    <p>SYNTHESIZE INFORMATION OS</p>
+            <!-- Pusat Dashboard Loader Minimalis -->
+            <main class="rl-center relative z-10 flex flex-col items-center justify-center my-auto">
+                
+                <!-- Brand Title -->
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-[0.3em] text-[#1c1c1c] uppercase leading-none">
+                        RHINE LAB
+                    </h1>
+                    <p class="text-[8px] sm:text-[10px] font-bold tracking-[0.5em] text-gray-500 uppercase mt-2">
+                        SYNTHESIZE INFORMATION OS
+                    </p>
                 </div>
 
-                <div class="rl-ring-wrap">
-                    <svg class="rl-ring" viewBox="0 0 300 300" aria-hidden="true">
-                        <!-- tick ring luar -->
-                        <circle class="rl-ring-ticks rl-spin-slow" cx="150" cy="150" r="141" />
-                        <!-- arc putus-putus berputar balik -->
-                        <circle class="rl-ring-arcs rl-spin-rev" cx="150" cy="150" r="128" />
-                        <!-- jalur progress -->
-                        <circle class="rl-ring-track" cx="150" cy="150" r="112" />
-                        <circle id="rlRingFill" class="rl-ring-fill" cx="150" cy="150" r="112" />
-                        <!-- marka salib -->
-                        <path class="rl-ring-cross" d="M150 2v14M150 284v14M2 150h14M284 150h14" />
+                <!-- Minimalist Core Logo & Progress Ring -->
+                <div class="relative w-44 h-44 sm:w-56 sm:h-56 flex items-center justify-center">
+                    
+                    <!-- SVG Ring Bar Dynamic Fill -->
+                    <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="90" class="stroke-gray-300/50" stroke-width="2" fill="none" />
+                        <circle id="rlRingFill" cx="100" cy="100" r="90" 
+                                class="stroke-[#EA7645] transition-all duration-100 ease-linear" 
+                                stroke-width="3" 
+                                stroke-dasharray="565.48" 
+                                stroke-dashoffset="565.48" 
+                                stroke-linecap="round"
+                                fill="none" />
                     </svg>
-                    <div class="rl-logo-core">
-                        <img src="{{ asset('images/logo.png') }}" alt="" />
+
+                    <!-- Outer Dotted Decorative Ring -->
+                    <div class="absolute inset-2 border border-dashed border-gray-400/40 rounded-full animate-spin-slow pointer-events-none"></div>
+
+                    <!-- Core Logo -->
+                    <div class="w-24 h-24 sm:w-32 sm:h-32 p-4 bg-white/40 backdrop-blur-sm rounded-full border border-white/80 shadow-sm flex items-center justify-center z-10">
+                        <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain filter contrast-125" />
                     </div>
                 </div>
 
-                <div class="rl-percent" aria-live="off">
-                    <span id="akProgressText">0</span><small>%</small>
+                <!-- Persentase Angka Minimalis -->
+                <div class="mt-6 font-mono text-2xl sm:text-3xl font-black tracking-widest text-[#1c1c1c] flex items-baseline">
+                    <span id="akProgressText">0</span><span class="text-xs text-gray-500 ml-0.5">%</span>
                 </div>
-                <div id="rlStamp" class="rl-stamp">ACCESS GRANTED</div>
+
+                <!-- Stamp "ACCESS GRANTED" -->
+                <div id="rlStamp" class="rl-stamp">
+                    ACCESS GRANTED
+                </div>
             </main>
 
-            <!-- Bawah: status + bar + tips -->
-            <footer class="rl-bottom">
-                <div class="rl-bottom-top">
-                    <div class="rl-status">
-                        <span id="akStatusDot" class="rl-dot"></span>
-                        <span id="akStatusText">CONNECTING TO SERVER</span>
+            <!-- Bottom Console Status & Thin Progress Line -->
+            <footer class="rl-hud-bottom absolute bottom-0 left-0 right-0 px-8 pb-6 z-10 flex flex-col gap-2 font-mono">
+                <div class="flex justify-between items-end text-[9px] sm:text-[11px] tracking-widest text-gray-600">
+                    <div class="flex items-center gap-2">
+                        <span id="akStatusDot" class="w-2 h-2 bg-[#EA7645] animate-ping rounded-full"></span>
+                        <span id="akStatusText" class="font-bold text-[#1c1c1c]">CONNECTING TO SERVER</span>
                     </div>
-                    <div class="rl-console">
-                        <span id="akConsoleOutput">INIT_SYSTEM...</span>
-                        <small>SYS.MEM: <b id="rlMem">ALLOCATING</b></small>
+                    <div id="akConsoleOutput" class="text-[#EA7645] font-bold text-right">
+                        INIT_SYSTEM...
                     </div>
                 </div>
 
-                <div id="akProgressBar" class="rl-bar" aria-hidden="true"></div>
-
-                <div class="rl-tip">
-                    <span class="rl-tip-label">TIPS</span>
-                    <span id="rlTip" class="rl-tip-text"></span>
+                <!-- Minimalist Clean Bar Line -->
+                <div class="w-full h-[3px] bg-gray-300/60 rounded-full overflow-hidden relative">
+                    <div id="akProgressBar" class="h-full bg-[#1c1c1c] w-0 transition-all duration-100 ease-linear"></div>
                 </div>
             </footer>
+
         </div>
     </div>
 
@@ -203,203 +202,68 @@
 
     <style>
         /* =========================================
-           RHINE LAB BOOT LOADER
-           Palet: kertas #ECE8E5 / tinta #1c1c1c / oranye #EA7645 / teal #48AA8C / lime #C4FF00
+           RHINE LAB // MINIMALIST LOADER STYLING
            ========================================= */
-        .rl-loader {
-            --rl-paper: #ECE8E5;
-            --rl-ink: #1c1c1c;
-            --rl-mute: #7a766f;
-            --rl-orange: #EA7645;
-            --rl-teal: #48AA8C;
-            --rl-lime: #C4FF00;
+        .rl-clean-loader {
             position: fixed; inset: 0; z-index: 50; overflow: hidden;
+            background: #ECE8E5; color: #1c1c1c;
             font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-            color: var(--rl-ink);
         }
 
-        /* Shutter */
+        /* Shutter Opening Mechanism */
         .rl-shutter {
             position: absolute; left: 0; width: 100%; height: 50.2%;
-            background: var(--rl-paper); overflow: hidden;
-            transition: transform 0.9s cubic-bezier(.77,0,.18,1);
+            background: #ECE8E5; overflow: hidden;
+            transition: transform 0.85s cubic-bezier(.77, 0, .18, 1);
             z-index: 0;
         }
         .rl-shutter-top { top: 0; }
         .rl-shutter-bottom { bottom: 0; }
-        /* garis tepi shutter hanya muncul saat membuka, supaya tidak memotong logo */
         .rl-shutter-bottom::before, .rl-shutter-top::after {
-            content: ""; position: absolute; left: 0; width: 100%; height: 3px; background: var(--rl-ink);
+            content: ""; position: absolute; left: 0; width: 100%; height: 2px; background: #1c1c1c;
             opacity: 0; transition: opacity .2s;
         }
         .rl-shutter-top::after { bottom: 0; }
         .rl-shutter-bottom::before { top: 0; }
-        .rl-loader.rl-open .rl-shutter::before, .rl-loader.rl-open .rl-shutter::after { opacity: 1; }
+        .rl-clean-loader.rl-open .rl-shutter::before, 
+        .rl-clean-loader.rl-open .rl-shutter::after { opacity: 1; }
+
         .rl-hex {
-            position: absolute; inset: 0; opacity: .55;
+            position: absolute; inset: 0; opacity: 0.35;
             background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L20 0 0 11.547v23.094l20 11.547 20-11.547V11.547zM20 45.034L1.155 34.148V12.376L20 1.49l18.845 10.886v21.772L20 45.034z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3Cpath d='M40 46.188L20 34.641 0 46.188v23.094l20 11.547 20-11.547V46.188zM20 79.675L1.155 68.789V47.017L20 36.13l18.845 10.886v21.772L20 79.675z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
             background-size: 60px 103.923px;
         }
-        .rl-shutter-bottom .rl-hex { background-position: 0 -51.9px; }
 
-        .rl-loader.rl-open .rl-shutter-top { transform: translateY(-101%); }
-        .rl-loader.rl-open .rl-shutter-bottom { transform: translateY(101%); }
-        .rl-loader.rl-open .rl-layer { opacity: 0; transition: opacity .35s ease; }
+        .rl-clean-loader.rl-open .rl-shutter-top { transform: translateY(-101%); }
+        .rl-clean-loader.rl-open .rl-shutter-bottom { transform: translateY(101%); }
+        .rl-clean-loader.rl-open .rl-layer { opacity: 0; transition: opacity .3s ease; }
 
-        /* Layer */
-        .rl-layer { position: absolute; inset: 0; z-index: 1; display: grid;
-            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-            grid-template-rows: 1fr auto; padding: 56px 40px 28px; gap: 0 32px; }
+        /* Corners Frame */
+        .rl-corner { position: absolute; width: 28px; height: 28px; border: 0 solid rgba(28,28,28,.4); z-index: 10; }
+        .rl-c-tl { top: 20px; left: 20px; border-top-width: 2px; border-left-width: 2px; }
+        .rl-c-tr { top: 20px; right: 20px; border-top-width: 2px; border-right-width: 2px; }
+        .rl-c-bl { bottom: 20px; left: 20px; border-bottom-width: 2px; border-left-width: 2px; }
+        .rl-c-br { bottom: 20px; right: 20px; border-bottom-width: 2px; border-right-width: 2px; }
 
-        /* Hazard strips */
-        .rl-hazard { position: absolute; left: 0; width: 100%; height: 8px; z-index: 2;
-            background: repeating-linear-gradient(-45deg, var(--rl-ink) 0 10px, var(--rl-lime) 10px 20px); }
-        .rl-hazard-top { top: 0; }
-        .rl-hazard-bottom { bottom: 0; }
+        .rl-layer { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; }
 
-        /* Grid lines */
-        .rl-gridline { position: absolute; background: rgba(28,28,28,.12); pointer-events: none; }
-        .rl-gridline-h { left: 0; right: 0; top: 50%; height: 1px; }
-        .rl-gridline-v { top: 0; bottom: 0; left: 50%; width: 1px; }
-
-        /* Corners */
-        .rl-corner { position: absolute; width: 44px; height: 44px; border: 0 solid rgba(28,28,28,.55); }
-        .rl-c-tl { top: 24px; left: 24px; border-top-width: 2px; border-left-width: 2px; }
-        .rl-c-tr { top: 24px; right: 24px; border-top-width: 2px; border-right-width: 2px; }
-        .rl-c-bl { bottom: 24px; left: 24px; border-bottom-width: 2px; border-left-width: 2px; }
-        .rl-c-br { bottom: 24px; right: 24px; border-bottom-width: 2px; border-right-width: 2px; }
-
-        /* Tag sudut */
-        .rl-tag { position: absolute; top: 34px; display: flex; flex-direction: column; gap: 2px; font-size: 10px; letter-spacing: .18em; }
-        .rl-tag b { font-size: 11px; letter-spacing: .3em; }
-        .rl-tag span { color: var(--rl-mute); }
-        .rl-tag-tl { left: 80px; border-left: 4px solid var(--rl-lime); padding-left: 10px; }
-        .rl-tag-tr { right: 80px; text-align: right; align-items: flex-end; }
-        .rl-tag-tr span { color: var(--rl-orange); font-weight: 700; }
-        .rl-blink-text { animation: rlBlink 1.6s steps(2, jump-none) infinite; }
-
-        /* Panels */
-        .rl-panel { align-self: center; font-size: 10px; letter-spacing: .1em; min-width: 0; }
-        .rl-panel-left { grid-column: 1; justify-self: start; width: min(100%, 300px); }
-        .rl-panel-right { grid-column: 3; justify-self: end; width: min(100%, 240px); }
-        .rl-panel-head { display: flex; align-items: center; gap: 8px; padding-bottom: 6px; margin-bottom: 8px;
-            border-bottom: 2px solid var(--rl-ink); font-weight: 800; letter-spacing: .3em; font-size: 10px; }
-        .rl-panel-head i { width: 8px; height: 8px; background: var(--rl-orange); transform: rotate(45deg); }
-
-        .rl-log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; min-height: 150px; }
-        .rl-log li { display: flex; gap: 8px; white-space: nowrap; overflow: hidden; color: #4a4742;
-            animation: rlLine .25s ease-out; }
-        .rl-log li time { color: var(--rl-mute); flex: none; }
-        .rl-log li span { overflow: hidden; text-overflow: ellipsis; }
-        .rl-log li em { font-style: normal; margin-left: auto; flex: none; font-weight: 800; color: var(--rl-teal); }
-        .rl-log li.warn em { color: var(--rl-orange); }
-
-        .rl-modules { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-        .rl-modules li { display: grid; grid-template-columns: 10px 1fr auto; align-items: center; gap: 8px;
-            padding: 5px 8px; border: 1px solid rgba(28,28,28,.25); background: rgba(255,255,255,.35);
-            color: var(--rl-mute); transition: background .2s, color .2s, border-color .2s; }
-        .rl-modules li i { width: 6px; height: 6px; background: currentColor; transform: rotate(45deg); }
-        .rl-modules li em { font-style: normal; font-weight: 800; font-size: 9px; }
-        .rl-modules li.is-load { color: var(--rl-ink); border-color: var(--rl-orange); background: rgba(234,118,69,.12); }
-        .rl-modules li.is-load i { background: var(--rl-orange); animation: rlBlink .5s steps(2, jump-none) infinite; }
-        .rl-modules li.is-ok { color: var(--rl-ink); border-color: rgba(72,170,140,.7); }
-        .rl-modules li.is-ok i { background: var(--rl-teal); }
-        .rl-modules li.is-ok em { color: var(--rl-teal); }
-
-        .rl-barcode { margin-top: 18px; height: 18px; display: flex; align-items: flex-end; gap: 2px; opacity: .5; }
-        .rl-barcode span { background: var(--rl-ink); display: block; }
-        .rl-barcode em { font-style: normal; font-size: 7px; margin-left: 6px; }
-
-        /* Center */
-        .rl-center { grid-column: 2; grid-row: 1; align-self: center; display: flex; flex-direction: column; align-items: center; min-width: 0; }
-        .rl-brand { text-align: center; margin-bottom: 18px; }
-        .rl-brand h1 { margin: 0; font-family: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
-            font-weight: 900; font-size: clamp(28px, 5.2vw, 56px); letter-spacing: .3em; margin-right: -.3em; line-height: 1; }
-        .rl-brand p { margin: 8px 0 0; font-size: 10px; letter-spacing: .5em; margin-right: -.5em; color: var(--rl-mute); font-weight: 800; }
-
-        .rl-ring-wrap { position: relative; width: clamp(190px, 28vh, 270px); aspect-ratio: 1; }
-        .rl-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-        .rl-ring circle { fill: none; transform-origin: 150px 150px; }
-        .rl-ring-ticks { stroke: rgba(28,28,28,.55); stroke-width: 8; stroke-dasharray: 1.5 13.8; }
-        .rl-ring-arcs { stroke: rgba(28,28,28,.35); stroke-width: 1.5; stroke-dasharray: 90 40 20 40 60 40; }
-        .rl-ring-track { stroke: rgba(28,28,28,.15); stroke-width: 6; }
-        .rl-ring-fill { stroke: var(--rl-orange); stroke-width: 6; stroke-dasharray: 703.7; stroke-dashoffset: 703.7;
-            transform: rotate(-90deg); transition: stroke-dashoffset .12s linear, stroke .3s;
-            filter: drop-shadow(0 0 4px rgba(234,118,69,.7)); }
-        .rl-ring-cross { stroke: var(--rl-ink); stroke-width: 2; fill: none; }
-        .rl-spin-slow { animation: rlSpin 40s linear infinite; }
-        .rl-spin-rev { animation: rlSpin 22s linear infinite reverse; }
-
-        .rl-logo-core { position: absolute; inset: 24%; display: grid; place-items: center; }
-        .rl-logo-core img { width: 100%; height: 100%; object-fit: contain; animation: rlLogoIn 1.2s ease-out both; }
-        .rl-logo-core::before { content: ""; position: absolute; inset: -8%; border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,.7), transparent 70%); z-index: -1; }
-
-        .rl-percent { margin-top: 14px; font-weight: 900; font-size: clamp(40px, 7vh, 64px); line-height: 1; letter-spacing: .06em;
-            font-variant-numeric: tabular-nums; display: flex; align-items: baseline; }
-        .rl-percent small { font-size: .3em; margin-left: 4px; color: var(--rl-mute); letter-spacing: 0; }
-
-        .rl-stamp { position: absolute; bottom: 26%; padding: 6px 16px; border: 3px solid var(--rl-teal); color: var(--rl-teal);
-            font-weight: 900; letter-spacing: .35em; font-size: clamp(12px, 2vw, 18px); background: rgba(236,232,229,.9);
-            transform: rotate(-4deg) scale(1.6); opacity: 0; pointer-events: none; }
+        /* Stamp ACCESS GRANTED */
+        .rl-stamp {
+            position: absolute; padding: 4px 16px; border: 2px solid #48AA8C; color: #48AA8C;
+            font-weight: 900; letter-spacing: 0.3em; font-size: 14px; background: rgba(236,232,229,0.95);
+            transform: rotate(-4deg) scale(1.5); opacity: 0; pointer-events: none; z-index: 20;
+        }
         .rl-stamp.is-show { animation: rlStamp .45s cubic-bezier(.2,.9,.3,1.2) forwards; }
 
-        /* Bottom */
-        .rl-bottom { grid-column: 1 / -1; grid-row: 2; padding: 0 24px 16px; }
-        .rl-bottom-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; gap: 16px; }
-        .rl-status { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: clamp(10px, 1.4vw, 12px); letter-spacing: .22em; min-width: 0; }
-        .rl-status span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .rl-dot { width: 10px; height: 10px; background: var(--rl-orange); transform: rotate(45deg); flex: none; animation: rlBlink .7s steps(2, jump-none) infinite; }
-        .rl-dot.is-done { background: var(--rl-teal); animation: none; box-shadow: 0 0 10px var(--rl-teal); }
-        .rl-status.is-done span:last-child { color: var(--rl-teal); }
-        .rl-console { text-align: right; display: flex; gap: 2px; flex-direction: column; font-size: 10px; letter-spacing: .15em; min-width: 0; }
-        .rl-console span { color: var(--rl-orange); font-weight: 800; }
-        .rl-console.is-done span { color: var(--rl-teal); }
-        .rl-console small { font-size: 8px; color: var(--rl-mute); }
-        .rl-console small b { color: var(--rl-teal); animation: rlBlink 1s steps(2, jump-none) infinite; }
-
-        .rl-bar { display: grid; grid-template-columns: repeat(48, 1fr); gap: 3px; height: 18px; padding: 3px;
-            border: 2px solid var(--rl-ink); background: rgba(255,255,255,.4); }
-        .rl-seg { background: rgba(28,28,28,.12); transform: skewX(-24deg); transition: background .1s; }
-        .rl-seg.on { background: var(--rl-ink); }
-        .rl-seg.head { background: var(--rl-orange); box-shadow: 0 0 10px var(--rl-orange); }
-        .rl-bar.is-done .rl-seg { background: var(--rl-teal); box-shadow: none; }
-
-        .rl-tip { display: flex; align-items: center; gap: 12px; margin-top: 10px; font-size: 10px; letter-spacing: .12em; color: #4a4742; min-height: 20px; }
-        .rl-tip-label { background: var(--rl-ink); color: var(--rl-paper); padding: 2px 8px; font-weight: 800; letter-spacing: .25em; flex: none;
-            clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); padding-right: 14px; }
-        .rl-tip-text { transition: opacity .3s; }
-        .rl-tip-text.is-swap { opacity: 0; }
-
-        /* Mobile */
-        @media (max-width: 900px) {
-            .rl-panel { display: none; }
-            .rl-layer { grid-template-columns: minmax(0, 1fr); padding: 64px 16px 24px; gap: 0; }
-            .rl-center { grid-column: 1; }
-            .rl-tag-tl { left: 56px; } .rl-tag-tr, .rl-c-bl, .rl-c-br { display: none; }
-            .rl-bottom { padding: 0 0 8px; min-width: 0; }
-            .rl-console { display: none; }
-            .rl-brand h1 { letter-spacing: .22em; margin-right: -.22em; }
-            .rl-brand p { letter-spacing: .3em; margin-right: -.3em; font-size: 9px; }
-            .rl-bar { grid-template-columns: repeat(32, 1fr); }
-            .rl-seg:nth-child(n+33) { display: none; }
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
-        @media (max-height: 560px) { .rl-brand p, .rl-tip { display: none; } }
+        .animate-spin-slow { animation: spinSlow 25s linear infinite; }
 
-        @keyframes rlSpin { to { transform: rotate(360deg); } }
-        @keyframes rlBlink { 50% { opacity: .25; } }
-        @keyframes rlLine { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
-        @keyframes rlLogoIn { from { opacity: 0; transform: scale(.7); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
         @keyframes rlStamp { to { opacity: 1; transform: rotate(-4deg) scale(1); } }
 
-        @media (prefers-reduced-motion: reduce) {
-            .rl-spin-slow, .rl-spin-rev, .rl-blink-text, .rl-dot, .rl-console small b { animation: none; }
-            .rl-shutter { transition-duration: .01s; }
-        }
-
-        /* =========================================
-           STANDARD PAGE ANIMATIONS
-           ========================================= */
+        /* Standard Page Animations */
         @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
         .animate-fade-up { animation: fadeUp 0.8s forwards; }
 
@@ -428,7 +292,6 @@
 
         let i = 0;
 
-        // Typewriter untuk WELCOME TO
         function typeWriter() {
             if (!welcomeElem) return;
             welcomeElem.textContent = '';
@@ -446,7 +309,6 @@
         }
         window.addEventListener('DOMContentLoaded', typeWriter);
 
-        // Transisi saat link navigasi diklik
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -456,7 +318,6 @@
             });
         });
 
-        // Tampilkan halaman utama
         function revealMain() {
             if (wrapper) {
                 wrapper.classList.remove('opacity-0');
@@ -466,180 +327,109 @@
         }
 
         /* =========================================
-           RHINE LAB BOOT SEQUENCE
+           MINIMALIST CLEAN BOOT LOADER LOGIC
            ========================================= */
         if (loader) {
             const $ = (id) => document.getElementById(id);
-            const barEl = $('akProgressBar');
+            const progressBar = $('akProgressBar');
             const ringFill = $('rlRingFill');
-            const percentEl = $('akProgressText');
-            const consoleEl = $('akConsoleOutput');
-            const consoleBox = consoleEl.parentElement;
+            const progressText = $('akProgressText');
+            const consoleOutput = $('akConsoleOutput');
             const statusText = $('akStatusText');
             const statusDot = $('akStatusDot');
-            const statusBox = statusDot.parentElement;
-            const logEl = $('rlLog');
-            const modulesEl = $('rlModules');
-            const memEl = $('rlMem');
             const stampEl = $('rlStamp');
-            const tipEl = $('rlTip');
 
-            const SEGMENTS = 48;
-            const RING_LEN = 703.7; // 2 * PI * 112
+            const CIRCUMFERENCE = 565.48; // 2 * PI * 90
 
-            // at = persen saat tahap mulai
-            const stages = [
-                { at: 0,  console: 'INIT_SYSTEM...',                      status: 'CONNECTING TO SERVER',  log: 'Kernel handshake RHL-ALPHA',    module: 'CORE_KERNEL' },
-                { at: 18, console: 'VERIFYING_CREDENTIALS...',            status: 'VERIFYING OPERATOR',    log: 'Credential check',              module: 'AUTH_GATE' },
-                { at: 36, console: 'MOUNTING_ORIGINIUM_ARTS_DB...',       status: 'MOUNTING DATABASE',     log: 'Mount originium_arts.db',       module: 'ORIGINIUM_ARTS_DB' },
-                { at: 54, console: 'DECRYPTING_CLASSIFIED_FILES...',      status: 'DECRYPTING ARCHIVE',    log: 'Decrypt archive RL-ARCHIVE-XX', module: 'ARCHIVE_INDEX' },
-                { at: 72, console: 'ESTABLISHING_SECURE_CONNECTION...',   status: 'SECURING CHANNEL',      log: 'Open secure channel',           module: 'SECURE_LINK' },
-                { at: 90, console: 'SYNC_INTERFACE...',                   status: 'SYNCING INTERFACE',     log: 'Sync UI shell',                 module: 'UI_SHELL' }
+            const consoleMessages = [
+                "INIT_SYSTEM...",
+                "VERIFYING_CREDENTIALS...",
+                "DECRYPTING_CLASSIFIED_FILES...",
+                "MOUNTING_ORIGINIUM_ARTS_DB...",
+                "BYPASSING_SECURITY_PROTOCOLS...",
+                "ESTABLISHING_SECURE_CONNECTION..."
             ];
 
-            const tips = [
-                'Seluruh data di Internal Database bersifat rahasia dan hanya untuk operator terdaftar.',
-                'Gunakan menu RESEARCH untuk menelusuri arsip riset Rhine Lab.',
-                'Menu USER menampilkan ledger operator yang terdaftar di sistem.',
-                'Sesi akan berakhir otomatis bila tidak ada aktivitas.',
-                'Rhine Lab: Synthesize Information, Analysis OS.'
-            ];
-
-            // Bangun segmen bar
-            const segs = [];
-            for (let s = 0; s < SEGMENTS; s++) {
-                const d = document.createElement('div');
-                d.className = 'rl-seg';
-                barEl.appendChild(d);
-                segs.push(d);
-            }
-
-            // Bangun daftar modul
-            const modItems = stages.map(st => {
-                const li = document.createElement('li');
-                li.innerHTML = '<i></i><span>' + st.module + '</span><em>WAIT</em>';
-                modulesEl.appendChild(li);
-                return li;
-            });
-
-            const t0 = performance.now();
-            const stamp = () => {
-                const t = (performance.now() - t0) / 1000;
-                return t.toFixed(2).padStart(5, '0');
-            };
-            const addLog = (text, result, warn) => {
-                const li = document.createElement('li');
-                if (warn) li.className = 'warn';
-                li.innerHTML = '<time>[' + stamp() + ']</time><span>' + text + '</span><em>' + (result || 'OK') + '</em>';
-                logEl.appendChild(li);
-                while (logEl.children.length > 8) logEl.removeChild(logEl.firstChild);
-            };
-
-            const setModule = (idx, state) => {
-                const li = modItems[idx];
-                if (!li) return;
-                li.className = state === 'load' ? 'is-load' : 'is-ok';
-                li.lastElementChild.textContent = state === 'load' ? 'LOAD' : 'OK';
-            };
-
-            let progress = 0;
-            let stageIdx = -1;
+            let progressValue = 0;
             let pageReady = document.readyState === 'complete';
             let finished = false;
+
             window.addEventListener('load', () => { pageReady = true; });
 
-            function enterStage(idx) {
-                if (idx > 0) {
-                    setModule(idx - 1, 'ok');
-                    // sesekali beri WARN palsu biar terasa hidup
-                    addLog(stages[idx - 1].log, idx === 3 ? 'WARN' : 'OK', idx === 3);
+            // Terminal Console Message Rotator
+            let msgIdx = 0;
+            const consoleTimer = setInterval(() => {
+                if (consoleOutput && msgIdx < consoleMessages.length) {
+                    consoleOutput.textContent = consoleMessages[msgIdx];
+                    msgIdx++;
                 }
-                stageIdx = idx;
-                setModule(idx, 'load');
-                consoleEl.textContent = stages[idx].console;
-                statusText.textContent = stages[idx].status;
-            }
+            }, 450);
 
-            function render() {
-                const shown = Math.round(progress);
-                percentEl.textContent = shown;
-                ringFill.style.strokeDashoffset = RING_LEN * (1 - progress / 100);
+            function renderProgress(val) {
+                const rounded = Math.round(val);
+                if (progressText) progressText.textContent = rounded;
+                if (progressBar) progressBar.style.width = `${val}%`;
 
-                const filled = Math.floor((progress / 100) * SEGMENTS);
-                for (let s = 0; s < SEGMENTS; s++) {
-                    segs[s].classList.toggle('on', s < filled);
-                    segs[s].classList.toggle('head', s === filled && progress < 100);
-                }
-                while (stageIdx + 1 < stages.length && progress >= stages[stageIdx + 1].at) {
-                    enterStage(stageIdx + 1);
+                // Calculate Circle Ring Offset
+                if (ringFill) {
+                    const offset = CIRCUMFERENCE - (val / 100) * CIRCUMFERENCE;
+                    ringFill.style.strokeDashoffset = offset;
                 }
             }
 
-            // Tips berganti
-            let tipIdx = 0;
-            tipEl.textContent = tips[0];
-            const tipTimer = setInterval(() => {
-                tipEl.classList.add('is-swap');
-                setTimeout(() => {
-                    tipIdx = (tipIdx + 1) % tips.length;
-                    tipEl.textContent = tips[tipIdx];
-                    tipEl.classList.remove('is-swap');
-                }, 300);
-            }, 2400);
-
-            const memTimer = setInterval(() => {
-                memEl.textContent = (Math.random() * 40 + 40).toFixed(1) + 'MB';
-            }, 250);
-
-            function finish() {
+            function finishLoading() {
                 finished = true;
-                clearInterval(tipTimer);
-                clearInterval(memTimer);
-                setModule(stages.length - 1, 'ok');
-                addLog(stages[stages.length - 1].log, 'OK');
-                addLog('Access granted', 'OK');
+                clearInterval(consoleTimer);
 
-                statusText.textContent = 'SYSTEM READY // ACCESS GRANTED';
-                statusBox.classList.add('is-done');
-                statusDot.classList.add('is-done');
-                consoleEl.textContent = 'OS_LOADED_SUCCESSFULLY.';
-                consoleBox.classList.add('is-done');
-                memEl.textContent = 'STABLE';
-                barEl.classList.add('is-done');
-                ringFill.style.stroke = '#48AA8C';
-                ringFill.style.filter = 'drop-shadow(0 0 5px rgba(72,170,140,.8))';
-                stampEl.classList.add('is-show');
+                // Update UI state to "ACCESS GRANTED"
+                if (statusText) {
+                    statusText.textContent = 'SYSTEM READY // ACCESS GRANTED';
+                    statusText.classList.add('text-[#48AA8C]');
+                }
+                if (statusDot) {
+                    statusDot.classList.remove('bg-[#EA7645]', 'animate-ping');
+                    statusDot.classList.add('bg-[#48AA8C]');
+                }
+                if (consoleOutput) {
+                    consoleOutput.textContent = 'OS_LOADED_SUCCESSFULLY.';
+                    consoleOutput.classList.remove('text-[#EA7645]');
+                    consoleOutput.classList.add('text-[#48AA8C]');
+                }
+                if (ringFill) {
+                    ringFill.style.stroke = '#48AA8C';
+                }
+                if (stampEl) {
+                    stampEl.classList.add('is-show');
+                }
 
-                // Tahan sebentar, lalu buka shutter
+                // Trigger Shutter Opening
                 setTimeout(() => {
                     loader.classList.add('rl-open');
-                    setTimeout(revealMain, 450);
-                    setTimeout(() => loader.remove(), 1100);
-                }, 1000);
+                    setTimeout(revealMain, 400);
+                    setTimeout(() => loader.remove(), 1000);
+                }, 850);
             }
 
-            // Loop progres
-            const timer = setInterval(() => {
-                // Tahan di 92% sampai semua aset halaman benar-benar selesai dimuat
+            // Progress Step Timer
+            const progressTimer = setInterval(() => {
                 const cap = pageReady ? 100 : 92;
-                if (Math.random() > 0.14) { // jeda acak
-                    progress = Math.min(progress + (Math.random() * 3.6 + 0.6), cap);
-                }
-                render();
-                if (progress >= 100 && !finished) {
-                    clearInterval(timer);
-                    finish();
-                }
-            }, 70);
+                let step = Math.floor(Math.random() * 6) + 1;
+                progressValue = Math.min(progressValue + step, cap);
 
-            enterStage(0);
-            render();
+                renderProgress(progressValue);
+
+                if (progressValue >= 100 && !finished) {
+                    clearInterval(progressTimer);
+                    finishLoading();
+                }
+            }, 60);
+
+            renderProgress(0);
 
         } else if (wrapper) {
             revealMain();
         }
 
-        // Animasi elemen halaman utama setelah loading selesai
         function triggerDelayedAnimations() {
             if (!delayedAnimateElems.length) return;
             delayedAnimateElems.forEach((elem, index) => {
@@ -662,7 +452,7 @@
             }
         }
 
-        // Perbaikan stuck loading saat tombol Back browser (BFCache)
+        // BFCache Navigation Fix
         window.addEventListener('pageshow', function (event) {
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                 const activeLoader = document.getElementById('pageLoader');
