@@ -4,89 +4,110 @@
 
 @section('content')
     <!-- ==============================================
-         ADVANCED ARKNIGHTS / RHINE LAB LOADING SCREEN
+         RHINE LAB // BOOT SEQUENCE LOADER
          ============================================== -->
-    <div id="pageLoader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#f4f2ee]/95 backdrop-blur-[20px] transition-all duration-1000 overflow-hidden">
-        
-        <!-- Background Tech Elements -->
-        <div class="absolute inset-0 opacity-[0.03] pointer-events-none hex-bg"></div>
-        
-        <!-- Vertical Scanline Effect -->
-        <div class="absolute w-full h-[2px] bg-[#48AA8C]/40 top-0 animate-scan-vertical shadow-[0_0_20px_#48AA8C] z-0"></div>
+    <div id="pageLoader" class="rl-loader" role="status" aria-live="polite" aria-label="Memuat Rhine Lab OS">
 
-        <!-- Decorative Corners (HUD Style) -->
-        <div class="absolute top-8 left-8 w-16 h-16 border-t-2 border-l-2 border-gray-400/50"></div>
-        <div class="absolute top-8 right-8 w-16 h-16 border-t-2 border-r-2 border-gray-400/50"></div>
-        <div class="absolute bottom-8 left-8 w-16 h-16 border-b-2 border-l-2 border-gray-400/50"></div>
-        <div class="absolute bottom-8 right-8 w-16 h-16 border-b-2 border-r-2 border-gray-400/50"></div>
+        <!-- Shutter (dua panel yang membuka saat ACCESS GRANTED) -->
+        <div class="rl-shutter rl-shutter-top"><div class="rl-hex"></div></div>
+        <div class="rl-shutter rl-shutter-bottom"><div class="rl-hex"></div></div>
 
-        <!-- Floating Data Ring (Center Background) -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35rem] h-[35rem] border border-gray-300/30 rounded-full border-dashed animate-spin-slow opacity-50 z-0"></div>
+        <!-- Lapisan konten -->
+        <div class="rl-layer">
 
-        <div class="relative z-10 flex flex-col items-center w-full max-w-4xl px-6 sm:px-12">
-            
-            <!-- Branding / Logo Area -->
-            <div class="mb-16 flex flex-col items-center relative">
-                <div class="absolute -left-6 top-2 w-1.5 h-6 bg-[#C4FF00] shadow-[0_0_10px_#C4FF00] animate-pulse"></div>
-                <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-[0.3em] text-[#1c1c1c] mb-1 uppercase select-none">RHINE LAB</h1>
-                <div class="flex items-center gap-3">
-                    <span class="w-8 sm:w-12 h-[1px] bg-gray-400"></span>
-                    <p class="text-[9px] sm:text-[11px] tracking-[0.5em] text-gray-500 uppercase font-extrabold select-none">SYNTHESIZE INFORMATION OS</p>
-                    <span class="w-8 sm:w-12 h-[1px] bg-gray-400"></span>
-                </div>
+            <!-- Hazard strip atas & bawah -->
+            <div class="rl-hazard rl-hazard-top"></div>
+            <div class="rl-hazard rl-hazard-bottom"></div>
+
+            <!-- Crosshair grid -->
+            <div class="rl-gridline rl-gridline-h"></div>
+            <div class="rl-gridline rl-gridline-v"></div>
+
+            <!-- HUD corners -->
+            <span class="rl-corner rl-c-tl"></span>
+            <span class="rl-corner rl-c-tr"></span>
+            <span class="rl-corner rl-c-bl"></span>
+            <span class="rl-corner rl-c-br"></span>
+
+            <!-- Info sudut -->
+            <div class="rl-tag rl-tag-tl">
+                <b>RHL-ALPHA</b>
+                <span>BUILD 0.9.4 // INTERNAL</span>
+            </div>
+            <div class="rl-tag rl-tag-tr">
+                <b>SEC_LEVEL</b>
+                <span class="rl-blink-text">CLASSIFIED</span>
             </div>
 
-            <!-- Loading Bar Container (HUD Interface) -->
-            <div class="w-full relative mt-4">
-                
-                <!-- Top Console Data -->
-                <div class="flex justify-between items-end mb-2 font-mono text-[8px] sm:text-[10px] text-gray-500 tracking-[0.15em] uppercase">
-                    <div class="flex flex-col">
-                        <span id="akConsoleOutput" class="text-[#EA7645] font-bold h-4">INIT_SYSTEM...</span>
-                        <span class="text-gray-400 text-[7px] sm:text-[8px]">> EXECUTING_PROTOCOL: RHL-ALPHA</span>
-                    </div>
-                    <div class="text-right">
-                        <span>SYS.MEM: <span class="animate-pulse text-[#48AA8C] font-bold">ALLOCATING</span></span><br>
-                        <span class="text-gray-400">SEC_LEVEL: CLASSIFIED</span>
+            <!-- Panel kiri: boot log -->
+            <aside class="rl-panel rl-panel-left" aria-hidden="true">
+                <div class="rl-panel-head"><i></i>BOOT_LOG</div>
+                <ul id="rlLog" class="rl-log"></ul>
+            </aside>
+
+            <!-- Panel kanan: modul -->
+            <aside class="rl-panel rl-panel-right" aria-hidden="true">
+                <div class="rl-panel-head"><i></i>MODULES</div>
+                <ul id="rlModules" class="rl-modules"></ul>
+                <div class="rl-barcode">
+                    <span style="height:100%;width:2px"></span><span style="height:60%;width:1px"></span><span style="height:100%;width:3px"></span><span style="height:45%;width:1px"></span><span style="height:80%;width:2px"></span><span style="height:100%;width:4px"></span><span style="height:60%;width:1px"></span>
+                    <em>RL-ARCHIVE-XX</em>
+                </div>
+            </aside>
+
+            <!-- Pusat: logo + ring -->
+            <main class="rl-center">
+                <div class="rl-brand">
+                    <h1>RHINE LAB</h1>
+                    <p>SYNTHESIZE INFORMATION OS</p>
+                </div>
+
+                <div class="rl-ring-wrap">
+                    <svg class="rl-ring" viewBox="0 0 300 300" aria-hidden="true">
+                        <!-- tick ring luar -->
+                        <circle class="rl-ring-ticks rl-spin-slow" cx="150" cy="150" r="141" />
+                        <!-- arc putus-putus berputar balik -->
+                        <circle class="rl-ring-arcs rl-spin-rev" cx="150" cy="150" r="128" />
+                        <!-- jalur progress -->
+                        <circle class="rl-ring-track" cx="150" cy="150" r="112" />
+                        <circle id="rlRingFill" class="rl-ring-fill" cx="150" cy="150" r="112" />
+                        <!-- marka salib -->
+                        <path class="rl-ring-cross" d="M150 2v14M150 284v14M2 150h14M284 150h14" />
+                    </svg>
+                    <div class="rl-logo-core">
+                        <img src="{{ asset('images/logo.png') }}" alt="" />
                     </div>
                 </div>
 
-                <!-- The Progress Bar -->
-                <div class="relative w-full h-[12px] sm:h-[16px] border border-gray-400/80 bg-white/30 backdrop-blur-sm p-[2px] flex items-center shadow-lg">
-                    <!-- Segmented Track Background -->
-                    <div class="absolute inset-0 opacity-15" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 3px, #000 3px, #000 6px);"></div>
+                <div class="rl-percent" aria-live="off">
+                    <span id="akProgressText">0</span><small>%</small>
+                </div>
+                <div id="rlStamp" class="rl-stamp">ACCESS GRANTED</div>
+            </main>
 
-                    <!-- Solid Fill -->
-                    <div id="akProgressBar" class="relative h-full bg-[#2c2c2c] w-0 transition-all duration-[80ms] ease-linear overflow-hidden">
-                        <!-- Shimmer / Shine effect on the bar -->
-                        <div class="absolute inset-0 w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-30deg] animate-shimmer"></div>
+            <!-- Bawah: status + bar + tips -->
+            <footer class="rl-bottom">
+                <div class="rl-bottom-top">
+                    <div class="rl-status">
+                        <span id="akStatusDot" class="rl-dot"></span>
+                        <span id="akStatusText">CONNECTING TO SERVER</span>
                     </div>
-                    
-                    <!-- Leading Edge Glow (Neon Accent) -->
-                    <div id="akProgressGlow" class="absolute h-full w-2 sm:w-3 bg-[#EA7645] shadow-[0_0_12px_#EA7645] transition-all duration-[80ms] ease-linear z-10 left-0"></div>
+                    <div class="rl-console">
+                        <span id="akConsoleOutput">INIT_SYSTEM...</span>
+                        <small>SYS.MEM: <b id="rlMem">ALLOCATING</b></small>
+                    </div>
                 </div>
 
-                <!-- Bottom Metrics -->
-                <div class="mt-3 flex justify-between items-end font-mono">
-                    <div class="flex items-center gap-2">
-                        <div id="akStatusDot" class="w-2 h-2 bg-[#EA7645] animate-ping rounded-full border border-white"></div>
-                        <span id="akStatusText" class="text-[9px] sm:text-[11px] font-bold text-gray-800 tracking-[0.2em]">CONNECTING TO SERVER</span>
-                    </div>
-                    
-                    <div class="text-3xl sm:text-4xl font-black text-[#1c1c1c] tracking-widest flex items-baseline leading-none">
-                        <span id="akProgressText">0</span><span class="text-sm sm:text-base text-gray-500 ml-1">%</span>
-                    </div>
+                <div id="akProgressBar" class="rl-bar" aria-hidden="true"></div>
+
+                <div class="rl-tip">
+                    <span class="rl-tip-label">TIPS</span>
+                    <span id="rlTip" class="rl-tip-text"></span>
                 </div>
-                
-                <!-- Tiny barcode decorative -->
-                <div class="absolute -bottom-10 right-0 opacity-40 flex items-end gap-[2px] h-4">
-                    <div class="w-[2px] h-full bg-gray-600"></div><div class="w-[1px] h-3 bg-gray-600"></div><div class="w-[3px] h-full bg-gray-600"></div><div class="w-[1px] h-2 bg-gray-600"></div><div class="w-[2px] h-4 bg-gray-600"></div><div class="w-[4px] h-full bg-gray-600"></div><div class="w-[1px] h-3 bg-gray-600"></div>
-                    <span class="text-[6px] font-mono ml-1 text-gray-600">RL-ARCHIVE-XX</span>
-                </div>
-            </div>
+            </footer>
         </div>
     </div>
-    
+
     <!-- ==============================================
          MAIN PAGE WRAPPER
          ============================================== -->
@@ -186,39 +207,197 @@
 
     <style>
         /* =========================================
-           ADVANCED ANIMATIONS (RHINE LAB HUD)
+           RHINE LAB BOOT LOADER
+           Palet: kertas #ECE8E5 / tinta #1c1c1c / oranye #EA7645 / teal #48AA8C / lime #C4FF00
            ========================================= */
-        
-        /* Scanline Animasi dari atas ke bawah berulang */
-        @keyframes scanVertical {
-            0% { top: -5%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 105%; opacity: 0; }
+        .rl-loader {
+            --rl-paper: #ECE8E5;
+            --rl-ink: #1c1c1c;
+            --rl-mute: #7a766f;
+            --rl-orange: #EA7645;
+            --rl-teal: #48AA8C;
+            --rl-lime: #C4FF00;
+            position: fixed; inset: 0; z-index: 50; overflow: hidden;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            color: var(--rl-ink);
         }
-        .animate-scan-vertical { animation: scanVertical 3.5s linear infinite; }
 
-        /* Shimmer (Kilap cahaya) melintasi loading bar */
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) skewX(-30deg); }
-            100% { transform: translateX(500%) skewX(-30deg); }
+        /* Shutter */
+        .rl-shutter {
+            position: absolute; left: 0; width: 100%; height: 50.2%;
+            background: var(--rl-paper); overflow: hidden;
+            transition: transform 0.9s cubic-bezier(.77,0,.18,1);
+            z-index: 0;
         }
-        .animate-shimmer { animation: shimmer 2s infinite; }
-
-        /* Putaran lambat untuk HUD Lingkaran background */
-        @keyframes spinSlow {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
+        .rl-shutter-top { top: 0; }
+        .rl-shutter-bottom { bottom: 0; }
+        .rl-shutter-bottom::before, .rl-shutter-top::after {
+            content: ""; position: absolute; left: 0; width: 100%; height: 2px; background: var(--rl-ink);
         }
-        .animate-spin-slow { animation: spinSlow 30s linear infinite; }
-
-        /* Background Pattern Hexagon Tipis (Khas Sci-Fi / Arknights) */
-        .hex-bg {
+        .rl-shutter-top::after { bottom: 0; }
+        .rl-shutter-bottom::before { top: 0; }
+        .rl-hex {
+            position: absolute; inset: 0; opacity: .55;
             background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L20 0 0 11.547v23.094l20 11.547 20-11.547V11.547zM20 45.034L1.155 34.148V12.376L20 1.49l18.845 10.886v21.772L20 45.034z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3Cpath d='M40 46.188L20 34.641 0 46.188v23.094l20 11.547 20-11.547V46.188zM20 79.675L1.155 68.789V47.017L20 36.13l18.845 10.886v21.772L20 79.675z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
             background-size: 60px 103.923px;
         }
+        .rl-shutter-bottom .rl-hex { background-position: 0 -51.9px; }
 
-        /* Standard Page Animations */
+        .rl-loader.rl-open .rl-shutter-top { transform: translateY(-101%); }
+        .rl-loader.rl-open .rl-shutter-bottom { transform: translateY(101%); }
+        .rl-loader.rl-open .rl-layer { opacity: 0; transition: opacity .35s ease; }
+
+        /* Layer */
+        .rl-layer { position: absolute; inset: 0; z-index: 1; display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            grid-template-rows: 1fr auto; padding: 56px 40px 28px; gap: 0 32px; }
+
+        /* Hazard strips */
+        .rl-hazard { position: absolute; left: 0; width: 100%; height: 8px; z-index: 2;
+            background: repeating-linear-gradient(-45deg, var(--rl-ink) 0 10px, var(--rl-lime) 10px 20px); }
+        .rl-hazard-top { top: 0; }
+        .rl-hazard-bottom { bottom: 0; }
+
+        /* Grid lines */
+        .rl-gridline { position: absolute; background: rgba(28,28,28,.12); pointer-events: none; }
+        .rl-gridline-h { left: 0; right: 0; top: 50%; height: 1px; }
+        .rl-gridline-v { top: 0; bottom: 0; left: 50%; width: 1px; }
+
+        /* Corners */
+        .rl-corner { position: absolute; width: 44px; height: 44px; border: 0 solid rgba(28,28,28,.55); }
+        .rl-c-tl { top: 24px; left: 24px; border-top-width: 2px; border-left-width: 2px; }
+        .rl-c-tr { top: 24px; right: 24px; border-top-width: 2px; border-right-width: 2px; }
+        .rl-c-bl { bottom: 24px; left: 24px; border-bottom-width: 2px; border-left-width: 2px; }
+        .rl-c-br { bottom: 24px; right: 24px; border-bottom-width: 2px; border-right-width: 2px; }
+
+        /* Tag sudut */
+        .rl-tag { position: absolute; top: 34px; display: flex; flex-direction: column; gap: 2px; font-size: 10px; letter-spacing: .18em; }
+        .rl-tag b { font-size: 11px; letter-spacing: .3em; }
+        .rl-tag span { color: var(--rl-mute); }
+        .rl-tag-tl { left: 80px; border-left: 4px solid var(--rl-lime); padding-left: 10px; }
+        .rl-tag-tr { right: 80px; text-align: right; align-items: flex-end; }
+        .rl-tag-tr span { color: var(--rl-orange); font-weight: 700; }
+        .rl-blink-text { animation: rlBlink 1.6s steps(2, jump-none) infinite; }
+
+        /* Panels */
+        .rl-panel { align-self: center; font-size: 10px; letter-spacing: .1em; min-width: 0; }
+        .rl-panel-left { grid-column: 1; justify-self: start; width: min(100%, 300px); }
+        .rl-panel-right { grid-column: 3; justify-self: end; width: min(100%, 240px); }
+        .rl-panel-head { display: flex; align-items: center; gap: 8px; padding-bottom: 6px; margin-bottom: 8px;
+            border-bottom: 2px solid var(--rl-ink); font-weight: 800; letter-spacing: .3em; font-size: 10px; }
+        .rl-panel-head i { width: 8px; height: 8px; background: var(--rl-orange); transform: rotate(45deg); }
+
+        .rl-log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; min-height: 150px; }
+        .rl-log li { display: flex; gap: 8px; white-space: nowrap; overflow: hidden; color: #4a4742;
+            animation: rlLine .25s ease-out; }
+        .rl-log li time { color: var(--rl-mute); flex: none; }
+        .rl-log li span { overflow: hidden; text-overflow: ellipsis; }
+        .rl-log li em { font-style: normal; margin-left: auto; flex: none; font-weight: 800; color: var(--rl-teal); }
+        .rl-log li.warn em { color: var(--rl-orange); }
+
+        .rl-modules { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+        .rl-modules li { display: grid; grid-template-columns: 10px 1fr auto; align-items: center; gap: 8px;
+            padding: 5px 8px; border: 1px solid rgba(28,28,28,.25); background: rgba(255,255,255,.35);
+            color: var(--rl-mute); transition: background .2s, color .2s, border-color .2s; }
+        .rl-modules li i { width: 6px; height: 6px; background: currentColor; transform: rotate(45deg); }
+        .rl-modules li em { font-style: normal; font-weight: 800; font-size: 9px; }
+        .rl-modules li.is-load { color: var(--rl-ink); border-color: var(--rl-orange); background: rgba(234,118,69,.12); }
+        .rl-modules li.is-load i { background: var(--rl-orange); animation: rlBlink .5s steps(2, jump-none) infinite; }
+        .rl-modules li.is-ok { color: var(--rl-ink); border-color: rgba(72,170,140,.7); }
+        .rl-modules li.is-ok i { background: var(--rl-teal); }
+        .rl-modules li.is-ok em { color: var(--rl-teal); }
+
+        .rl-barcode { margin-top: 18px; height: 18px; display: flex; align-items: flex-end; gap: 2px; opacity: .5; }
+        .rl-barcode span { background: var(--rl-ink); display: block; }
+        .rl-barcode em { font-style: normal; font-size: 7px; margin-left: 6px; }
+
+        /* Center */
+        .rl-center { grid-column: 2; grid-row: 1; align-self: center; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+        .rl-brand { text-align: center; margin-bottom: 18px; }
+        .rl-brand h1 { margin: 0; font-family: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+            font-weight: 900; font-size: clamp(28px, 5.2vw, 56px); letter-spacing: .3em; margin-right: -.3em; line-height: 1; }
+        .rl-brand p { margin: 8px 0 0; font-size: 10px; letter-spacing: .5em; margin-right: -.5em; color: var(--rl-mute); font-weight: 800; }
+
+        .rl-ring-wrap { position: relative; width: clamp(190px, 28vh, 270px); aspect-ratio: 1; }
+        .rl-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+        .rl-ring circle { fill: none; transform-origin: 150px 150px; }
+        .rl-ring-ticks { stroke: rgba(28,28,28,.55); stroke-width: 8; stroke-dasharray: 1.5 13.8; }
+        .rl-ring-arcs { stroke: rgba(28,28,28,.35); stroke-width: 1.5; stroke-dasharray: 90 40 20 40 60 40; }
+        .rl-ring-track { stroke: rgba(28,28,28,.15); stroke-width: 6; }
+        .rl-ring-fill { stroke: var(--rl-orange); stroke-width: 6; stroke-dasharray: 703.7; stroke-dashoffset: 703.7;
+            transform: rotate(-90deg); transition: stroke-dashoffset .12s linear, stroke .3s;
+            filter: drop-shadow(0 0 4px rgba(234,118,69,.7)); }
+        .rl-ring-cross { stroke: var(--rl-ink); stroke-width: 2; fill: none; }
+        .rl-spin-slow { animation: rlSpin 40s linear infinite; }
+        .rl-spin-rev { animation: rlSpin 22s linear infinite reverse; }
+
+        .rl-logo-core { position: absolute; inset: 24%; display: grid; place-items: center; }
+        .rl-logo-core img { width: 100%; height: 100%; object-fit: contain; animation: rlLogoIn 1.2s ease-out both; }
+        .rl-logo-core::before { content: ""; position: absolute; inset: -8%; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,.7), transparent 70%); z-index: -1; }
+
+        .rl-percent { margin-top: 14px; font-weight: 900; font-size: clamp(40px, 7vh, 64px); line-height: 1; letter-spacing: .06em;
+            font-variant-numeric: tabular-nums; display: flex; align-items: baseline; }
+        .rl-percent small { font-size: .3em; margin-left: 4px; color: var(--rl-mute); letter-spacing: 0; }
+
+        .rl-stamp { position: absolute; bottom: 26%; padding: 6px 16px; border: 3px solid var(--rl-teal); color: var(--rl-teal);
+            font-weight: 900; letter-spacing: .35em; font-size: clamp(12px, 2vw, 18px); background: rgba(236,232,229,.9);
+            transform: rotate(-4deg) scale(1.6); opacity: 0; pointer-events: none; }
+        .rl-stamp.is-show { animation: rlStamp .45s cubic-bezier(.2,.9,.3,1.2) forwards; }
+
+        /* Bottom */
+        .rl-bottom { grid-column: 1 / -1; grid-row: 2; padding: 0 24px 16px; }
+        .rl-bottom-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; gap: 16px; }
+        .rl-status { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: clamp(10px, 1.4vw, 12px); letter-spacing: .22em; min-width: 0; }
+        .rl-status span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .rl-dot { width: 10px; height: 10px; background: var(--rl-orange); transform: rotate(45deg); flex: none; animation: rlBlink .7s steps(2, jump-none) infinite; }
+        .rl-dot.is-done { background: var(--rl-teal); animation: none; box-shadow: 0 0 10px var(--rl-teal); }
+        .rl-status.is-done span:last-child { color: var(--rl-teal); }
+        .rl-console { text-align: right; display: flex; flex-direction: column; font-size: 10px; letter-spacing: .15em; min-width: 0; }
+        .rl-console span { color: var(--rl-orange); font-weight: 800; }
+        .rl-console.is-done span { color: var(--rl-teal); }
+        .rl-console small { font-size: 8px; color: var(--rl-mute); }
+        .rl-console small b { color: var(--rl-teal); animation: rlBlink 1s steps(2, jump-none) infinite; }
+
+        .rl-bar { display: grid; grid-template-columns: repeat(48, 1fr); gap: 3px; height: 18px; padding: 3px;
+            border: 2px solid var(--rl-ink); background: rgba(255,255,255,.4); }
+        .rl-seg { background: rgba(28,28,28,.12); transform: skewX(-24deg); transition: background .1s; }
+        .rl-seg.on { background: var(--rl-ink); }
+        .rl-seg.head { background: var(--rl-orange); box-shadow: 0 0 10px var(--rl-orange); }
+        .rl-bar.is-done .rl-seg { background: var(--rl-teal); box-shadow: none; }
+
+        .rl-tip { display: flex; align-items: center; gap: 12px; margin-top: 10px; font-size: 10px; letter-spacing: .12em; color: #4a4742; min-height: 20px; }
+        .rl-tip-label { background: var(--rl-ink); color: var(--rl-paper); padding: 2px 8px; font-weight: 800; letter-spacing: .25em; flex: none;
+            clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); padding-right: 14px; }
+        .rl-tip-text { transition: opacity .3s; }
+        .rl-tip-text.is-swap { opacity: 0; }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .rl-panel { display: none; }
+            .rl-layer { grid-template-columns: 1fr; padding: 48px 16px 20px; }
+            .rl-center { grid-column: 1; }
+            .rl-tag-tl { left: 56px; } .rl-tag-tr { right: 56px; }
+            .rl-bottom { padding: 0 4px 12px; }
+            .rl-bar { grid-template-columns: repeat(32, 1fr); }
+            .rl-seg:nth-child(n+33) { display: none; }
+        }
+        @media (max-height: 560px) { .rl-brand p, .rl-tip { display: none; } }
+
+        @keyframes rlSpin { to { transform: rotate(360deg); } }
+        @keyframes rlBlink { 50% { opacity: .25; } }
+        @keyframes rlLine { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+        @keyframes rlLogoIn { from { opacity: 0; transform: scale(.7); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+        @keyframes rlStamp { to { opacity: 1; transform: rotate(-4deg) scale(1); } }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rl-spin-slow, .rl-spin-rev, .rl-blink-text, .rl-dot, .rl-console small b { animation: none; }
+            .rl-shutter { transition-duration: .01s; }
+        }
+
+        /* =========================================
+           STANDARD PAGE ANIMATIONS
+           ========================================= */
         @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
         .animate-fade-up { animation: fadeUp 0.8s forwards; }
 
@@ -240,35 +419,14 @@
     <script>
         const wrapper = document.getElementById('pageWrapper');
         const loader = document.getElementById('pageLoader');
-        
-        // Elemen Loader Arknights Baru
-        const progressBar = document.getElementById('akProgressBar');
-        const progressGlow = document.getElementById('akProgressGlow');
-        const progressText = document.getElementById('akProgressText');
-        const consoleOutput = document.getElementById('akConsoleOutput');
-        const statusText = document.getElementById('akStatusText');
-        const statusDot = document.getElementById('akStatusDot');
-        
-        // Array Teks Konsol Hacker/Tech
-        const consoleMessages = [
-            "INIT_SYSTEM...",
-            "VERIFYING_CREDENTIALS...",
-            "DECRYPTING_CLASSIFIED_FILES...",
-            "MOUNTING_ORIGINIUM_ARTS_DB...",
-            "BYPASSING_SECURITY_PROTOCOLS...",
-            "ESTABLISHING_SECURE_CONNECTION..."
-        ];
 
         const welcomeText = "WELCOME TO";
         const welcomeElem = document.getElementById('welcomeText');
         const delayedAnimateElems = Array.from(document.querySelectorAll('.pre-animate'));
-        
-        let i = 0;
-        let progressValue = 0;
-        let progressTimer;
-        let consoleTimer;
 
-        // Fungsi Animasi Teks Ketik (Typewriter) untuk WELCOME TO
+        let i = 0;
+
+        // Typewriter untuk WELCOME TO
         function typeWriter() {
             if (!welcomeElem) return;
             welcomeElem.textContent = '';
@@ -286,96 +444,205 @@
         }
         window.addEventListener('DOMContentLoaded', typeWriter);
 
-        // Animasi transisi saat link navigasi diklik
-        const links = document.querySelectorAll('.nav-link');
-        links.forEach(link => {
+        // Transisi saat link navigasi diklik
+        document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
                 const href = this.getAttribute('href');
                 wrapper.classList.add('fade-out');
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 700); 
+                setTimeout(() => { window.location.href = href; }, 700);
             });
         });
 
-        // Logika Loading Arknights Lanjutan
-        if (loader) {
-            requestAnimationFrame(() => {
-                
-                // Rotasi Teks Konsol Terminal
-                let msgIndex = 0;
-                consoleTimer = setInterval(() => {
-                    if (consoleOutput && msgIndex < consoleMessages.length) {
-                        consoleOutput.textContent = consoleMessages[msgIndex];
-                        msgIndex++;
-                    }
-                }, 400); // Ganti teks tiap 400ms
-
-                progressTimer = setInterval(() => {
-                    // Kecepatan acak (random interval) agar terasa seperti loading server sungguhan
-                    let step = Math.floor(Math.random() * 8) + 1; 
-                    progressValue = Math.min(progressValue + step, 100);
-                    
-                    // Update Lebar Bar & Posisi Leading Glow Accent
-                    if (progressBar) progressBar.style.width = `${progressValue}%`;
-                    if (progressGlow) {
-                        progressGlow.style.left = `calc(${progressValue}% - ${progressValue === 100 ? 0 : 8}px)`; 
-                    }
-                    if (progressText) progressText.textContent = progressValue;
-                    
-                    // JIKA SELESAI (100%)
-                    if (progressValue === 100) {
-                        clearInterval(progressTimer);
-                        clearInterval(consoleTimer);
-                        
-                        setTimeout(() => {
-                            // Ubah UI menjadi status "Selesai" (Warna hijau / sistem siap)
-                            if (statusText) {
-                                statusText.textContent = 'SYSTEM READY // ACCESS GRANTED';
-                                statusText.classList.remove('text-gray-800');
-                                statusText.classList.add('text-[#48AA8C]'); // Hijau Rhine Lab
-                            }
-                            if (statusDot) {
-                                statusDot.classList.remove('bg-[#EA7645]', 'animate-ping');
-                                statusDot.classList.add('bg-[#48AA8C]', 'animate-pulse');
-                            }
-                            if (consoleOutput) {
-                                consoleOutput.textContent = "OS_LOADED_SUCCESSFULLY.";
-                                consoleOutput.classList.remove('text-[#EA7645]');
-                                consoleOutput.classList.add('text-[#48AA8C]');
-                            }
-                            
-                            // Eksekusi Pudar (Fade Out) & Tampilkan Beranda Utama
-                            setTimeout(() => {
-                                loader.classList.add('opacity-0');
-                                loader.addEventListener('transitionend', () => loader.remove(), { once: true });
-                                
-                                if (wrapper) {
-                                    wrapper.classList.remove('opacity-0');
-                                    requestAnimationFrame(() => wrapper.classList.add('opacity-100'));
-                                }
-                                triggerDelayedAnimations();
-                            }, 800); // Tahan sebentar tulisan ACCESS GRANTED sebelum menghilang
-                            
-                        }, 250);
-                    }
-                }, 60); // Interval update bar progress
-            });
-        } else if (wrapper) {
-            // Jika loader tidak ada/dihapus, langsung tampil
-            wrapper.classList.remove('opacity-0');
-            requestAnimationFrame(() => wrapper.classList.add('opacity-100'));
+        // Tampilkan halaman utama
+        function revealMain() {
+            if (wrapper) {
+                wrapper.classList.remove('opacity-0');
+                requestAnimationFrame(() => wrapper.classList.add('opacity-100'));
+            }
             triggerDelayedAnimations();
         }
 
-        // Trigger animasi elemen halaman utama setelah loading selesai
+        /* =========================================
+           RHINE LAB BOOT SEQUENCE
+           ========================================= */
+        if (loader) {
+            const $ = (id) => document.getElementById(id);
+            const barEl = $('akProgressBar');
+            const ringFill = $('rlRingFill');
+            const percentEl = $('akProgressText');
+            const consoleEl = $('akConsoleOutput');
+            const consoleBox = consoleEl.parentElement;
+            const statusText = $('akStatusText');
+            const statusDot = $('akStatusDot');
+            const statusBox = statusDot.parentElement;
+            const logEl = $('rlLog');
+            const modulesEl = $('rlModules');
+            const memEl = $('rlMem');
+            const stampEl = $('rlStamp');
+            const tipEl = $('rlTip');
+
+            const SEGMENTS = 48;
+            const RING_LEN = 703.7; // 2 * PI * 112
+
+            // at = persen saat tahap mulai
+            const stages = [
+                { at: 0,  console: 'INIT_SYSTEM...',                      status: 'CONNECTING TO SERVER',  log: 'Kernel handshake RHL-ALPHA',    module: 'CORE_KERNEL' },
+                { at: 18, console: 'VERIFYING_CREDENTIALS...',            status: 'VERIFYING OPERATOR',    log: 'Credential check',              module: 'AUTH_GATE' },
+                { at: 36, console: 'MOUNTING_ORIGINIUM_ARTS_DB...',       status: 'MOUNTING DATABASE',     log: 'Mount originium_arts.db',       module: 'ORIGINIUM_ARTS_DB' },
+                { at: 54, console: 'DECRYPTING_CLASSIFIED_FILES...',      status: 'DECRYPTING ARCHIVE',    log: 'Decrypt archive RL-ARCHIVE-XX', module: 'ARCHIVE_INDEX' },
+                { at: 72, console: 'ESTABLISHING_SECURE_CONNECTION...',   status: 'SECURING CHANNEL',      log: 'Open secure channel',           module: 'SECURE_LINK' },
+                { at: 90, console: 'SYNC_INTERFACE...',                   status: 'SYNCING INTERFACE',     log: 'Sync UI shell',                 module: 'UI_SHELL' }
+            ];
+
+            const tips = [
+                'Seluruh data di Internal Database bersifat rahasia dan hanya untuk operator terdaftar.',
+                'Gunakan menu RESEARCH untuk menelusuri arsip riset Rhine Lab.',
+                'Menu USER menampilkan ledger operator yang terdaftar di sistem.',
+                'Sesi akan berakhir otomatis bila tidak ada aktivitas.',
+                'Rhine Lab: Synthesize Information, Analysis OS.'
+            ];
+
+            // Bangun segmen bar
+            const segs = [];
+            for (let s = 0; s < SEGMENTS; s++) {
+                const d = document.createElement('div');
+                d.className = 'rl-seg';
+                barEl.appendChild(d);
+                segs.push(d);
+            }
+
+            // Bangun daftar modul
+            const modItems = stages.map(st => {
+                const li = document.createElement('li');
+                li.innerHTML = '<i></i><span>' + st.module + '</span><em>WAIT</em>';
+                modulesEl.appendChild(li);
+                return li;
+            });
+
+            const t0 = performance.now();
+            const stamp = () => {
+                const t = (performance.now() - t0) / 1000;
+                return t.toFixed(2).padStart(5, '0');
+            };
+            const addLog = (text, result, warn) => {
+                const li = document.createElement('li');
+                if (warn) li.className = 'warn';
+                li.innerHTML = '<time>[' + stamp() + ']</time><span>' + text + '</span><em>' + (result || 'OK') + '</em>';
+                logEl.appendChild(li);
+                while (logEl.children.length > 8) logEl.removeChild(logEl.firstChild);
+            };
+
+            const setModule = (idx, state) => {
+                const li = modItems[idx];
+                if (!li) return;
+                li.className = state === 'load' ? 'is-load' : 'is-ok';
+                li.lastElementChild.textContent = state === 'load' ? 'LOAD' : 'OK';
+            };
+
+            let progress = 0;
+            let stageIdx = -1;
+            let pageReady = document.readyState === 'complete';
+            let finished = false;
+            window.addEventListener('load', () => { pageReady = true; });
+
+            function enterStage(idx) {
+                if (idx > 0) {
+                    setModule(idx - 1, 'ok');
+                    // sesekali beri WARN palsu biar terasa hidup
+                    addLog(stages[idx - 1].log, idx === 3 ? 'WARN' : 'OK', idx === 3);
+                }
+                stageIdx = idx;
+                setModule(idx, 'load');
+                consoleEl.textContent = stages[idx].console;
+                statusText.textContent = stages[idx].status;
+            }
+
+            function render() {
+                const shown = Math.round(progress);
+                percentEl.textContent = shown;
+                ringFill.style.strokeDashoffset = RING_LEN * (1 - progress / 100);
+
+                const filled = Math.floor((progress / 100) * SEGMENTS);
+                for (let s = 0; s < SEGMENTS; s++) {
+                    segs[s].classList.toggle('on', s < filled);
+                    segs[s].classList.toggle('head', s === filled && progress < 100);
+                }
+                while (stageIdx + 1 < stages.length && progress >= stages[stageIdx + 1].at) {
+                    enterStage(stageIdx + 1);
+                }
+            }
+
+            // Tips berganti
+            let tipIdx = 0;
+            tipEl.textContent = tips[0];
+            const tipTimer = setInterval(() => {
+                tipEl.classList.add('is-swap');
+                setTimeout(() => {
+                    tipIdx = (tipIdx + 1) % tips.length;
+                    tipEl.textContent = tips[tipIdx];
+                    tipEl.classList.remove('is-swap');
+                }, 300);
+            }, 2400);
+
+            const memTimer = setInterval(() => {
+                memEl.textContent = (Math.random() * 40 + 40).toFixed(1) + 'MB';
+            }, 250);
+
+            function finish() {
+                finished = true;
+                clearInterval(tipTimer);
+                clearInterval(memTimer);
+                setModule(stages.length - 1, 'ok');
+                addLog(stages[stages.length - 1].log, 'OK');
+                addLog('Access granted', 'OK');
+
+                statusText.textContent = 'SYSTEM READY // ACCESS GRANTED';
+                statusBox.classList.add('is-done');
+                statusDot.classList.add('is-done');
+                consoleEl.textContent = 'OS_LOADED_SUCCESSFULLY.';
+                consoleBox.classList.add('is-done');
+                memEl.textContent = 'STABLE';
+                barEl.classList.add('is-done');
+                ringFill.style.stroke = '#48AA8C';
+                ringFill.style.filter = 'drop-shadow(0 0 5px rgba(72,170,140,.8))';
+                stampEl.classList.add('is-show');
+
+                // Tahan sebentar, lalu buka shutter
+                setTimeout(() => {
+                    loader.classList.add('rl-open');
+                    setTimeout(revealMain, 450);
+                    setTimeout(() => loader.remove(), 1100);
+                }, 1000);
+            }
+
+            // Loop progres
+            const timer = setInterval(() => {
+                // Tahan di 92% sampai semua aset halaman benar-benar selesai dimuat
+                const cap = pageReady ? 100 : 92;
+                if (Math.random() > 0.14) { // jeda acak
+                    progress = Math.min(progress + (Math.random() * 3.6 + 0.6), cap);
+                }
+                render();
+                if (progress >= 100 && !finished) {
+                    clearInterval(timer);
+                    finish();
+                }
+            }, 70);
+
+            enterStage(0);
+            render();
+
+        } else if (wrapper) {
+            revealMain();
+        }
+
+        // Animasi elemen halaman utama setelah loading selesai
         function triggerDelayedAnimations() {
             if (!delayedAnimateElems.length) return;
             delayedAnimateElems.forEach((elem, index) => {
                 const animationClass = elem.getAttribute('data-animate');
                 const existingDelay = parseFloat(elem.style.animationDelay || 0);
-                // Jeda berurutan
                 const extraDelay = index * 0.12;
                 elem.style.animationDelay = `${existingDelay + 0.3 + extraDelay}s`;
                 elem.classList.remove('pre-animate');
@@ -392,5 +659,19 @@
                 }, computedDelay);
             }
         }
+
+        // Perbaikan stuck loading saat tombol Back browser (BFCache)
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                const activeLoader = document.getElementById('pageLoader');
+                if (activeLoader) activeLoader.remove();
+                if (wrapper) {
+                    wrapper.classList.remove('opacity-0', 'fade-out');
+                    wrapper.style.opacity = '1';
+                    wrapper.style.visibility = 'visible';
+                }
+                triggerDelayedAnimations();
+            }
+        });
     </script>
 @endsection
