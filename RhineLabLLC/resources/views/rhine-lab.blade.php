@@ -4,122 +4,73 @@
 
 @section('content')
     <!-- ==============================================
-         RHINE LAB // PV "ACCESS" ACCURATE BOOT LOADER
+         RHINE LAB // EXACT REPLICA BOOT LOADER (00:18)
          ============================================== -->
-    <div id="pageLoader" class="rl-pv-loader" role="status" aria-live="polite">
-
-        <!-- Shutter Panel Terbelah 2 (Atas & Bawah) -->
-        <div class="rl-shutter rl-shutter-top">
-            <div class="rl-grid-bg"></div>
+    <div id="pageLoader" class="fixed inset-0 z-50 overflow-hidden bg-[#ECE8E5] font-sans text-[#1c1c1c] select-none flex items-center justify-center">
+        
+        <!-- Latar Belakang & Watermark DNA Samar -->
+        <div class="absolute inset-0 z-0 opacity-10 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, #d3cfc9 0px, #d3cfc9 1px, transparent 1px, transparent 40px);"></div>
+        <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
+            <!-- DNA Helix Abstract Shape -->
+            <svg viewBox="0 0 100 100" class="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px]" fill="none" stroke="#000" stroke-width="2">
+                <path d="M 20 10 Q 50 50 80 90 M 80 10 Q 50 50 20 90" stroke-dasharray="4 4" />
+            </svg>
         </div>
-        <div class="rl-shutter rl-shutter-bottom">
-            <div class="rl-grid-bg"></div>
-        </div>
 
-        <!-- Overlapping Shutter Center Line -->
-        <div class="rl-shutter-line"></div>
+        <!-- Shutter Panel (Efek Pintu Terbuka) -->
+        <div id="shutterTop" class="absolute top-0 left-0 w-full h-[50%] bg-[#ECE8E5] z-10 transition-transform duration-[1100ms] cubic-bezier-shutter"></div>
+        <div id="shutterBottom" class="absolute bottom-0 left-0 w-full h-[50%] bg-[#ECE8E5] z-10 transition-transform duration-[1100ms] cubic-bezier-shutter"></div>
 
-        <!-- Layer Konten UI HUD -->
-        <div class="rl-layer flex flex-col justify-between items-center h-full w-full p-6 sm:p-12 pointer-events-none select-none relative z-10">
+        <!-- Layer UI Utama (Teks & Cincin) -->
+        <div id="loaderUI" class="absolute inset-0 z-20 flex flex-col justify-center items-center transition-opacity duration-500">
+            
+            <!-- Top Left Typography (Sesuai Referensi Gambar) -->
+            <div class="absolute top-10 left-10 sm:top-12 sm:left-14 flex flex-col">
+                <h1 class="text-3xl sm:text-4xl font-black tracking-widest text-[#1c1c1c] leading-none mb-1">RHINE LAB</h1>
+                <p class="text-[7.5px] sm:text-[9px] font-bold tracking-[0.25em] text-[#1c1c1c] uppercase leading-none mb-0.5">SYNTHESIZE INFORMATION</p>
+                <p class="text-lg sm:text-xl font-light tracking-[0.25em] text-[#1c1c1c] uppercase leading-none">ANALYSIS <span class="font-bold">OS</span></p>
+            </div>
 
-            <!-- HUD Corners (Aksen Sudut Khas Arknights) -->
-            <span class="rl-corner rl-c-tl"></span>
-            <span class="rl-corner rl-c-tr"></span>
-            <span class="rl-corner rl-c-bl"></span>
-            <span class="rl-corner rl-c-br"></span>
-
-            <!-- Top Header Status HUD -->
-            <header class="w-full max-w-5xl flex justify-between items-start font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-[#2c2c2c] uppercase">
-                <div class="flex flex-col gap-1">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 bg-[#EA7645] inline-block"></span>
-                        <span class="font-black text-[#1c1c1c] tracking-[0.3em]">RHINE LAB LLC.</span>
-                    </div>
-                    <span class="text-gray-500 text-[8px] pl-4">DATABASE PORTAL // REF. PV-ACCESS</span>
-                </div>
-                <div class="text-right flex flex-col items-end gap-1">
-                    <div class="flex items-center gap-1.5">
-                        <span class="text-gray-500">SYS_STATUS:</span>
-                        <span id="rlTopStatus" class="font-bold text-[#EA7645]">PROCESSING</span>
-                    </div>
-                    <span class="text-[8px] text-gray-400 font-mono">LOCATION: COLUMBIA / TRIMOUNTS</span>
-                </div>
-            </header>
-
-            <!-- Middle Core Interface (Logo & Precision Reticle Ring) -->
-            <main class="w-full max-w-4xl my-auto flex flex-col items-center justify-center relative">
+            <!-- Pusat: Cincin Minimalis Berputar -->
+            <div class="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] flex items-center justify-center">
                 
-                <!-- Rotating Reticle & Ring Stack -->
-                <div class="relative w-52 h-52 sm:w-64 sm:h-64 flex items-center justify-center">
+                <!-- SVG Rings -->
+                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 300 300">
                     
-                    <!-- Outer Rotating Crosshair Ring -->
-                    <svg class="absolute inset-0 w-full h-full animate-spin-slow opacity-40" viewBox="0 0 200 200">
-                        <circle cx="100" cy="100" r="95" stroke="#1c1c1c" stroke-width="1" stroke-dasharray="4 8" fill="none" />
-                        <circle cx="100" cy="100" r="85" stroke="#1c1c1c" stroke-width="0.5" stroke-dasharray="40 10 20 10" fill="none" />
-                    </svg>
+                    <!-- 1. Inner Broken Black Arcs (Berputar Berlawanan Arah Jarum Jam) -->
+                    <g class="origin-[150px_150px] animate-[spin_12s_linear_infinite_reverse]">
+                        <circle cx="150" cy="150" r="55" fill="none" stroke="#1c1c1c" stroke-width="1.2" stroke-dasharray="90 82.7" stroke-linecap="butt"/>
+                    </g>
 
-                    <!-- Inner Active Gauge Progress Fill -->
-                    <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
-                        <circle cx="100" cy="100" r="76" stroke="#d5d2cc" stroke-width="2" fill="none" />
-                        <circle id="rlRingFill" cx="100" cy="100" r="76" 
-                                class="stroke-[#EA7645] transition-all duration-100 ease-out" 
-                                stroke-width="3" 
-                                stroke-dasharray="477.52" 
-                                stroke-dashoffset="477.52" 
-                                stroke-linecap="butt"
-                                fill="none" />
-                    </svg>
+                    <!-- 2. Middle Solid White Circle -->
+                    <circle cx="150" cy="150" r="92" fill="none" stroke="#ffffff" stroke-width="3.5" class="opacity-95" />
 
-                    <!-- Logo Center Wrapper -->
-                    <div class="w-28 h-28 sm:w-36 sm:h-36 p-4 bg-white/70 backdrop-blur-md rounded-full border border-white shadow-lg flex items-center justify-center z-10 rl-core-glow">
-                        <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain filter contrast-125" />
-                    </div>
+                    <!-- 3. Outer Black Arc dengan Titik (Berputar Searah Jarum Jam) -->
+                    <g class="origin-[150px_150px] animate-[spin_15s_linear_infinite]">
+                        <!-- Garis busur (sekitar 270 derajat) -->
+                        <path d="M 72 228 A 110 110 0 1 1 258 130" fill="none" stroke="#1c1c1c" stroke-width="1.2" stroke-linecap="round"/>
+                        <!-- Titik hitam di ujung busur -->
+                        <circle cx="258" cy="130" r="3.5" fill="#1c1c1c" />
+                    </g>
 
-                    <!-- HUD Reticle Cross Markings -->
-                    <div class="absolute inset-0 flex items-center justify-between px-1 pointer-events-none opacity-30">
-                        <div class="w-2 h-[1px] bg-[#1c1c1c]"></div>
-                        <div class="w-2 h-[1px] bg-[#1c1c1c]"></div>
-                    </div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-between py-1 pointer-events-none opacity-30">
-                        <div class="h-2 w-[1px] bg-[#1c1c1c]"></div>
-                        <div class="h-2 w-[1px] bg-[#1c1c1c]"></div>
-                    </div>
+                    <!-- 4. Floating Orange Dots -->
+                    <g class="origin-[150px_150px] animate-[spin_20s_linear_infinite]">
+                        <circle cx="105" cy="195" r="4.5" fill="#EA7645" />
+                        <circle cx="205" cy="110" r="4.5" fill="#EA7645" />
+                    </g>
+                </svg>
+
+                <!-- Teks Di Tengah Cincin (Berganti Secara Dinamis) -->
+                <div id="centerText" class="absolute inset-0 flex items-center justify-center text-[9px] sm:text-[10px] font-medium tracking-[0.25em] text-[#1c1c1c] text-center px-6 transition-opacity duration-300 opacity-0 uppercase">
+                    ACCESS PERMISSION REQUIRED
                 </div>
+            </div>
 
-                <!-- Text Log Typing Output (Sesuai Trailer PV) -->
-                <div class="mt-8 text-center flex flex-col items-center font-mono">
-                    <div id="rlLogLine" class="text-sm sm:text-base font-black tracking-[0.25em] text-[#1c1c1c] uppercase min-h-[1.5rem]">
-                        ACCESS PERMISSION REQUIRED
-                    </div>
-                    <div class="flex items-center gap-2 mt-2 text-[10px] font-bold tracking-[0.3em] text-gray-500 uppercase">
-                        <span>PROGRESS:</span>
-                        <span id="akProgressText" class="text-[#EA7645] font-black">0</span>%
-                    </div>
-                </div>
-
-                <!-- Stamp "PERMISSION AUTHORIZED / ACCESS GRANTED" -->
-                <div id="rlStamp" class="rl-stamp">
-                    PERMISSION AUTHORIZED
-                </div>
-            </main>
-
-            <!-- Bottom Console HUD -->
-            <footer class="w-full max-w-5xl z-10 flex flex-col gap-2 font-mono">
-                <div class="flex justify-between items-center text-[9px] sm:text-[10px] tracking-[0.2em] text-gray-600 uppercase">
-                    <div class="flex items-center gap-2">
-                        <span id="akStatusDot" class="w-2 h-2 bg-[#EA7645] inline-block animate-ping"></span>
-                        <span id="akStatusText" class="font-bold text-[#1c1c1c]">REQUEST RECEIVED</span>
-                    </div>
-                    <div id="akConsoleOutput" class="text-[#EA7645] font-bold text-right">
-                        ID_CONFIRMED
-                    </div>
-                </div>
-
-                <!-- Thin Segmented Progress Line -->
-                <div class="w-full h-[3px] bg-gray-300/80 rounded-full overflow-hidden relative">
-                    <div id="akProgressBar" class="h-full bg-[#1c1c1c] w-0 transition-all duration-100 ease-out"></div>
-                </div>
-            </footer>
+            <!-- Bottom Right Typography -->
+            <div class="absolute bottom-10 right-10 sm:bottom-12 sm:right-14 flex items-center gap-3">
+                <span class="text-[7.5px] sm:text-[9px] font-bold tracking-[0.2em] uppercase text-[#1c1c1c]">POWERED BY RHINE LAB</span>
+                <span class="w-4 h-[2px] bg-[#1c1c1c]"></span>
+            </div>
 
         </div>
     </div>
@@ -223,69 +174,17 @@
 
     <style>
         /* =========================================
-           RHINE LAB // PV ACCESS ACCURATE STYLING
+           CUSTOM CSS ANIMATIONS & STYLES
            ========================================= */
-        .rl-pv-loader {
-            position: fixed; inset: 0; z-index: 50; overflow: hidden;
-            background: #ECE8E5; color: #1c1c1c;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        
+        /* Exponential Ease Out Shutter Curve (Halus banget) */
+        .cubic-bezier-shutter {
+            transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* Ultra-smooth Shutter Opening Transisi */
-        .rl-shutter {
-            position: absolute; left: 0; width: 100%; height: 50.1%;
-            background: #ECE8E5; overflow: hidden;
-            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 0;
-        }
-        .rl-shutter-top { top: 0; }
-        .rl-shutter-bottom { bottom: 0; }
-
-        /* Aksen Garis Pemisah Tengah Shutter */
-        .rl-shutter-line {
-            position: absolute; top: 50%; left: 0; right: 0; height: 1px;
-            background: #1c1c1c; z-index: 2; transform: translateY(-50%);
-            transition: opacity 0.3s ease;
-        }
-
-        .rl-pv-loader.rl-open .rl-shutter-line { opacity: 0; }
-        .rl-pv-loader.rl-open .rl-shutter-top { transform: translateY(-101%); }
-        .rl-pv-loader.rl-open .rl-shutter-bottom { transform: translateY(101%); }
-        .rl-pv-loader.rl-open .rl-layer { opacity: 0; transition: opacity .4s ease; }
-
-        /* Grid Background Pattern khas Trailer PV */
-        .rl-grid-bg {
-            position: absolute; inset: 0; opacity: 0.18;
-            background-image: 
-                linear-gradient(to right, #1c1c1c 1px, transparent 1px),
-                linear-gradient(to bottom, #1c1c1c 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-
-        /* HUD Frame Corners */
-        .rl-corner { position: absolute; width: 28px; height: 28px; border: 0 solid rgba(28,28,28,.4); z-index: 10; }
-        .rl-c-tl { top: 20px; left: 20px; border-top-width: 2px; border-left-width: 2px; }
-        .rl-c-tr { top: 20px; right: 20px; border-top-width: 2px; border-right-width: 2px; }
-        .rl-c-bl { bottom: 20px; left: 20px; border-bottom-width: 2px; border-left-width: 2px; }
-        .rl-c-br { bottom: 20px; right: 20px; border-bottom-width: 2px; border-right-width: 2px; }
-
-        /* Core Glow */
-        .rl-core-glow {
-            box-shadow: 0 0 35px rgba(234, 118, 69, 0.18), inset 0 0 15px rgba(255, 255, 255, 0.8);
-        }
-
-        /* Stamp PERMISSION AUTHORIZED */
-        .rl-stamp {
-            position: absolute; padding: 6px 20px; border: 2px solid #48AA8C; color: #48AA8C;
-            font-weight: 900; letter-spacing: 0.35em; font-size: 13px; background: rgba(236,232,229,0.96);
-            transform: rotate(-3deg) scale(1.4); opacity: 0; pointer-events: none; z-index: 20;
-            top: 55%;
-        }
-        .rl-stamp.is-show { animation: rlStamp .45s cubic-bezier(.16, 1, 0.3, 1) forwards; }
-
-        @keyframes rlStamp { to { opacity: 1; transform: rotate(-3deg) scale(1); } }
-        @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .animate-spin-slow { animation: spinSlow 30s linear infinite; }
+        /* Trigger Animasi Shutter Terbuka */
+        .shutter-open-top { transform: translateY(-100%); }
+        .shutter-open-bottom { transform: translateY(100%); }
 
         /* Standard Page Animations */
         @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
@@ -351,111 +250,71 @@
         }
 
         /* =========================================
-           PV "ACCESS" ACCURATE LOADER LOGIC
+           EXACT PV ANIMATION SEQUENCE LOGIC
            ========================================= */
         if (loader) {
-            const $ = (id) => document.getElementById(id);
-            const progressBar = $('akProgressBar');
-            const ringFill = $('rlRingFill');
-            const progressText = $('akProgressText');
-            const consoleOutput = $('akConsoleOutput');
-            const statusText = $('akStatusText');
-            const statusDot = $('akStatusDot');
-            const stampEl = $('rlStamp');
-            const logLine = $('rlLogLine');
-            const topStatus = $('rlTopStatus');
+            const centerText = document.getElementById('centerText');
+            const loaderUI = document.getElementById('loaderUI');
+            const sTop = document.getElementById('shutterTop');
+            const sBottom = document.getElementById('shutterBottom');
+            
+            const username = "{{ auth()->check() ? auth()->user()->name : 'OPERATIVE' }}".toUpperCase();
 
-            const CIRCUMFERENCE = 477.52; // 2 * PI * 76
-
-            // Sequence log persis sesuai percakapan suara trailer PV Rhine Lab Access
-            const pvSequence = [
-                { progress: 20, log: "ACCESS PERMISSION REQUIRED", console: "ID_CHECK", status: "PROCESSING PERMISSION" },
-                { progress: 45, log: "ID CONFIRMED // JOYCE MOORE", console: "ID_CONFIRMED", status: "CREDENTIALS VERIFIED" },
-                { progress: 75, log: "REQUEST RECEIVED // START PROCESSING", console: "PROCESSING", status: "AUTHORIZING ACCESS" },
-                { progress: 100, log: "PERMISSION AUTHORIZED", console: "WELCOME_RHINE_LAB", status: "ACCESS GRANTED" }
+            // Urutan teks yang akan muncul di tengah cincin
+            const sequence = [
+                "ACCESS PERMISSION REQUIRED",
+                `ID CONFIRMED // ${username}`,
+                "PERMISSION AUTHORIZED"
             ];
 
-            let progressValue = 0;
-            let pageReady = document.readyState === 'complete';
-            let finished = false;
+            let step = 0;
 
-            window.addEventListener('load', () => { pageReady = true; });
-
-            function renderProgress(val) {
-                const rounded = Math.round(val);
-                if (progressText) progressText.textContent = rounded;
-                if (progressBar) progressBar.style.width = `${val}%`;
-
-                if (ringFill) {
-                    const offset = CIRCUMFERENCE - (val / 100) * CIRCUMFERENCE;
-                    ringFill.style.strokeDashoffset = offset;
-                }
-
-                // Update teks log sesuai persentase
-                if (val < 25) {
-                    if (logLine) logLine.textContent = pvSequence[0].log;
-                    if (consoleOutput) consoleOutput.textContent = pvSequence[0].console;
-                    if (statusText) statusText.textContent = pvSequence[0].status;
-                } else if (val < 60) {
-                    if (logLine) logLine.textContent = pvSequence[1].log;
-                    if (consoleOutput) consoleOutput.textContent = pvSequence[1].console;
-                    if (statusText) statusText.textContent = pvSequence[1].status;
-                } else if (val < 95) {
-                    if (logLine) logLine.textContent = pvSequence[2].log;
-                    if (consoleOutput) consoleOutput.textContent = pvSequence[2].console;
-                    if (statusText) statusText.textContent = pvSequence[2].status;
-                } else {
-                    if (logLine) logLine.textContent = pvSequence[3].log;
-                    if (consoleOutput) consoleOutput.textContent = pvSequence[3].console;
-                    if (statusText) statusText.textContent = pvSequence[3].status;
+            function animateTextSequence() {
+                if (step < sequence.length) {
+                    // Ganti teks dan munculkan (fade in)
+                    centerText.textContent = sequence[step];
+                    centerText.classList.remove('opacity-0');
+                    centerText.classList.add('opacity-100');
+                    
+                    // Tahan teks selama 1.2 detik, lalu pudarkan (kecuali teks terakhir)
+                    setTimeout(() => {
+                        if (step < sequence.length - 1) {
+                            centerText.classList.remove('opacity-100');
+                            centerText.classList.add('opacity-0');
+                            
+                            // Lanjut ke teks berikutnya setelah pudar
+                            setTimeout(() => {
+                                step++;
+                                animateTextSequence();
+                            }, 400); 
+                        } else {
+                            // Teks terakhir selesai ditahan, mulai transisi shutter terbuka
+                            triggerShutterOpen();
+                        }
+                    }, 1200);
                 }
             }
 
-            function finishLoading() {
-                finished = true;
+            function triggerShutterOpen() {
+                // 1. Pudarkan seluruh UI (Cincin & Teks)
+                loaderUI.classList.remove('opacity-100');
+                loaderUI.classList.add('opacity-0');
 
-                if (topStatus) {
-                    topStatus.textContent = 'AUTHORIZED';
-                    topStatus.classList.remove('text-[#EA7645]');
-                    topStatus.classList.add('text-[#48AA8C]');
-                }
-                if (statusDot) {
-                    statusDot.classList.remove('bg-[#EA7645]', 'animate-ping');
-                    statusDot.classList.add('bg-[#48AA8C]');
-                }
-                if (consoleOutput) {
-                    consoleOutput.classList.remove('text-[#EA7645]');
-                    consoleOutput.classList.add('text-[#48AA8C]');
-                }
-                if (ringFill) {
-                    ringFill.style.stroke = '#48AA8C';
-                }
-                if (stampEl) {
-                    stampEl.classList.add('is-show');
-                }
-
-                // Ultra-smooth Shutter Open
+                // 2. Buka pintu shutter ke atas & bawah
                 setTimeout(() => {
-                    loader.classList.add('rl-open');
+                    sTop.classList.add('shutter-open-top');
+                    sBottom.classList.add('shutter-open-bottom');
+                    
+                    // 3. Tampilkan halaman utama di balik shutter
                     setTimeout(revealMain, 400);
-                    setTimeout(() => loader.remove(), 1100);
-                }, 850);
+                    
+                    // 4. Hapus elemen loader dari DOM
+                    setTimeout(() => loader.remove(), 1200);
+                }, 400);
             }
 
-            const progressTimer = setInterval(() => {
-                const cap = pageReady ? 100 : 92;
-                let step = Math.floor(Math.random() * 5) + 2;
-                progressValue = Math.min(progressValue + step, cap);
-
-                renderProgress(progressValue);
-
-                if (progressValue >= 100 && !finished) {
-                    clearInterval(progressTimer);
-                    finishLoading();
-                }
-            }, 55);
-
-            renderProgress(0);
+            // Mulai sequence teks
+            setTimeout(animateTextSequence, 300);
 
         } else if (wrapper) {
             revealMain();
@@ -483,7 +342,7 @@
             }
         }
 
-        // BFCache Navigation Fix
+        // Fix Stuck BFCache Navigation (Tombol Back Browser)
         window.addEventListener('pageshow', function (event) {
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                 const activeLoader = document.getElementById('pageLoader');
