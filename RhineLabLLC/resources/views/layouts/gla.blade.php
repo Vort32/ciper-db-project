@@ -6,6 +6,19 @@
     <title>@yield('title')</title>
     <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('images/logo1.png') }}">
     @vite('resources/css/app.css')
+    
+    <style>
+        /* Paksa semua elemen transparan menjadi terlihat saat dimuat dari BFCache (tombol Back) */
+        body.bfcache-active #pageWrapper,
+        body.bfcache-active .opacity-0,
+        body.bfcache-active .pre-animate {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+            transition: none !important;
+            animation: none !important;
+        }
+    </style>
 </head>
 <body class="antialiased bg-[#ECE8E5] min-h-screen relative overflow-hidden">
 
@@ -15,32 +28,25 @@
     <!-- Alpine.js -->
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
-    <!-- Global Fix: BFCache Chrome & Single Visit Animation -->
     <script>
-        // 1. Tangani tombol Back/Forward Browser (BFCache) untuk SEMUA halaman
+        // Memaksa penanganan tombol Back/Forward Chrome (BFCache)
         window.addEventListener('pageshow', function(event) {
-            const pageWrapper = document.getElementById('pageWrapper');
-            if (pageWrapper) {
-                pageWrapper.style.transition = 'none';
-                pageWrapper.style.opacity = '1';
-            }
-        });
+            // Jika halaman dimuat ulang dari cache navigasi browser (persisted)
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                document.body.classList.add('bfcache-active');
+                
+                const pageWrapper = document.getElementById('pageWrapper');
+                if (pageWrapper) {
+                    pageWrapper.style.opacity = '1';
+                    pageWrapper.style.visibility = 'visible';
+                }
 
-        // 2. Batasi animasi loading cuma 1 kali per sesi masuk web
-        document.addEventListener('DOMContentLoaded', function() {
-            const pageWrapper = document.getElementById('pageWrapper');
-            if (!pageWrapper) return;
-
-            const hasVisited = sessionStorage.getItem('rhine_lab_visited');
-
-            if (hasVisited) {
-                // Kalau sudah pernah masuk, matikan efek animasi & langsung tampilkan
-                pageWrapper.style.transition = 'none';
-                pageWrapper.style.opacity = '1';
-            } else {
-                // Pertama kali masuk: jalankan animasi biasa & tandai sesi
-                pageWrapper.style.opacity = '1';
-                sessionStorage.setItem('rhine_lab_visited', 'true');
+                // Tampilkan semua elemen yang sebelumnya tersembunyi oleh kelas animasi
+                document.querySelectorAll('.opacity-0, .pre-animate').forEach(function(el) {
+                    el.style.opacity = '1';
+                    el.style.visibility = 'visible';
+                    el.style.transform = 'none';
+                });
             }
         });
     </script>
