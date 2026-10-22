@@ -27,7 +27,6 @@ class ResearchRecordController extends Controller
     {
         $userId = Auth::id();
 
-        // Mengambil data catatan riset khusus milik user yang sedang login
         $records = ResearchRecord::with(['project.division', 'user'])
             ->where('user_id', $userId)
             ->latest('recorded_at')
@@ -71,13 +70,11 @@ class ResearchRecordController extends Controller
         $divisionId = (int) $data['division_id'];
         $division   = Division::findOrFail($divisionId);
 
-        // Cari atau buat proyek riset baru dengan reference_code unik
         $project = ResearchProject::where('title', $data['title'])
             ->where('division_id', $divisionId)
             ->first();
 
         if (!$project) {
-            // Generasi reference_code unik dinamis (Contoh: MATH-20261022-849-PROJ)
             $divCode = strtoupper($division->code ?: 'DIV');
             $uniqueCode = $divCode . '-' . date('Ymd') . '-' . rand(100, 999) . '-PROJ';
 
@@ -94,7 +91,6 @@ class ResearchRecordController extends Controller
         $filePath  = $request->hasFile('file') ? $this->storeFile($request->file('file'), 'documents') : null;
         $thumbPath = $request->hasFile('thumbnail') ? $this->storeFile($request->file('thumbnail'), 'thumbnails') : null;
         
-        // Gunakan foto dokumentasi jika ada, jika tidak ada gunakan thumbnail otomatis
         $imagePath = $request->hasFile('image') 
             ? $this->storeFile($request->file('image'), 'research_records') 
             : $thumbPath;
@@ -102,7 +98,7 @@ class ResearchRecordController extends Controller
         $record = ResearchRecord::create([
             'research_project_id' => $project->id,
             'division_id'         => $divisionId,
-            'user_id'             => Auth::id(), // Mengikat langsung ke ID user yang login
+            'user_id'             => Auth::id(),
             'record_code'         => $recordCode,
             'classification'      => $data['classification'],
             'status'              => $data['status'],
@@ -240,7 +236,6 @@ class ResearchRecordController extends Controller
             return back()->with('error', 'Berkas dokumen tidak ditemukan.');
         }
 
-        // Jika tersimpan via Supabase Storage (URL HTTP/HTTPS)
         if (Str::startsWith($researchRecord->file_path, ['http://', 'https://'])) {
             return redirect($researchRecord->file_path);
         }
@@ -289,17 +284,17 @@ class ResearchRecordController extends Controller
     }
 
     /**
-     * Menyimpan file dengan aman di Vercel / Supabase Storage & Localhost PC.
+     * Menyimpan file dengan aman ke Supabase Storage (Bucket 'Uploads').
      */
     protected function storeFile(UploadedFile $file, string $subfolder): string
     {
         $filename = uniqid($subfolder . '_', true) . '.' . $file->getClientOriginalExtension();
-        $supabaseUrl = env('SUPABASE_URL');
+        $supabaseUrl = rtrim(env('SUPABASE_URL'), '/');
         $supabaseKey = env('SUPABASE_SERVICE_ROLE_KEY');
 
-        // 1. Upload ke Supabase Storage jika konfigurasi terisi
         if (!empty($supabaseUrl) && !empty($supabaseKey)) {
-            $bucket = 'uploads';
+            // Disesuaikan dengan nama bucket di Supabase kamu: 'Uploads'
+            $bucket = 'Uploads';
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $supabaseKey,
@@ -313,7 +308,6 @@ class ResearchRecordController extends Controller
             }
         }
 
-        // 2. Fallback folder /tmp jika berjalan di Vercel
         if (isset($_ENV['VERCEL']) || getenv('VERCEL') || app()->environment('production')) {
             $tmpDirectory = '/tmp/uploads/' . $subfolder;
             if (!File::exists($tmpDirectory)) {
@@ -324,7 +318,6 @@ class ResearchRecordController extends Controller
             return 'uploads/' . $subfolder . '/' . $filename;
         }
 
-        // 3. Simpan biasa jika berjalan di localhost PC
         $directory = public_path('uploads/' . $subfolder);
         if (!File::exists($directory)) {
             File::makeDirectory($directory, 0755, true);
