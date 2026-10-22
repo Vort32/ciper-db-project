@@ -4,98 +4,96 @@
 
 @section('content')
     <!-- ==============================================
-         RHINE LAB // MINIMALIST BOOT SEQUENCE LOADER
+         RHINE LAB // ULTRA-CLEAN BOOT LOADER
          ============================================== -->
     <div id="pageLoader" class="rl-clean-loader" role="status" aria-live="polite">
 
-        <!-- Shutter Panel (Efek Terbuka Atas & Bawah) -->
+        <!-- Shutter Panel (Transisi Terbuka Atas & Bawah) -->
         <div class="rl-shutter rl-shutter-top"><div class="rl-hex"></div></div>
         <div class="rl-shutter rl-shutter-bottom"><div class="rl-hex"></div></div>
 
         <!-- Layer Konten UI Minimalis -->
-        <div class="rl-layer">
+        <div class="rl-layer flex flex-col justify-between items-center h-full w-full p-8 sm:p-12 pointer-events-none select-none">
 
-            <!-- Corner Frame minimalis -->
+            <!-- Frame Sudut Minimalis -->
             <span class="rl-corner rl-c-tl"></span>
             <span class="rl-corner rl-c-tr"></span>
             <span class="rl-corner rl-c-bl"></span>
             <span class="rl-corner rl-c-br"></span>
 
-            <!-- Info Kiri-Kanan Atas HUD -->
-            <div class="rl-hud-top flex justify-between items-center w-full px-8 pt-6 absolute top-0 left-0 right-0 z-10 font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-gray-500 uppercase">
+            <!-- Top HUD Header -->
+            <header class="w-full max-w-4xl flex justify-between items-center z-10 font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-gray-500 uppercase">
                 <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-3 bg-[#EA7645]"></span>
-                    <span class="font-bold text-[#1c1c1c]">RHL-OS</span>
-                    <span class="text-gray-400">// BOOT_SEQ v2.4</span>
+                    <span class="w-2 h-2 bg-[#EA7645]"></span>
+                    <span class="font-bold text-[#1c1c1c] tracking-[0.3em]">RHINE LAB OS</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-gray-400">SEC_LEVEL:</span>
-                    <span class="font-bold text-[#EA7645] animate-pulse">CLASSIFIED</span>
+                    <span class="text-gray-400">SEC_STATUS:</span>
+                    <span class="font-bold text-[#EA7645] tracking-widest">CLASSIFIED</span>
                 </div>
-            </div>
+            </header>
 
-            <!-- Pusat Dashboard Loader Minimalis -->
-            <main class="rl-center relative z-10 flex flex-col items-center justify-center my-auto">
+            <!-- Center Core Area -->
+            <main class="relative z-10 flex flex-col items-center justify-center my-auto">
                 
-                <!-- Brand Title -->
-                <div class="text-center mb-8">
-                    <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-[0.3em] text-[#1c1c1c] uppercase leading-none">
+                <!-- Title & Subtitle -->
+                <div class="text-center mb-8 sm:mb-10">
+                    <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-[0.35em] text-[#1c1c1c] uppercase leading-none">
                         RHINE LAB
                     </h1>
-                    <p class="text-[8px] sm:text-[10px] font-bold tracking-[0.5em] text-gray-500 uppercase mt-2">
+                    <p class="text-[8px] sm:text-[10px] font-semibold tracking-[0.5em] text-gray-400 uppercase mt-2.5">
                         SYNTHESIZE INFORMATION OS
                     </p>
                 </div>
 
-                <!-- Minimalist Core Logo & Progress Ring -->
-                <div class="relative w-44 h-44 sm:w-56 sm:h-56 flex items-center justify-center">
+                <!-- Clean Circular Progress & Logo -->
+                <div class="relative w-40 h-40 sm:w-52 sm:h-52 flex items-center justify-center">
                     
-                    <!-- SVG Ring Bar Dynamic Fill -->
+                    <!-- Circular SVG Ring -->
                     <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
-                        <circle cx="100" cy="100" r="90" class="stroke-gray-300/50" stroke-width="2" fill="none" />
-                        <circle id="rlRingFill" cx="100" cy="100" r="90" 
+                        <!-- Ring Track -->
+                        <circle cx="100" cy="100" r="88" stroke="#d5d2cc" stroke-width="1.5" fill="none" />
+                        <!-- Active Ring Fill -->
+                        <circle id="rlRingFill" cx="100" cy="100" r="88" 
                                 class="stroke-[#EA7645] transition-all duration-100 ease-linear" 
-                                stroke-width="3" 
-                                stroke-dasharray="565.48" 
-                                stroke-dashoffset="565.48" 
+                                stroke-width="2.5" 
+                                stroke-dasharray="552.92" 
+                                stroke-dashoffset="552.92" 
                                 stroke-linecap="round"
                                 fill="none" />
                     </svg>
 
-                    <!-- Outer Dotted Decorative Ring -->
-                    <div class="absolute inset-2 border border-dashed border-gray-400/40 rounded-full animate-spin-slow pointer-events-none"></div>
-
-                    <!-- Core Logo -->
-                    <div class="w-24 h-24 sm:w-32 sm:h-32 p-4 bg-white/40 backdrop-blur-sm rounded-full border border-white/80 shadow-sm flex items-center justify-center z-10">
-                        <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain filter contrast-125" />
+                    <!-- Minimalist Logo Wrapper -->
+                    <div class="w-24 h-24 sm:w-32 sm:h-32 p-5 bg-white/50 backdrop-blur-md rounded-full border border-white/80 shadow-sm flex items-center justify-center z-10">
+                        <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain" />
                     </div>
                 </div>
 
-                <!-- Persentase Angka Minimalis -->
-                <div class="mt-6 font-mono text-2xl sm:text-3xl font-black tracking-widest text-[#1c1c1c] flex items-baseline">
-                    <span id="akProgressText">0</span><span class="text-xs text-gray-500 ml-0.5">%</span>
+                <!-- Counter Percentage -->
+                <div class="mt-6 font-mono text-xl sm:text-2xl font-bold tracking-[0.2em] text-[#1c1c1c] flex items-baseline">
+                    <span id="akProgressText">0</span><span class="text-xs text-gray-400 ml-0.5">%</span>
                 </div>
 
-                <!-- Stamp "ACCESS GRANTED" -->
+                <!-- Stamp ACCESS GRANTED -->
                 <div id="rlStamp" class="rl-stamp">
                     ACCESS GRANTED
                 </div>
             </main>
 
-            <!-- Bottom Console Status & Thin Progress Line -->
-            <footer class="rl-hud-bottom absolute bottom-0 left-0 right-0 px-8 pb-6 z-10 flex flex-col gap-2 font-mono">
-                <div class="flex justify-between items-end text-[9px] sm:text-[11px] tracking-widest text-gray-600">
+            <!-- Bottom Console Line -->
+            <footer class="w-full max-w-4xl z-10 flex flex-col gap-2 font-mono">
+                <div class="flex justify-between items-center text-[9px] sm:text-[10px] tracking-[0.2em] text-gray-500 uppercase">
                     <div class="flex items-center gap-2">
-                        <span id="akStatusDot" class="w-2 h-2 bg-[#EA7645] animate-ping rounded-full"></span>
-                        <span id="akStatusText" class="font-bold text-[#1c1c1c]">CONNECTING TO SERVER</span>
+                        <span id="akStatusDot" class="w-1.5 h-1.5 bg-[#EA7645] rounded-full animate-pulse"></span>
+                        <span id="akStatusText" class="font-semibold text-gray-700">INITIALIZING...</span>
                     </div>
-                    <div id="akConsoleOutput" class="text-[#EA7645] font-bold text-right">
-                        INIT_SYSTEM...
+                    <div id="akConsoleOutput" class="text-[#EA7645] font-semibold text-right">
+                        SYSTEM_BOOT
                     </div>
                 </div>
 
-                <!-- Minimalist Clean Bar Line -->
-                <div class="w-full h-[3px] bg-gray-300/60 rounded-full overflow-hidden relative">
+                <!-- Thin Modern Loading Bar -->
+                <div class="w-full h-[2px] bg-gray-300/80 rounded-full overflow-hidden">
                     <div id="akProgressBar" class="h-full bg-[#1c1c1c] w-0 transition-all duration-100 ease-linear"></div>
                 </div>
             </footer>
@@ -202,7 +200,7 @@
 
     <style>
         /* =========================================
-           RHINE LAB // MINIMALIST LOADER STYLING
+           RHINE LAB // ULTRA-CLEAN LOADER STYLING
            ========================================= */
         .rl-clean-loader {
             position: fixed; inset: 0; z-index: 50; overflow: hidden;
@@ -210,7 +208,7 @@
             font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
         }
 
-        /* Shutter Opening Mechanism */
+        /* Shutter Opening Animation */
         .rl-shutter {
             position: absolute; left: 0; width: 100%; height: 50.2%;
             background: #ECE8E5; overflow: hidden;
@@ -219,47 +217,44 @@
         }
         .rl-shutter-top { top: 0; }
         .rl-shutter-bottom { bottom: 0; }
+        
+        /* Thin Accent Line at the Shutter Boundary */
         .rl-shutter-bottom::before, .rl-shutter-top::after {
             content: ""; position: absolute; left: 0; width: 100%; height: 2px; background: #1c1c1c;
             opacity: 0; transition: opacity .2s;
         }
         .rl-shutter-top::after { bottom: 0; }
         .rl-shutter-bottom::before { top: 0; }
+        
         .rl-clean-loader.rl-open .rl-shutter::before, 
         .rl-clean-loader.rl-open .rl-shutter::after { opacity: 1; }
 
+        /* Subtle Hex Pattern */
         .rl-hex {
-            position: absolute; inset: 0; opacity: 0.35;
+            position: absolute; inset: 0; opacity: 0.25;
             background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L20 0 0 11.547v23.094l20 11.547 20-11.547V11.547zM20 45.034L1.155 34.148V12.376L20 1.49l18.845 10.886v21.772L20 45.034z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3Cpath d='M40 46.188L20 34.641 0 46.188v23.094l20 11.547 20-11.547V46.188zM20 79.675L1.155 68.789V47.017L20 36.13l18.845 10.886v21.772L20 79.675z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
             background-size: 60px 103.923px;
         }
 
+        /* Shutter Slide Out */
         .rl-clean-loader.rl-open .rl-shutter-top { transform: translateY(-101%); }
         .rl-clean-loader.rl-open .rl-shutter-bottom { transform: translateY(101%); }
         .rl-clean-loader.rl-open .rl-layer { opacity: 0; transition: opacity .3s ease; }
 
-        /* Corners Frame */
-        .rl-corner { position: absolute; width: 28px; height: 28px; border: 0 solid rgba(28,28,28,.4); z-index: 10; }
+        /* Minimal Corner Accents */
+        .rl-corner { position: absolute; width: 24px; height: 24px; border: 0 solid rgba(28,28,28,.3); z-index: 10; }
         .rl-c-tl { top: 20px; left: 20px; border-top-width: 2px; border-left-width: 2px; }
         .rl-c-tr { top: 20px; right: 20px; border-top-width: 2px; border-right-width: 2px; }
         .rl-c-bl { bottom: 20px; left: 20px; border-bottom-width: 2px; border-left-width: 2px; }
         .rl-c-br { bottom: 20px; right: 20px; border-bottom-width: 2px; border-right-width: 2px; }
 
-        .rl-layer { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; }
-
-        /* Stamp ACCESS GRANTED */
+        /* ACCESS GRANTED Stamp */
         .rl-stamp {
             position: absolute; padding: 4px 16px; border: 2px solid #48AA8C; color: #48AA8C;
-            font-weight: 900; letter-spacing: 0.3em; font-size: 14px; background: rgba(236,232,229,0.95);
+            font-weight: 900; letter-spacing: 0.35em; font-size: 13px; background: rgba(236,232,229,0.95);
             transform: rotate(-4deg) scale(1.5); opacity: 0; pointer-events: none; z-index: 20;
         }
-        .rl-stamp.is-show { animation: rlStamp .45s cubic-bezier(.2,.9,.3,1.2) forwards; }
-
-        @keyframes spinSlow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow { animation: spinSlow 25s linear infinite; }
+        .rl-stamp.is-show { animation: rlStamp .4s cubic-bezier(.2,.9,.3,1.2) forwards; }
 
         @keyframes rlStamp { to { opacity: 1; transform: rotate(-4deg) scale(1); } }
 
@@ -327,7 +322,7 @@
         }
 
         /* =========================================
-           MINIMALIST CLEAN BOOT LOADER LOGIC
+           ULTRA-CLEAN LOADER LOGIC
            ========================================= */
         if (loader) {
             const $ = (id) => document.getElementById(id);
@@ -339,15 +334,14 @@
             const statusDot = $('akStatusDot');
             const stampEl = $('rlStamp');
 
-            const CIRCUMFERENCE = 565.48; // 2 * PI * 90
+            const CIRCUMFERENCE = 552.92; // 2 * PI * 88
 
             const consoleMessages = [
-                "INIT_SYSTEM...",
-                "VERIFYING_CREDENTIALS...",
-                "DECRYPTING_CLASSIFIED_FILES...",
-                "MOUNTING_ORIGINIUM_ARTS_DB...",
-                "BYPASSING_SECURITY_PROTOCOLS...",
-                "ESTABLISHING_SECURE_CONNECTION..."
+                "SYSTEM_BOOT",
+                "VERIFYING_AUTH",
+                "DECRYPTING_DATA",
+                "MOUNTING_DB",
+                "ESTABLISHING_LINK"
             ];
 
             let progressValue = 0;
@@ -363,14 +357,14 @@
                     consoleOutput.textContent = consoleMessages[msgIdx];
                     msgIdx++;
                 }
-            }, 450);
+            }, 500);
 
             function renderProgress(val) {
                 const rounded = Math.round(val);
                 if (progressText) progressText.textContent = rounded;
                 if (progressBar) progressBar.style.width = `${val}%`;
 
-                // Calculate Circle Ring Offset
+                // Ring Bar Stroke Fill Calculation
                 if (ringFill) {
                     const offset = CIRCUMFERENCE - (val / 100) * CIRCUMFERENCE;
                     ringFill.style.strokeDashoffset = offset;
@@ -381,17 +375,17 @@
                 finished = true;
                 clearInterval(consoleTimer);
 
-                // Update UI state to "ACCESS GRANTED"
+                // UI Update on Success
                 if (statusText) {
-                    statusText.textContent = 'SYSTEM READY // ACCESS GRANTED';
+                    statusText.textContent = 'ACCESS GRANTED';
                     statusText.classList.add('text-[#48AA8C]');
                 }
                 if (statusDot) {
-                    statusDot.classList.remove('bg-[#EA7645]', 'animate-ping');
+                    statusDot.classList.remove('bg-[#EA7645]', 'animate-pulse');
                     statusDot.classList.add('bg-[#48AA8C]');
                 }
                 if (consoleOutput) {
-                    consoleOutput.textContent = 'OS_LOADED_SUCCESSFULLY.';
+                    consoleOutput.textContent = 'OS_READY';
                     consoleOutput.classList.remove('text-[#EA7645]');
                     consoleOutput.classList.add('text-[#48AA8C]');
                 }
@@ -402,18 +396,18 @@
                     stampEl.classList.add('is-show');
                 }
 
-                // Trigger Shutter Opening
+                // Shutter Open Delay
                 setTimeout(() => {
                     loader.classList.add('rl-open');
-                    setTimeout(revealMain, 400);
-                    setTimeout(() => loader.remove(), 1000);
-                }, 850);
+                    setTimeout(revealMain, 380);
+                    setTimeout(() => loader.remove(), 950);
+                }, 800);
             }
 
-            // Progress Step Timer
+            // Smooth Progress Step
             const progressTimer = setInterval(() => {
                 const cap = pageReady ? 100 : 92;
-                let step = Math.floor(Math.random() * 6) + 1;
+                let step = Math.floor(Math.random() * 5) + 2;
                 progressValue = Math.min(progressValue + step, cap);
 
                 renderProgress(progressValue);
@@ -422,7 +416,7 @@
                     clearInterval(progressTimer);
                     finishLoading();
                 }
-            }, 60);
+            }, 50);
 
             renderProgress(0);
 
@@ -452,7 +446,7 @@
             }
         }
 
-        // BFCache Navigation Fix
+        // BFCache Navigation Handling
         window.addEventListener('pageshow', function (event) {
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                 const activeLoader = document.getElementById('pageLoader');
