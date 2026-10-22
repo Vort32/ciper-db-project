@@ -60,9 +60,20 @@
                         default => ['label' => 'FILE', 'bg' => 'bg-gray-600']
                     };
 
-                    // OTOMATISASI GAMBAR
-                    $fig1Path = $record->image_path ? asset($record->image_path) : ($record->thumbnail_path ? asset($record->thumbnail_path) : asset('images/gallery1.jpg'));
-                    $fig2Path = $record->thumbnail_path ? asset($record->thumbnail_path) : null;
+                    // HELPER PENGECEKAN URL SUPABASE VS LOCALHOST
+                    $resolveUrl = function(?string $path) {
+                        if (!$path) return null;
+                        return \Illuminate\Support\Str::startsWith($path, ['http://', 'https://']) 
+                            ? $path 
+                            : asset($path);
+                    };
+
+                    // OTOMATISASI GAMBAR DENGAN SUPPORT SUPABASE
+                    $fig1Path = $resolveUrl($record->image_path) 
+                        ?? $resolveUrl($record->thumbnail_path) 
+                        ?? asset('images/gallery1.jpg');
+                        
+                    $fig2Path = $resolveUrl($record->thumbnail_path);
 
                     $project = $record->project;
                     $division = $project?->division;
