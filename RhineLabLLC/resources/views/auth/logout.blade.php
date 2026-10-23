@@ -10,6 +10,7 @@
     $orgLogo   = !empty($selectedOrganization['logo']) ? $selectedOrganization['logo'] : 'images/logo.png';
     $divName   = $selectedDivision?->name ?? ($user?->division?->name ?? 'RHINE RESEARCH SECTION');
     $divCode   = $selectedDivision?->code ?? ($user?->division?->code ?? 'SECTOR-01');
+    $usrId     = 'USR-' . str_pad($user?->id ?? '001', 3, '0', STR_PAD_LEFT);
 @endphp
 
 {{-- ==============================================
@@ -55,107 +56,112 @@
 @endif
 
 {{-- ==============================================
-     HALAMAN TERMINASI SESI
+     HALAMAN TERMINASI SESI (layout HUD split)
      ============================================== --}}
-<div id="pageWrapper" class="st-page">
-    <div class="st-bg" aria-hidden="true"></div>
+<div id="pageWrapper" class="en-page">
+    <div class="en-bg" aria-hidden="true"></div>
 
-    {{-- Bar atas --}}
-    <header class="st-top">
-        <div class="st-brand rv" style="--d:.1s">
-            <span class="st-brand-1">RHINE LAB</span>
-            <span class="st-brand-2">SYNTHESIZE INFORMATION</span>
-            <span class="st-brand-3">ANALYSIS <b>OS</b></span>
+    {{-- ===== KIRI: PORTRAIT OPERATIF ===== --}}
+    <aside class="en-stage rv" style="--d:.05s" aria-label="Profil operatif">
+        <div class="en-photo">
+            <img src="{{ asset($user?->photo_path ?? 'images/users/Silence.png') }}"
+                 alt="Foto {{ $user?->name }}" decoding="async">
         </div>
-        <div class="st-live rv" style="--d:.2s">
-            <i class="st-live-dot"></i>Sesi aktif
+        <span class="en-ghost" aria-hidden="true">TERMINATE</span>
+
+        <i class="en-cross en-cross--a" aria-hidden="true"></i>
+        <i class="en-cross en-cross--b" aria-hidden="true"></i>
+
+        <div class="en-caption">
+            <span class="en-id">{{ $usrId }}</span>
+            <p class="en-role">{{ $roleLabel }}</p>
+            <p class="en-name">{{ $user?->name }}</p>
+            <p class="en-pos">{{ $user?->position ?? 'Researcher' }}</p>
         </div>
-    </header>
+    </aside>
 
-    {{-- Kartu utama --}}
-    <main class="st-main">
-        <section class="st-card rv" style="--d:.25s" aria-labelledby="logoutHeadline">
-
-            <div class="st-card-head">
-                <span class="st-badge">Operative termination node</span>
-                <h2 id="logoutHeadline" class="st-title" aria-label="Session Termination"></h2>
-                <p class="st-sub">Konfirmasi untuk mengakhiri sesi kerja operatif.</p>
+    {{-- ===== KANAN: PANEL DATA ===== --}}
+    <main class="en-side">
+        <header class="en-top">
+            <div class="en-brand rv" style="--d:.15s">
+                <span class="en-brand-1">RHINE LAB</span>
+                <span class="en-brand-2">SYNTHESIZE INFORMATION</span>
+                <span class="en-brand-3">ANALYSIS <b>OS</b></span>
             </div>
+            <div class="en-live rv" style="--d:.2s"><i></i>Sesi aktif</div>
+        </header>
 
-            <div class="st-body">
-                {{-- Profil --}}
-                <div class="st-profile rv" style="--d:.4s">
-                    <div class="st-avatar">
-                        <img src="{{ asset($user?->photo_path ?? 'images/users/Silence.png') }}"
-                             alt="Foto {{ $user?->name }}" width="144" height="144" loading="eager" decoding="async">
-                        <span class="st-avatar-id">USR-{{ str_pad($user?->id ?? '001', 3, '0', STR_PAD_LEFT) }}</span>
-                    </div>
-                    <div class="st-who">
-                        <p class="st-role">{{ $roleLabel }}</p>
-                        <p class="st-name">{{ $user?->name }}</p>
-                        <p class="st-pos">{{ $user?->position ?? 'Researcher' }}</p>
-                    </div>
+        <section class="en-panel rv" style="--d:.3s" aria-labelledby="logoutHeadline">
+            <i class="en-br en-br--tl" aria-hidden="true"></i>
+            <i class="en-br en-br--tr" aria-hidden="true"></i>
+            <i class="en-br en-br--bl" aria-hidden="true"></i>
+            <i class="en-br en-br--br" aria-hidden="true"></i>
+
+            <p class="en-tag">Operative termination node</p>
+            <h1 id="logoutHeadline" class="en-title" aria-label="Session Termination"></h1>
+            <div class="en-rule" aria-hidden="true"><i></i></div>
+            <p class="en-sub">Konfirmasi untuk mengakhiri sesi kerja operatif.</p>
+
+            <dl class="en-data">
+                <div class="en-row">
+                    <dt>Organisasi</dt>
+                    <dd>
+                        <span>{{ $orgName }}</span>
+                        <img src="{{ asset($orgLogo) }}" alt="Logo organisasi" class="en-logo" loading="lazy" decoding="async">
+                    </dd>
                 </div>
-
-                {{-- Info + aksi --}}
-                <div class="st-side">
-                    <dl class="st-info rv" style="--d:.5s">
-                        <div class="st-row">
-                            <div>
-                                <dt>Organisasi</dt>
-                                <dd>{{ $orgName }}</dd>
-                            </div>
-                            <img src="{{ asset($orgLogo) }}" alt="Logo organisasi" class="st-logo" loading="lazy" decoding="async">
-                        </div>
-                        <div class="st-row">
-                            <div>
-                                <dt>Divisi</dt>
-                                <dd>{{ $divName }}</dd>
-                                <dd class="st-code">{{ $divCode }}</dd>
-                            </div>
-                            @if (!empty($selectedDivision?->photo_path))
-                                <img src="{{ asset($selectedDivision->photo_path) }}" alt="Logo divisi" class="st-logo" loading="lazy" decoding="async">
-                            @endif
-                        </div>
-                    </dl>
-
-                    <form action="{{ route('logout') }}" method="post" class="st-actions rv" style="--d:.6s">
-                        @csrf
-                        <button type="submit" class="st-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                            Akhiri sesi
-                        </button>
-
-                        <nav class="st-links" aria-label="Pintasan">
-                            <a href="{{ route('admin.dashboard') }}" class="st-link st-link--accent">Pusat Admin</a>
-                            <a href="{{ route('research-records.index') }}" class="st-link">Catatan Riset</a>
-                            <a href="{{ route('research.ledger') }}" class="st-link">Direktori</a>
-                        </nav>
-                    </form>
+                <div class="en-row">
+                    <dt>Divisi</dt>
+                    <dd>
+                        <span>{{ $divName }}<small>{{ $divCode }}</small></span>
+                        @if (!empty($selectedDivision?->photo_path))
+                            <img src="{{ asset($selectedDivision->photo_path) }}" alt="Logo divisi" class="en-logo" loading="lazy" decoding="async">
+                        @endif
+                    </dd>
                 </div>
-            </div>
+                <div class="en-row">
+                    <dt>Status</dt>
+                    <dd><span>Menunggu otorisasi<small>Akses akan dicabut setelah konfirmasi</small></span></dd>
+                </div>
+            </dl>
+
+            <form action="{{ route('logout') }}" method="post" class="en-actions">
+                @csrf
+                <button type="submit" class="en-btn">
+                    <span class="en-btn-label">Akhiri sesi</span>
+                    <span class="en-btn-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                            <path stroke-linecap="square" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                    </span>
+                </button>
+
+                <nav class="en-links" aria-label="Pintasan">
+                    <a href="{{ route('admin.dashboard') }}" class="en-link en-link--accent">Pusat Admin</a>
+                    <a href="{{ route('research-records.index') }}" class="en-link">Catatan Riset</a>
+                    <a href="{{ route('research.ledger') }}" class="en-link">Direktori</a>
+                </nav>
+            </form>
         </section>
-    </main>
 
-    {{-- Footer --}}
-    <footer class="st-foot rv" style="--d:.7s">
-        <span>RHINE OS v3.2.0 · Restricted access</span>
-        <span>POWERED BY <b>RHINE LAB</b></span>
-    </footer>
+        <footer class="en-foot rv" style="--d:.6s">
+            <span>RHINE OS v3.2.0 · Restricted access</span>
+            <span>POWERED BY <b>RHINE LAB</b></span>
+        </footer>
+    </main>
 </div>
 
 <noscript><style>.rv{opacity:1!important;transform:none!important}</style></noscript>
 
 <style>
     :root {
-        --st-bg: #ECE8E5;
-        --st-ink: #1c1c1c;
-        --st-mute: #7a766f;
-        --st-line: rgba(28, 28, 28, .09);
-        --st-accent: #EA7645;
-        --st-ok: #48AA8C;
+        --en-bg: #ECE8E5;
+        --en-ink: #1c1c1c;
+        --en-mute: #7a766f;
+        --en-line: rgba(28, 28, 28, .12);
+        --en-accent: #EA7645;
+        --en-ok: #48AA8C;
+        --en-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
 
     .hex-bg {
@@ -164,139 +170,165 @@
     }
 
     /* =========================================
-       HALAMAN UTAMA
+       HALAMAN UTAMA — mobile first
        ========================================= */
-    .st-page {
+    .en-page {
         position: relative; min-height: 100vh; min-height: 100dvh;
         display: flex; flex-direction: column;
-        padding: clamp(16px, 3vw, 32px);
-        padding-bottom: max(clamp(16px, 3vw, 32px), env(safe-area-inset-bottom));
-        color: var(--st-ink); background: var(--st-bg);
+        color: var(--en-ink); background: var(--en-bg); overflow-x: hidden;
         font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
-        overflow-x: hidden; -webkit-font-smoothing: antialiased;
+        -webkit-font-smoothing: antialiased;
     }
 
-    /* Latar statis: gradient murah, tanpa blur layer besar */
-    .st-bg {
+    /* Latar statis: gradient + garis grid tipis, tanpa blur layer */
+    .en-bg {
         position: fixed; inset: 0; z-index: 0; pointer-events: none;
         background:
-            radial-gradient(60rem 40rem at 0% 0%, rgba(255, 255, 255, .85), transparent 60%),
-            radial-gradient(40rem 32rem at 100% 100%, rgba(234, 118, 69, .14), transparent 62%),
-            var(--st-bg);
+            radial-gradient(50rem 36rem at 100% 0%, rgba(255, 255, 255, .85), transparent 60%),
+            radial-gradient(36rem 28rem at 0% 100%, rgba(234, 118, 69, .12), transparent 62%),
+            linear-gradient(var(--en-line), var(--en-line)) 0 0 / 100% 1px no-repeat,
+            var(--en-bg);
     }
-    .st-bg::after {
-        content: ""; position: absolute; inset: 0; opacity: .7;
-        background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L20 0 0 11.547v23.094l20 11.547 20-11.547V11.547zM20 45.034L1.155 34.148V12.376L20 1.49l18.845 10.886v21.772L20 45.034z' fill='%23000000' fill-opacity='0.035' fill-rule='evenodd'/%3E%3C/svg%3E");
-        background-size: 60px 103.923px;
-        -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
-                mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+    .en-bg::after {
+        content: ""; position: absolute; inset: 0; opacity: .5;
+        background-image:
+            linear-gradient(to right, rgba(28, 28, 28, .045) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(28, 28, 28, .045) 1px, transparent 1px);
+        background-size: 72px 72px;
+        -webkit-mask-image: linear-gradient(115deg, transparent 20%, #000 70%);
+                mask-image: linear-gradient(115deg, transparent 20%, #000 70%);
     }
 
     /* Reveal: satu urutan masuk, murni CSS */
     .rv { opacity: 0; transform: translateY(8px); transition: opacity .6s ease var(--d, 0s), transform .6s cubic-bezier(.16, 1, .3, 1) var(--d, 0s); }
-    .st-page.is-in .rv { opacity: 1; transform: none; }
+    .en-page.is-in .rv { opacity: 1; transform: none; }
 
-    /* Bar atas */
-    .st-top { position: relative; z-index: 2; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
-    .st-brand { display: flex; flex-direction: column; width: max-content; line-height: 1; }
-    .st-brand-1 { font-size: 22px; font-weight: 800; letter-spacing: .01em; }
-    .st-brand-2 { margin-top: 3px; font-size: 7.5px; font-weight: 500; letter-spacing: .02em; text-align-last: justify; }
-    .st-brand-3 { display: flex; justify-content: space-between; margin-top: 3px; font-size: 16px; letter-spacing: .02em; }
-    .st-brand-3 b { font-weight: 800; color: var(--st-accent); }
-    .st-live { display: inline-flex; align-items: center; gap: 8px; padding-top: 4px; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--st-mute); }
-    .st-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--st-ok); box-shadow: 0 0 0 0 rgba(72, 170, 140, .5); animation: stPulse 2.4s ease-out infinite; }
+    /* ---- Stage / portrait ---- */
+    .en-stage { position: relative; z-index: 1; height: 44vh; height: 44dvh; min-height: 280px; max-height: 420px; }
+    .en-photo { position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 100% 86%, 0 100%); background: #d9d4cf; }
+    .en-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+    .en-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(20, 20, 20, .72), rgba(20, 20, 20, 0) 62%); }
 
-    /* Layout tengah */
-    .st-main { position: relative; z-index: 2; flex: 1; display: flex; align-items: center; justify-content: center; padding: clamp(20px, 4vh, 40px) 0; }
-
-    /* Kartu: satu-satunya layer backdrop-filter di halaman */
-    .st-card {
-        position: relative; width: 100%; max-width: 760px;
-        padding: clamp(22px, 4vw, 40px); border-radius: 28px;
-        background: linear-gradient(145deg, rgba(255, 255, 255, .62), rgba(255, 255, 255, .28));
-        border: 1px solid rgba(255, 255, 255, .85);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .95), 0 24px 48px -24px rgba(0, 0, 0, .12);
-        -webkit-backdrop-filter: blur(18px) saturate(1.15);
-                backdrop-filter: blur(18px) saturate(1.15);
+    .en-ghost {
+        position: absolute; right: 12px; top: 56px; z-index: 1; pointer-events: none; user-select: none;
+        font-size: clamp(44px, 14vw, 72px); font-weight: 900; letter-spacing: .06em; line-height: 1;
+        color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, .55);
+        writing-mode: vertical-rl;
     }
-    /* kilau tipis ala liquid glass, statis */
-    .st-card::before {
-        content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-        background: linear-gradient(115deg, rgba(255, 255, 255, .5) 0%, rgba(255, 255, 255, 0) 38%);
+
+    .en-cross { position: absolute; z-index: 2; width: 14px; height: 14px; pointer-events: none; }
+    .en-cross::before, .en-cross::after { content: ""; position: absolute; background: #fff; }
+    .en-cross::before { left: 6px; top: 0; width: 2px; height: 14px; }
+    .en-cross::after { left: 0; top: 6px; width: 14px; height: 2px; }
+    .en-cross--a { left: 16px; top: 16px; }
+    .en-cross--b { right: 16px; top: 16px; }
+
+    .en-caption { position: absolute; z-index: 2; left: 20px; right: 20px; bottom: 52px; color: #fff; }
+    .en-id { display: inline-block; padding: 3px 8px; margin-bottom: 10px; font: 700 10px/1.4 var(--en-mono); letter-spacing: .22em; color: var(--en-ink); background: #fff; }
+    .en-role { margin: 0; font-size: 10px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--en-accent); }
+    .en-name { margin: 4px 0 0; font-size: clamp(24px, 7vw, 34px); font-weight: 800; line-height: 1.1; }
+    .en-pos { margin: 4px 0 0; font-size: 12px; opacity: .8; }
+
+    /* ---- Side / panel ---- */
+    .en-side { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; gap: 20px; padding: 0 16px 16px; margin-top: -28px; }
+    .en-top { display: none; }
+    .en-brand { display: flex; flex-direction: column; width: max-content; line-height: 1; }
+    .en-brand-1 { font-size: 22px; font-weight: 800; letter-spacing: .01em; }
+    .en-brand-2 { margin-top: 3px; font-size: 7.5px; font-weight: 500; letter-spacing: .02em; text-align-last: justify; }
+    .en-brand-3 { display: flex; justify-content: space-between; margin-top: 3px; font-size: 16px; letter-spacing: .02em; }
+    .en-brand-3 b { font-weight: 800; color: var(--en-accent); }
+    .en-live { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--en-mute); }
+    .en-live i { width: 7px; height: 7px; border-radius: 50%; background: var(--en-ok); animation: enPulse 2.4s ease-out infinite; }
+
+    .en-panel {
+        position: relative; padding: 24px 20px 22px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, .7), rgba(255, 255, 255, .34));
+        border: 1px solid rgba(255, 255, 255, .9);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 24px 48px -28px rgba(0, 0, 0, .18);
+        -webkit-backdrop-filter: blur(10px) saturate(1.1);
+                backdrop-filter: blur(10px) saturate(1.1);
     }
     @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-        .st-card { background: rgba(250, 248, 246, .92); }
+        .en-panel { background: rgba(250, 248, 246, .94); }
     }
 
-    .st-card-head { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding-bottom: 24px; border-bottom: 1px solid var(--st-line); }
-    .st-badge { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 999px; border: 1px solid rgba(234, 118, 69, .35); background: rgba(234, 118, 69, .08); color: var(--st-accent); font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
-    .st-badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--st-accent); }
-    .st-title { min-height: 1.2em; margin: 0; font-size: clamp(22px, 5.4vw, 38px); font-weight: 800; letter-spacing: .14em; line-height: 1.2; }
-    .st-title.is-typing::after { content: ""; display: inline-block; width: 2px; height: .9em; margin-left: 4px; vertical-align: -.08em; background: var(--st-accent); animation: stBlink .8s steps(2, jump-none) infinite; }
-    .st-sub { margin: 0; font-size: 13px; color: var(--st-mute); }
+    /* siku sudut ala HUD */
+    .en-br { position: absolute; width: 12px; height: 12px; border: 0 solid var(--en-ink); pointer-events: none; }
+    .en-br--tl { left: -1px; top: -1px; border-left-width: 2px; border-top-width: 2px; }
+    .en-br--tr { right: -1px; top: -1px; border-right-width: 2px; border-top-width: 2px; }
+    .en-br--bl { left: -1px; bottom: -1px; border-left-width: 2px; border-bottom-width: 2px; }
+    .en-br--br { right: -1px; bottom: -1px; border-right-width: 2px; border-bottom-width: 2px; border-color: var(--en-accent); }
 
-    .st-body { position: relative; display: grid; gap: 24px; margin-top: 24px; grid-template-columns: 1fr; }
-    @media (min-width: 760px) { .st-body { grid-template-columns: 200px 1fr; gap: 32px; align-items: start; } }
+    .en-tag { margin: 0; font: 700 10px/1.4 var(--en-mono); letter-spacing: .24em; text-transform: uppercase; color: var(--en-accent); }
+    .en-title { min-height: 1.15em; margin: 10px 0 0; font-size: clamp(26px, 8vw, 44px); font-weight: 900; letter-spacing: .06em; line-height: 1.1; }
+    .en-title.is-typing::after { content: ""; display: inline-block; width: 3px; height: .85em; margin-left: 6px; vertical-align: -.05em; background: var(--en-accent); animation: enBlink .8s steps(2, jump-none) infinite; }
+    .en-rule { position: relative; height: 1px; margin: 16px 0 12px; background: var(--en-line); }
+    .en-rule i { position: absolute; left: 0; top: -1px; width: 56px; height: 3px; background: var(--en-accent); }
+    .en-sub { margin: 0; font-size: 13px; color: var(--en-mute); }
 
-    /* Profil */
-    .st-profile { display: flex; flex-direction: column; align-items: center; gap: 14px; }
-    .st-avatar { position: relative; width: 144px; height: 144px; padding: 5px; border-radius: 28px; background: rgba(255, 255, 255, .6); border: 1px solid rgba(255, 255, 255, .9); box-shadow: 0 12px 24px -14px rgba(0, 0, 0, .2); }
-    @media (min-width: 760px) { .st-avatar { width: 168px; height: 168px; } }
-    .st-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 23px; }
-    .st-avatar-id { position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 3px 0; border-radius: 8px; text-align: center; font: 700 9px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .2em; color: #fff; background: rgba(0, 0, 0, .45); }
-    .st-who { text-align: center; }
-    .st-role { margin: 0; font-size: 10px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--st-accent); }
-    .st-name { margin: 4px 0 0; font-size: 18px; font-weight: 800; line-height: 1.25; }
-    .st-pos { margin: 2px 0 0; font-size: 12px; color: var(--st-mute); }
-
-    /* Info: satu panel, dua baris, tanpa blur tambahan */
-    .st-info { margin: 0; border-radius: 18px; background: rgba(255, 255, 255, .5); border: 1px solid rgba(255, 255, 255, .85); }
-    .st-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; }
-    .st-row + .st-row { border-top: 1px solid var(--st-line); }
-    .st-row dt { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--st-mute); }
-    .st-row dd { margin: 4px 0 0; font-size: 14px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
-    .st-row dd.st-code { margin-top: 2px; font: 600 10px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .2em; color: var(--st-accent); }
-    .st-logo { flex: none; width: 36px; height: 36px; object-fit: contain; filter: grayscale(1); opacity: .75; }
+    /* Data rows: label kiri, nilai kanan, garis tipis */
+    .en-data { margin: 20px 0 0; border-top: 1px solid var(--en-line); }
+    .en-row { display: flex; flex-direction: column; gap: 6px; padding: 12px 0; border-bottom: 1px solid var(--en-line); }
+    .en-row dt { font: 700 10px/1.4 var(--en-mono); letter-spacing: .2em; text-transform: uppercase; color: var(--en-mute); }
+    .en-row dd { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; font-size: 14px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+    .en-row dd small { display: block; margin-top: 2px; font: 600 10px/1.4 var(--en-mono); letter-spacing: .14em; text-transform: none; color: var(--en-accent); }
+    .en-logo { flex: none; width: 34px; height: 34px; object-fit: contain; filter: grayscale(1); opacity: .75; }
 
     /* Aksi */
-    .st-actions { display: flex; flex-direction: column; gap: 12px; margin: 16px 0 0; }
-    .st-btn {
-        display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
-        padding: 14px 24px; border: 1px solid var(--st-ink); border-radius: 999px; cursor: pointer;
-        font: 700 12px/1 inherit; letter-spacing: .22em; text-transform: uppercase; color: #fff; background: var(--st-ink);
-        transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
+    .en-actions { display: flex; flex-direction: column; gap: 16px; margin: 22px 0 0; }
+    .en-btn {
+        display: flex; align-items: stretch; width: 100%; padding: 0; border: 0; cursor: pointer; color: #fff; background: var(--en-ink);
+        clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+        transition: background-color .2s ease;
     }
-    .st-btn:hover { background: var(--st-accent); border-color: var(--st-accent); }
-    .st-btn:active { transform: scale(.98); }
-    .st-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .st-link {
-        display: flex; align-items: center; justify-content: center; min-height: 42px; padding: 8px 6px; border-radius: 999px;
-        font-size: 11px; font-weight: 600; letter-spacing: .06em; text-align: center; text-decoration: none; color: var(--st-ink);
-        background: rgba(255, 255, 255, .5); border: 1px solid rgba(255, 255, 255, .9);
-        transition: color .2s ease, border-color .2s ease, background-color .2s ease;
+    .en-btn-label { flex: 1; padding: 17px 20px; text-align: left; font-size: 12px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; }
+    .en-btn-icon { display: flex; align-items: center; justify-content: center; width: 56px; background: var(--en-accent); transition: background-color .2s ease; }
+    .en-btn:hover { background: #2b2b2b; }
+    .en-btn:hover .en-btn-icon { background: #d66031; }
+    .en-btn:active { transform: scale(.985); }
+    .en-links { display: flex; flex-wrap: wrap; gap: 8px 0; }
+    .en-link { padding: 6px 14px 6px 0; margin-right: 14px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-decoration: none; color: var(--en-ink); border-right: 1px solid var(--en-line); transition: color .2s ease; }
+    .en-link:last-child { border-right: 0; margin-right: 0; padding-right: 0; }
+    .en-link:hover { color: var(--en-ok); }
+    .en-link--accent { color: var(--en-accent); }
+    .en-link--accent:hover { color: var(--en-accent); text-decoration: underline; text-underline-offset: 4px; }
+    .en-btn:focus-visible, .en-link:focus-visible { outline: 2px solid var(--en-accent); outline-offset: 3px; }
+
+    .en-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 12px; margin-top: auto; font: 500 10px/1.4 var(--en-mono); letter-spacing: .08em; color: var(--en-mute); }
+    .en-foot b { font-weight: 800; color: var(--en-ink); }
+
+    /* =========================================
+       DESKTOP — split screen
+       ========================================= */
+    @media (min-width: 900px) {
+        .en-page { display: grid; grid-template-columns: minmax(340px, 5fr) 7fr; height: 100vh; height: 100dvh; overflow: hidden; }
+        .en-stage { height: 100%; max-height: none; min-height: 0; }
+        .en-photo { clip-path: polygon(0 0, 100% 0, calc(100% - 72px) 100%, 0 100%); }
+        .en-ghost { right: 96px; top: 96px; font-size: clamp(64px, 8vw, 120px); }
+        .en-cross--a { left: 28px; top: 28px; }
+        .en-cross--b { display: none; }
+        .en-caption { left: 40px; right: 96px; bottom: 56px; }
+        .en-name { font-size: clamp(30px, 3.2vw, 44px); }
+
+        .en-side { margin-top: 0; padding: 32px clamp(32px, 5vw, 80px) 28px 8px; gap: 0; justify-content: space-between; overflow-y: auto; }
+        .en-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+        .en-panel { align-self: stretch; max-width: 640px; width: 100%; margin: auto 0; padding: 36px 36px 32px; -webkit-backdrop-filter: blur(18px) saturate(1.15); backdrop-filter: blur(18px) saturate(1.15); }
+        .en-row { flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; }
+        .en-row dt { flex: none; width: 110px; }
+        .en-row dd { flex: 1; }
+        .en-foot { margin-top: 0; }
     }
-    .st-link:hover { color: var(--st-ok); border-color: var(--st-ok); background: rgba(255, 255, 255, .85); }
-    .st-link--accent { color: var(--st-accent); border-color: rgba(234, 118, 69, .35); }
-    .st-link--accent:hover { color: var(--st-accent); border-color: var(--st-accent); }
-    .st-btn:focus-visible, .st-link:focus-visible { outline: 2px solid var(--st-accent); outline-offset: 3px; }
 
-    /* Footer */
-    .st-foot { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 10px; letter-spacing: .08em; color: var(--st-mute); }
-    .st-foot b { font-weight: 800; color: var(--st-ink); }
-
-    @media (max-width: 480px) {
-        .st-card { border-radius: 24px; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-        .st-links { grid-template-columns: 1fr; }
-        .st-foot { justify-content: center; text-align: center; }
-        .st-bg::after { display: none; }
+    @media (min-height: 1px) and (max-height: 640px) and (min-width: 900px) {
+        .en-page { height: auto; min-height: 100dvh; overflow: auto; }
     }
 
-    @keyframes stPulse { 0% { box-shadow: 0 0 0 0 rgba(72, 170, 140, .5); } 70%, 100% { box-shadow: 0 0 0 7px rgba(72, 170, 140, 0); } }
-    @keyframes stBlink { 50% { opacity: .2; } }
+    @keyframes enPulse { 0% { box-shadow: 0 0 0 0 rgba(72, 170, 140, .5); } 70%, 100% { box-shadow: 0 0 0 7px rgba(72, 170, 140, 0); } }
+    @keyframes enBlink { 50% { opacity: .2; } }
 
     @media (prefers-reduced-motion: reduce) {
         .rv { transition-duration: .01s; transition-delay: 0s; transform: none; }
-        .st-live-dot, .st-title.is-typing::after { animation: none; }
+        .en-live i, .en-title.is-typing::after { animation: none; }
     }
 
     /* =========================================
