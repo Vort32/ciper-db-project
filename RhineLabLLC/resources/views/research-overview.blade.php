@@ -6,9 +6,9 @@
 <div id="pageWrapper" class="relative min-h-screen bg-[#ECE8E5] text-[#222] py-16 px-4 sm:px-6 overflow-hidden transition-opacity duration-700 opacity-0 custom-scroll">
     
     <!-- Background Ambient Glow & Watermark -->
-    <div class="fixed w-[40rem] h-[40rem] bg-white/50 rounded-full blur-[100px] -top-20 -left-20 z-0 pointer-events-none"></div>
-    <div class="fixed w-[30rem] h-[30rem] bg-[#EA7645]/10 rounded-full blur-[80px] bottom-0 right-10 z-0 pointer-events-none"></div>
-    <div class="fixed inset-0 bg-cover bg-center opacity-[0.03] pointer-events-none" style="background-image: url('{{ asset('images/Rhine_Lab_HQ1.png') }}');"></div>
+    <div class="fixed w-[40rem] h-[40rem] bg-white/50 rounded-full blur-[100px] -top-20 -left-20 z-0 pointer-events-none transform-gpu"></div>
+    <div class="fixed w-[30rem] h-[30rem] bg-[#EA7645]/10 rounded-full blur-[80px] bottom-0 right-10 z-0 pointer-events-none transform-gpu"></div>
+    <div class="fixed inset-0 bg-cover bg-center opacity-[0.03] pointer-events-none transform-gpu" style="background-image: url('{{ asset('images/Rhine_Lab_HQ1.png') }}');"></div>
 
     <!-- Header Left HUD -->
     <div class="absolute top-6 left-6 z-20 space-y-1 select-none">
@@ -48,11 +48,12 @@
     <div class="relative z-10 max-w-5xl mx-auto mt-20 space-y-12 pb-24">
         
         <?php
-            $operatives =$users ?? \App\Models\User::with(['division', 'researchRecords.project.division'])->get();
+            // Disarankan: kirim $users dari controller (lihat catatan). Fallback ini tetap berjalan.
+            $operatives = $users ?? \App\Models\User::with(['division', 'researchRecords.project.division'])->get();
         ?>
 
         <?php if (count($operatives) > 0): ?>
-            <?php foreach ($operatives as$user): ?>
+            <?php foreach ($operatives as $user): ?>
                 <!-- BUNGKUSAN SETIAP OPERATIF -->
                 <div class="operative-wrapper relative w-full">
                     
@@ -65,7 +66,7 @@
                         <div class="relative z-10 w-full md:w-2/5 flex flex-col justify-center items-center md:items-start">
                             <button type="button" class="btn-toggle-records relative group focus:outline-none w-[70%] md:w-full max-w-[280px] aspect-[4/5] cursor-pointer">
                                 <div class="absolute inset-0 bg-white/50 backdrop-blur-sm border border-white/80 transform -translate-x-3 translate-y-3 transition-transform duration-700 ease-out group-hover:-translate-x-5 group-hover:translate-y-5 shadow-xl"></div>
-                                <img src="{{ $user->photo_path ? asset($user->photo_path) : asset('images/users/Silence.png') }}" alt="Foto {{ $user->name }}" class="relative z-10 w-full h-full object-cover border border-white/50 shadow-md transition-transform duration-700 ease-out group-hover:scale-[1.02]" />
+                                <img src="{{ $user->photo_path ? asset($user->photo_path) : asset('images/users/Silence.png') }}" alt="Foto {{ $user->name }}" loading="lazy" decoding="async" class="relative z-10 w-full h-full object-cover border border-white/50 shadow-md transition-transform duration-700 ease-out group-hover:scale-[1.02]" />
                                 <div class="absolute bottom-4 left-4 z-20 w-12 h-[3px] bg-[#1c1c1c]"></div>
                             </button>
                             <p class="mt-2 text-[9px] font-extrabold uppercase tracking-[0.2em] text-[#EA7645] animate-pulse">
@@ -85,12 +86,12 @@
                             </div>
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white/70 backdrop-blur-md border border-white p-3 md:p-4 mt-2 shadow-sm w-full relative z-10 gap-2 sm:gap-0">
                                 <div class="flex items-center gap-3">
-                                    <img src="{{ asset('images/logo.png') }}" class="h-6 md:h-8 filter grayscale opacity-90">
+                                    <img src="{{ asset('images/logo.png') }}" alt="" decoding="async" class="h-6 md:h-8 filter grayscale opacity-90">
                                     <span class="text-[9px] md:text-[11px] font-black uppercase tracking-[0.2em] text-[#1c1c1c] leading-tight">
                                         {{ $user->affiliation ?? 'RHINE LAB LLC' }}<br>
                                         <span class="text-[#EA7645] font-black">
                                             <?php if ($user->division): ?>
-                                                {{ $user->division->code }} — {{$user->division->name }}
+                                                {{ $user->division->code }} — {{ $user->division->name }}
                                             <?php else: ?>
                                                 RHINE RESEARCH SECTION
                                             <?php endif; ?>
@@ -141,25 +142,25 @@
                             </button>
                         </div>
 
-                        <?php if ($user->researchRecords &&$user->researchRecords->isNotEmpty()): ?>
+                        <?php if ($user->researchRecords && $user->researchRecords->isNotEmpty()): ?>
                             <div class="rec-stage absolute inset-0 isolate cursor-grab select-none" style="touch-action: pan-y;">
                                 <?php $iteration = 1; ?>
-                                <?php foreach ($user->researchRecords as$record): ?>
-                                    <?php $statusFormatted = strtoupper(str_replace('_', ' ',$record->status ?? 'DRAFT')); ?>
-                                    <div class="rec-card absolute left-1/2 top-1/2 w-[min(86vw,22.5rem)]" style="opacity:0;">
+                                <?php foreach ($user->researchRecords as $record): ?>
+                                    <?php $statusFormatted = strtoupper(str_replace('_', ' ', $record->status ?? 'DRAFT')); ?>
+                                    <div class="rec-card absolute left-1/2 top-1/2 w-[min(86vw,22.5rem)]" style="opacity:0; visibility:hidden;">
                                         <article class="group relative flex flex-col min-h-[480px] rounded-[22px] border border-white/70 px-5 pt-4 pb-4 overflow-hidden backdrop-blur-2xl backdrop-saturate-150"
                                                  style="background: linear-gradient(155deg, rgba(255,255,255,0.62) 0%, rgba(255,255,255,0.28) 45%, rgba(139,107,78,0.12) 100%);
                                                         box-shadow: inset 0 1px 1px rgba(255,255,255,0.95), inset 0 -1px 1px rgba(255,255,255,0.35), 0 30px 60px rgba(70,48,28,0.22), 0 4px 12px rgba(70,48,28,0.10);">
                                             
                                             <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white/60 to-transparent pointer-events-none"></div>
                                             <div class="absolute -top-16 -left-12 w-52 h-52 rounded-full bg-white/40 blur-2xl pointer-events-none"></div>
-                                            <img src="{{ asset('images/logo.png') }}" alt="" draggable="false" class="absolute -bottom-6 -right-6 w-48 opacity-[0.08] grayscale pointer-events-none select-none">
+                                            <img src="{{ asset('images/logo.png') }}" alt="" draggable="false" loading="lazy" decoding="async" class="absolute -bottom-6 -right-6 w-48 opacity-[0.08] grayscale pointer-events-none select-none">
 
                                             <header class="relative z-10 flex items-start gap-3 pb-2 border-b border-[#1c1c1c]/60">
                                                 <span class="text-5xl font-black leading-none tracking-tighter text-[#1c1c1c]"><?= $iteration++ ?></span>
                                                 <div class="flex-1 text-center pt-0.5">
                                                     <div class="flex items-center justify-center gap-1.5">
-                                                        <img src="{{ asset('images/logo.png') }}" alt="" draggable="false" class="h-4 grayscale opacity-80">
+                                                        <img src="{{ asset('images/logo.png') }}" alt="" draggable="false" loading="lazy" decoding="async" class="h-4 grayscale opacity-80">
                                                         <span class="text-[8px] font-black tracking-[0.22em] uppercase text-[#555]">Rhine Lab Corporation</span>
                                                     </div>
                                                     <h4 class="mt-1.5 text-base sm:text-lg font-black tracking-[0.2em] uppercase text-[#1c1c1c] leading-none">Research Record</h4>
@@ -183,7 +184,7 @@
                                                 <div class="relative mx-auto w-[90%] -rotate-3 bg-white p-2 pb-7 shadow-[0_10px_24px_rgba(0,0,0,0.28)] transition-transform duration-500 ease-out group-hover:-rotate-1 group-hover:scale-[1.02]">
                                                     <div class="absolute -top-3 -left-5 z-20 h-5 w-16 -rotate-[35deg] bg-white/55 border border-white/80 shadow-sm backdrop-blur-sm"></div>
                                                     <?php if ($record->image_path): ?>
-                                                        <img src="{{ asset($record->image_path) }}" alt="Dokumentasi" draggable="false" class="w-full aspect-[4/3] object-cover">
+                                                        <img src="{{ asset($record->image_path) }}" alt="Dokumentasi" draggable="false" loading="lazy" decoding="async" class="w-full aspect-[4/3] object-cover">
                                                     <?php else: ?>
                                                         <div class="w-full aspect-[4/3] bg-gray-100 flex items-center justify-center text-[9px] font-bold text-gray-400 uppercase tracking-widest">NO VISUAL DATA</div>
                                                     <?php endif; ?>
@@ -250,10 +251,23 @@
     .custom-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 9999px; }
     .cubic-bloop { transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
     .profile-back { transform: scale(0.9); filter: blur(6px); opacity: 0.55; pointer-events: none; }
-    .rec-card { transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease; will-change: transform; }
+    .rec-card { transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease; will-change: transform; backface-visibility: hidden; }
     .rec-card.dragging { transition: none; }
     .rec-stage.dragging { cursor: grabbing; }
     .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* Optimasi mobile: blur dikurangi hanya di layar kecil */
+    @media (max-width: 767px) {
+        .rec-card article {
+            -webkit-backdrop-filter: blur(10px) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        .profile-stage,
+        .profile-stage [class*="backdrop-blur"] {
+            -webkit-backdrop-filter: blur(8px) !important;
+            backdrop-filter: blur(8px) !important;
+        }
+    }
 </style>
 
 <script>
@@ -275,31 +289,42 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnNext   = container.querySelector('.rec-next');
         const btnClose  = container.querySelector('.rec-close');
 
-        let idx = 0, dx = 0, startX = 0, dragging = false, moved = false, isOpen = false, wheelLock = false;
+        let idx = 0, dx = 0, startX = 0, dragging = false, moved = false,
+            isOpen = false, wheelLock = false, raf = 0, closeTimer = 0;
+        let m = { fit: 1, spacing: 1 };
 
-        function metrics() {
-            if(!cards.length) return { fit: 1, spacing: 0 };
+        // Ukuran dibaca sekali (saat buka / resize), bukan di setiap frame
+        function measure() {
+            if (!cards.length) return;
             const c = cards[0];
             const w = c.offsetWidth, h = c.offsetHeight;
+            if (!w || !h) return;
             const fit = Math.min(1, (window.innerHeight - 190) / h);
-            return { fit, spacing: Math.min(w * fit * 0.8, window.innerWidth * 0.6) };
+            m = { fit, spacing: Math.min(w * fit * 0.8, window.innerWidth * 0.6) };
         }
 
         function layout(entering = false) {
             if (!cards.length) return;
-            const m = metrics();
+            const offset = dragging ? dx / m.spacing : 0;
             cards.forEach((c, i) => {
-                const p = i - idx + (dragging ? dx / m.spacing : 0);
+                const p = i - idx + offset;
                 const a = Math.abs(p);
                 const x = p * m.spacing;
                 const y = Math.min(a, 3) * 14 + (entering ? 90 : 0);
                 const r = p * 5;
                 const s = m.fit * (1 - Math.min(a, 3) * 0.09);
+                const o = entering ? 0 : Math.max(0, 1 - Math.max(0, a - 0.6) * 0.35);
                 c.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotate(${r}deg) scale(${s})`;
-                c.style.opacity = entering ? 0 : Math.max(0, 1 - Math.max(0, a - 0.6) * 0.35);
+                c.style.opacity = o;
+                c.style.visibility = (!entering && o === 0) ? 'hidden' : 'visible';
                 c.style.zIndex = 100 - Math.round(a * 10);
                 c.style.pointerEvents = a > 3.5 ? 'none' : 'auto';
             });
+        }
+
+        function scheduleLayout() {
+            if (raf) return;
+            raf = requestAnimationFrame(() => { raf = 0; layout(); });
         }
 
         function update() {
@@ -314,14 +339,28 @@ document.addEventListener('DOMContentLoaded', () => {
             layout(); update();
         }
 
+        // Listener global hanya dipasang saat overlay terbuka
+        function onKey(e) {
+            if (e.key === 'Escape') closeRecords();
+            if (e.key === 'ArrowRight') go(1);
+            if (e.key === 'ArrowLeft') go(-1);
+        }
+        function onResize() { measure(); layout(); }
+
         function openRecords() {
             if (!section || isOpen) return;
+            clearTimeout(closeTimer);
             isOpen = true;
             idx = 0; dx = 0;
             section.classList.remove('hidden');
             profile && profile.classList.add('profile-back');
             document.body.style.overflow = 'hidden';
+
+            document.addEventListener('keydown', onKey);
+            window.addEventListener('resize', onResize);
+
             if (cards.length) {
+                measure();
                 cards.forEach(c => c.style.transition = 'none');
                 layout(true);
                 void section.offsetWidth;
@@ -339,7 +378,9 @@ document.addEventListener('DOMContentLoaded', () => {
             section.classList.add('opacity-0');
             profile && profile.classList.remove('profile-back');
             document.body.style.overflow = '';
-            setTimeout(() => { if (!isOpen) section.classList.add('hidden'); }, 500);
+            document.removeEventListener('keydown', onKey);
+            window.removeEventListener('resize', onResize);
+            closeTimer = setTimeout(() => { if (!isOpen) section.classList.add('hidden'); }, 500);
         }
 
         if (btnToggle && section) {
@@ -347,13 +388,6 @@ document.addEventListener('DOMContentLoaded', () => {
             btnClose && btnClose.addEventListener('click', closeRecords);
             btnPrev && btnPrev.addEventListener('click', () => go(-1));
             btnNext && btnNext.addEventListener('click', () => go(1));
-
-            document.addEventListener('keydown', (e) => {
-                if (!isOpen) return;
-                if (e.key === 'Escape') closeRecords();
-                if (e.key === 'ArrowRight') go(1);
-                if (e.key === 'ArrowLeft') go(-1);
-            });
 
             if (!cards.length) {
                 section.addEventListener('click', (e) => { if (e.target === section) closeRecords(); });
@@ -372,15 +406,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!dragging) return;
                 dx = e.clientX - startX;
                 if (Math.abs(dx) > 6) moved = true;
-                layout();
+                scheduleLayout();
             });
 
             const endDrag = (e) => {
                 if (!dragging) return;
                 dragging = false;
+                if (raf) { cancelAnimationFrame(raf); raf = 0; }
                 cards.forEach(c => c.classList.remove('dragging'));
                 stage.classList.remove('dragging');
-                const m = metrics();
                 const threshold = Math.min(60, m.spacing * 0.2);
 
                 if (moved) {
@@ -408,9 +442,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 wheelLock = true;
                 setTimeout(() => wheelLock = false, 350);
             }, { passive: false });
-
-            window.addEventListener('resize', () => { if (isOpen) layout(); });
-            layout(); update();
         }
     });
 });
