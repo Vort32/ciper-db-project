@@ -178,14 +178,18 @@
                             Log Out / Akhiri Sesi
                         </button>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="glass-link inline-flex w-full items-center justify-center rounded-full py-3 px-3 text-[9px] font-black uppercase tracking-[0.2em] text-center transition-all duration-300 text-[#EA7645] border-[#EA7645]/40">
+                                Pusat Admin
+                            </a>
                             <a href="{{ route('research-records.index') }}"
-                                class="glass-link inline-flex w-full items-center justify-center rounded-full py-3 px-4 text-[10px] font-bold uppercase tracking-[0.25em] text-center transition-all duration-300">
+                                class="glass-link inline-flex w-full items-center justify-center rounded-full py-3 px-3 text-[9px] font-bold uppercase tracking-[0.2em] text-center transition-all duration-300">
                                 Catatan Riset
                             </a>
                             <a href="{{ route('research.ledger') }}"
-                                class="glass-link inline-flex w-full items-center justify-center rounded-full py-3 px-4 text-[10px] font-bold uppercase tracking-[0.25em] text-center transition-all duration-300">
-                                Direktori Utama
+                                class="glass-link inline-flex w-full items-center justify-center rounded-full py-3 px-3 text-[9px] font-bold uppercase tracking-[0.2em] text-center transition-all duration-300">
+                                Direktori
                             </a>
                         </div>
                     </form>
@@ -418,9 +422,6 @@
             requestAnimationFrame(() => wrapper.classList.add('opacity-100'));
         };
 
-        /* =========================================
-           OVERLAY SEQUENCE: logo -> ID CONFIRMED -> access granted -> wipe
-           ========================================= */
         const runOverlaySequence = async () => {
             if (!overlay) {
                 revealPage();
@@ -440,27 +441,27 @@
             const setStatus = (t) => { if (statusEl) statusEl.textContent = t; };
 
             setProgress(0.15);
-            await wait(1100);                       // logo selesai "menyapu" masuk
+            await wait(1100);
 
-            overlay.classList.add('is-id');         // blok teks melebar, logo bergeser ke kiri
+            overlay.classList.add('is-id');
             setStatus('ID CONFIRMED');
             setProgress(0.45);
             await wait(750);
 
-            for (let k = 1; k <= name.length; k++) { // nama diketik
+            for (let k = 1; k <= name.length; k++) {
                 if (nameEl) nameEl.textContent = name.slice(0, k);
                 setProgress(0.45 + 0.4 * (k / name.length));
                 await wait(65);
             }
 
-            overlay.classList.add('is-done');       // role muncul, kursor hilang
+            overlay.classList.add('is-done');
             setStatus('ACCESS GRANTED');
             dotEl?.classList.add('is-done');
             barEl?.classList.add('is-done');
             setProgress(1);
             await wait(1100);
 
-            overlay.classList.add('is-out');        // overlay tersapu ke atas
+            overlay.classList.add('is-out');
             setTimeout(() => { revealPage(); activateAnimatedElems(); }, 350);
             setTimeout(() => overlay.remove(), 1100);
         };
