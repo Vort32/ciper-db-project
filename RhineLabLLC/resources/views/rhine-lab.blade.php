@@ -4,59 +4,101 @@
 
 @section('content')
     <!-- ==============================================
-         RHINE LAB // BOOT SEQUENCE LOADER
+         RHINE LAB // LIQUID GLASS BOOT LOADER
          ============================================== -->
-    <div id="pageLoader" class="rl-loader" role="status" aria-live="polite" aria-label="Memuat Rhine Lab OS"
-         data-operator="{{ auth()->check() ? auth()->user()->name : 'GUEST' }}">
+    <div id="pageLoader" class="fixed inset-0 z-50 overflow-hidden bg-[#ECE8E5] font-sans text-[#1c1c1c] select-none flex items-center justify-center">
+        
+        <!-- Ambient Liquid Glow Background -->
+        <div class="absolute w-[36rem] h-[36rem] bg-white/60 rounded-full blur-[100px] -top-20 -left-20 z-0 pointer-events-none"></div>
+        <div class="absolute w-[30rem] h-[30rem] bg-[#EA7645]/15 rounded-full blur-[90px] bottom-0 right-0 z-0 pointer-events-none"></div>
+        <div class="absolute w-80 h-80 bg-[#48AA8C]/15 rounded-full blur-[90px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none"></div>
 
-        <!-- Shutter (dua panel yang membuka saat selesai) -->
-        <div class="rl-shutter rl-shutter-top"><div class="rl-hex"></div></div>
-        <div class="rl-shutter rl-shutter-bottom"><div class="rl-hex"></div></div>
+        <!-- Shutter Panel (Efek Pintu Terbuka Liquid Glass) -->
+        <div id="shutterTop" class="absolute top-0 left-0 w-full h-[50.1%] bg-[#ECE8E5] z-10 border-b border-white/60 transition-transform duration-[1200ms] cubic-bezier-shutter">
+            <div class="absolute inset-0 opacity-[0.12] pointer-events-none" style="background-image: linear-gradient(to right, #1c1c1c 1px, transparent 1px), linear-gradient(to bottom, #1c1c1c 1px, transparent 1px); background-size: 36px 36px;"></div>
+        </div>
+        <div id="shutterBottom" class="absolute bottom-0 left-0 w-full h-[50.1%] bg-[#ECE8E5] z-10 border-t border-white/60 transition-transform duration-[1200ms] cubic-bezier-shutter">
+            <div class="absolute inset-0 opacity-[0.12] pointer-events-none" style="background-image: linear-gradient(to right, #1c1c1c 1px, transparent 1px), linear-gradient(to bottom, #1c1c1c 1px, transparent 1px); background-size: 36px 36px;"></div>
+        </div>
 
-        <div class="rl-layer">
-            <div class="rl-hazard"></div>
-            <span class="rl-corner rl-c-tl"></span>
-            <span class="rl-corner rl-c-tr"></span>
-            <span class="rl-corner rl-c-bl"></span>
-            <span class="rl-corner rl-c-br"></span>
+        <!-- Layer UI Utama (Liquid Glass Dashboard) -->
+        <div id="loaderUI" class="absolute inset-0 z-20 flex flex-col justify-between items-center p-8 sm:p-12 transition-opacity duration-500">
+            
+            <!-- Top Left & Right Liquid Glass Cards -->
+            <header class="w-full max-w-5xl flex justify-between items-center font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-[#1c1c1c] uppercase">
+                <div class="glass-pill px-4 py-2 rounded-full flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-[#EA7645] animate-pulse"></span>
+                    <span class="font-bold">RHINE LAB LLC</span>
+                    <span class="text-gray-400 font-normal">// SYSTEM_BOOT</span>
+                </div>
+                <div class="glass-pill px-4 py-2 rounded-full flex items-center gap-2">
+                    <span class="text-gray-500">CLEARANCE:</span>
+                    <span class="font-extrabold text-[#EA7645]">LEVEL-4</span>
+                </div>
+            </header>
 
-            <div class="rl-meta rl-meta-tl">RHINE LAB, LLC.<br>INTERNAL DATABASE</div>
+            <!-- Pusat: Glassmorphism Floating Core & Ring Loader -->
+            <main class="relative z-10 flex flex-col items-center justify-center my-auto">
+                
+                <!-- Liquid Glass Ring Container -->
+                <div class="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] flex items-center justify-center">
+                    
+                    <!-- SVG Rings (Inner & Outer Motion) -->
+                    <svg class="absolute inset-0 w-full h-full" viewBox="0 0 300 300">
+                        <!-- Outer Rotating Arc -->
+                        <g class="origin-[150px_150px] animate-[spin_16s_linear_infinite]">
+                            <path d="M 60 210 A 110 110 0 1 1 250 120" fill="none" stroke="rgba(28,28,28,0.3)" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="250" cy="120" r="4" fill="#EA7645" />
+                        </g>
 
-            <main class="rl-center">
-                <div class="rl-ring-wrap">
-                    <svg class="rl-ring" viewBox="0 0 300 300" aria-hidden="true">
-                        <circle class="rl-ring-ticks rl-spin-slow" cx="150" cy="150" r="141" />
-                        <circle class="rl-ring-track" cx="150" cy="150" r="118" />
-                        <circle id="rlRingFill" class="rl-ring-fill" cx="150" cy="150" r="118" />
+                        <!-- Inner Dash Ring -->
+                        <g class="origin-[150px_150px] animate-[spin_12s_linear_infinite_reverse]">
+                            <circle cx="150" cy="150" r="70" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-dasharray="80 70" />
+                        </g>
+
+                        <!-- Dynamic Glowing Progress Circle -->
+                        <circle id="rlRingFill" cx="150" cy="150" r="92" 
+                                fill="none" stroke="#EA7645" stroke-width="3" 
+                                stroke-dasharray="578.05" stroke-dashoffset="578.05" 
+                                stroke-linecap="round" class="transition-all duration-150 ease-out" />
                     </svg>
-                    <div class="rl-logo-core">
-                        <img src="{{ asset('images/logo.png') }}" alt="" />
+
+                    <!-- Core Logo Glass Sphere -->
+                    <div class="glass-core w-28 h-28 sm:w-36 sm:h-36 p-5 rounded-full flex items-center justify-center z-10 shadow-2xl backdrop-blur-md border border-white/80">
+                        <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain filter contrast-125" />
                     </div>
                 </div>
 
-                <div class="rl-brand">
-                    <h1>RHINE LAB</h1>
-                    <p>SYNTHESIZE INFORMATION OS</p>
-                </div>
-
-                <div class="rl-terminal">
-                    <div id="rlStatus" class="rl-status">
-                        <span class="rl-br">[</span>
-                        <span id="akStatusDot" class="rl-dot"></span>
-                        <span id="akStatusText">ACCESS PERMISSION REQUIRED</span>
-                        <span class="rl-br">]</span>
+                <!-- Teks Dynamic Console Di Bawah Cincin -->
+                <div class="mt-8 text-center flex flex-col items-center font-mono">
+                    <div id="centerText" class="text-xs sm:text-sm font-black tracking-[0.3em] text-[#1c1c1c] uppercase min-h-[1.5rem] transition-all duration-300">
+                        ACCESS PERMISSION REQUIRED
                     </div>
-                    <div id="rlIdRow" class="rl-id">
-                        <span class="rl-id-label">ID CONFIRMED :</span>
-                        <span id="rlIdText"></span><span class="rl-caret"></span>
+                    <div class="flex items-center gap-2 mt-2 text-[9px] sm:text-[10px] font-bold tracking-[0.35em] text-gray-500 uppercase">
+                        <span>SYSTEM SYNC:</span>
+                        <span id="akProgressText" class="text-[#EA7645] font-black">0</span>%
                     </div>
-                </div>
-
-                <div class="rl-meter">
-                    <div id="akProgressBar" class="rl-bar" aria-hidden="true"><i id="rlBarFill"></i></div>
-                    <div class="rl-percent"><span id="akProgressText">0</span><small>%</small></div>
                 </div>
             </main>
+
+            <!-- Bottom Terminal Bar Glass -->
+            <footer class="w-full max-w-5xl z-10 flex flex-col gap-2 font-mono">
+                <div class="flex justify-between items-center text-[9px] sm:text-[10px] tracking-[0.2em] text-gray-600 uppercase px-1">
+                    <div class="flex items-center gap-2">
+                        <span id="akStatusDot" class="w-2 h-2 rounded-full bg-[#EA7645] animate-ping"></span>
+                        <span id="akStatusText" class="font-bold text-[#1c1c1c]">INITIALIZING...</span>
+                    </div>
+                    <div id="akConsoleOutput" class="text-[#EA7645] font-bold text-right">
+                        BOOT_SEQ
+                    </div>
+                </div>
+
+                <!-- Thin Modern Liquid Progress Bar -->
+                <div class="w-full h-[3px] bg-white/60 backdrop-blur-sm rounded-full overflow-hidden border border-white/80">
+                    <div id="akProgressBar" class="h-full bg-gradient-to-r from-[#EA7645] to-[#48AA8C] w-0 transition-all duration-150 ease-out"></div>
+                </div>
+            </footer>
+
         </div>
     </div>
 
@@ -159,104 +201,33 @@
 
     <style>
         /* =========================================
-           RHINE LAB BOOT LOADER
+           LIQUID GLASS STYLING & ANIMATIONS
            ========================================= */
-        .rl-loader {
-            --rl-paper: #ECE8E5; --rl-ink: #1c1c1c; --rl-mute: #7a766f;
-            --rl-orange: #EA7645; --rl-teal: #48AA8C; --rl-lime: #C4FF00;
-            position: fixed; inset: 0; z-index: 50; overflow: hidden;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-            color: var(--rl-ink);
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
         }
 
-        /* Shutter */
-        .rl-shutter { position: absolute; left: 0; width: 100%; height: 50.2%; background: var(--rl-paper);
-            overflow: hidden; transition: transform 0.9s cubic-bezier(.77,0,.18,1); z-index: 0; }
-        .rl-shutter-top { top: 0; }
-        .rl-shutter-bottom { bottom: 0; }
-        .rl-shutter::after { content: ""; position: absolute; left: 0; width: 100%; height: 3px; background: var(--rl-ink); opacity: 0; transition: opacity .2s; }
-        .rl-shutter-top::after { bottom: 0; }
-        .rl-shutter-bottom::after { top: 0; }
-        .rl-hex { position: absolute; inset: 0; opacity: .55;
-            background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L20 0 0 11.547v23.094l20 11.547 20-11.547V11.547zM20 45.034L1.155 34.148V12.376L20 1.49l18.845 10.886v21.772L20 45.034z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3Cpath d='M40 46.188L20 34.641 0 46.188v23.094l20 11.547 20-11.547V46.188zM20 79.675L1.155 68.789V47.017L20 36.13l18.845 10.886v21.772L20 79.675z' fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-            background-size: 60px 103.923px; }
-        .rl-shutter-bottom .rl-hex { background-position: 0 -51.9px; }
+        .glass-core {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.35));
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 0 20px 40px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
 
-        .rl-loader.rl-open .rl-shutter-top { transform: translateY(-101%); }
-        .rl-loader.rl-open .rl-shutter-bottom { transform: translateY(101%); }
-        .rl-loader.rl-open .rl-shutter::after { opacity: 1; }
-        .rl-loader.rl-open .rl-layer { opacity: 0; transition: opacity .35s ease; }
+        /* Exponential Ease Out Shutter Curve */
+        .cubic-bezier-shutter {
+            transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-        /* Layer */
-        .rl-layer { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; padding: 24px 20px; }
-        .rl-hazard { position: absolute; top: 0; left: 0; width: 100%; height: 4px; opacity: .9;
-            background: repeating-linear-gradient(-45deg, var(--rl-ink) 0 8px, var(--rl-lime) 8px 16px); }
-        .rl-corner { position: absolute; width: 22px; height: 22px; border: 0 solid rgba(28,28,28,.4); }
-        .rl-c-tl { top: 18px; left: 18px; border-top-width: 1.5px; border-left-width: 1.5px; }
-        .rl-c-tr { top: 18px; right: 18px; border-top-width: 1.5px; border-right-width: 1.5px; }
-        .rl-c-bl { bottom: 18px; left: 18px; border-bottom-width: 1.5px; border-left-width: 1.5px; }
-        .rl-c-br { bottom: 18px; right: 18px; border-bottom-width: 1.5px; border-right-width: 1.5px; }
-        .rl-meta { position: absolute; font-size: 9px; letter-spacing: .22em; line-height: 1.7; color: var(--rl-mute); font-weight: 700; }
-        .rl-meta-tl { top: 30px; left: 34px; animation: rlFade .8s .3s ease both; }
+        /* Trigger Animasi Shutter Terbuka */
+        .shutter-open-top { transform: translateY(-101%); }
+        .shutter-open-bottom { transform: translateY(101%); }
 
-        /* Center column */
-        .rl-center { width: min(100%, 420px); display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 3vh, 26px); }
-
-        .rl-ring-wrap { position: relative; width: clamp(140px, 30vh, 210px); aspect-ratio: 1; }
-        .rl-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-        .rl-ring circle { fill: none; transform-origin: 150px 150px; }
-        .rl-ring-ticks { stroke: rgba(28,28,28,.45); stroke-width: 8; stroke-dasharray: 1.5 13.8; }
-        .rl-ring-track { stroke: rgba(28,28,28,.12); stroke-width: 4; }
-        .rl-ring-fill { stroke: var(--rl-orange); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 741.4; stroke-dashoffset: 741.4;
-            transform: rotate(-90deg); transition: stroke-dashoffset .12s linear, stroke .3s;
-            filter: drop-shadow(0 0 4px rgba(234,118,69,.55)); }
-        .rl-spin-slow { animation: rlSpin 40s linear infinite; }
-        .rl-logo-core { position: absolute; inset: 25%; display: grid; place-items: center; }
-        .rl-logo-core img { width: 100%; height: 100%; object-fit: contain; animation: rlLogoIn 1s ease-out both; }
-
-        .rl-brand { text-align: center; animation: rlFade .8s .2s ease both; }
-        .rl-brand h1 { margin: 0; font-family: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
-            font-weight: 900; font-size: clamp(24px, 7vw, 40px); letter-spacing: .28em; margin-right: -.28em; line-height: 1; }
-        .rl-brand p { margin: 8px -.4em 0 0; font-size: clamp(8px, 2.2vw, 10px); letter-spacing: .4em; color: var(--rl-mute); font-weight: 800; }
-
-        /* Terminal readout */
-        .rl-terminal { min-height: 46px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
-        .rl-status { display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800;
-            font-size: clamp(9px, 2.6vw, 11px); letter-spacing: .2em; }
-        .rl-br { color: var(--rl-mute); font-weight: 400; }
-        .rl-status #akStatusText { white-space: nowrap; }
-        .rl-status #akStatusText.rl-swap { animation: rlSwap .35s ease both; }
-        .rl-dot { width: 7px; height: 7px; background: var(--rl-orange); transform: rotate(45deg); flex: none; animation: rlBlink .7s steps(2, jump-none) infinite; }
-        .rl-dot.is-done { background: var(--rl-teal); animation: none; box-shadow: 0 0 8px var(--rl-teal); }
-        .rl-status.is-done #akStatusText { color: var(--rl-teal); }
-
-        .rl-id { font-size: clamp(9px, 2.4vw, 10px); letter-spacing: .24em; font-weight: 700; opacity: 0; transform: translateY(4px);
-            transition: opacity .3s, transform .3s; display: flex; align-items: center; gap: 6px; }
-        .rl-id.show { opacity: 1; transform: none; }
-        .rl-id-label { color: var(--rl-mute); }
-        .rl-caret { width: 6px; height: 11px; background: var(--rl-ink); animation: rlBlink .8s steps(2, jump-none) infinite; }
-
-        /* Progress */
-        .rl-meter { width: 100%; display: flex; align-items: center; gap: 14px; }
-        .rl-bar { flex: 1; height: 3px; background: rgba(28,28,28,.14); position: relative; overflow: hidden; }
-        .rl-bar i { position: absolute; inset: 0; background: var(--rl-ink); transform-origin: left; transform: scaleX(0); transition: transform .12s linear, background .3s; }
-        .rl-bar.is-done i { background: var(--rl-teal); }
-        .rl-percent { font-weight: 800; font-size: 13px; letter-spacing: .08em; font-variant-numeric: tabular-nums; display: flex; align-items: baseline; flex: none; min-width: 44px; justify-content: flex-end; }
-        .rl-percent small { font-size: .8em; margin-left: 2px; color: var(--rl-mute); }
-
-        @media (max-width: 480px) { .rl-meta { display: none; } }
-        @media (max-height: 560px) { .rl-brand p, .rl-meta { display: none; } }
-
-        @keyframes rlSpin { to { transform: rotate(360deg); } }
-        @keyframes rlBlink { 50% { opacity: .25; } }
-        @keyframes rlFade { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes rlSwap { from { opacity: 0; transform: translateY(5px); letter-spacing: .3em; } to { opacity: 1; transform: none; letter-spacing: .2em; } }
-        @keyframes rlLogoIn { from { opacity: 0; transform: scale(.7); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
-        @media (prefers-reduced-motion: reduce) { .rl-spin-slow, .rl-dot, .rl-caret { animation: none; } .rl-shutter { transition-duration: .01s; } }
-
-        /* =========================================
-           STANDARD PAGE ANIMATIONS
-           ========================================= */
+        /* Standard Page Animations */
         @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
         .animate-fade-up { animation: fadeUp 0.8s forwards; }
 
@@ -285,7 +256,6 @@
 
         let i = 0;
 
-        // Typewriter untuk WELCOME TO
         function typeWriter() {
             if (!welcomeElem) return;
             welcomeElem.textContent = '';
@@ -303,7 +273,6 @@
         }
         window.addEventListener('DOMContentLoaded', typeWriter);
 
-        // Transisi saat link navigasi diklik
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -313,7 +282,6 @@
             });
         });
 
-        // Tampilkan halaman utama
         function revealMain() {
             if (wrapper) {
                 wrapper.classList.remove('opacity-0');
@@ -323,105 +291,113 @@
         }
 
         /* =========================================
-           RHINE LAB BOOT SEQUENCE
+           LIQUID GLASS LOADER LOGIC
            ========================================= */
         if (loader) {
-            const $ = (id) => document.getElementById(id);
-            const barEl = $('akProgressBar');
-            const barFill = $('rlBarFill');
-            const ringFill = $('rlRingFill');
-            const percentEl = $('akProgressText');
-            const statusText = $('akStatusText');
-            const statusDot = $('akStatusDot');
-            const statusBox = $('rlStatus');
-            const idRow = $('rlIdRow');
-            const idText = $('rlIdText');
+            const centerText = document.getElementById('centerText');
+            const loaderUI = document.getElementById('loaderUI');
+            const ringFill = document.getElementById('rlRingFill');
+            const progressBar = document.getElementById('akProgressBar');
+            const progressText = document.getElementById('akProgressText');
+            const statusText = document.getElementById('akStatusText');
+            const consoleOutput = document.getElementById('akConsoleOutput');
+            const statusDot = document.getElementById('akStatusDot');
+            
+            const sTop = document.getElementById('shutterTop');
+            const sBottom = document.getElementById('shutterBottom');
 
-            const RING_LEN = 741.4; // 2 * PI * 118
-            const operator = (loader.dataset.operator || 'GUEST').toUpperCase();
+            const CIRCUMFERENCE = 578.05; // 2 * PI * 92
+            const username = "{{ auth()->check() ? auth()->user()->name : 'OPERATIVE' }}".toUpperCase();
 
-            const stages = [
-                { at: 0,  status: 'ACCESS PERMISSION REQUIRED' },
-                { at: 30, status: 'VERIFYING IDENTITY' },
-                { at: 55, status: 'ID CONFIRMED', showId: true },
-                { at: 80, status: 'MOUNTING DATABASE' }
-            ];
-
-            let progress = 0;
-            let stageIdx = -1;
+            let progressValue = 0;
             let pageReady = document.readyState === 'complete';
             let finished = false;
+
             window.addEventListener('load', () => { pageReady = true; });
 
-            function setStatus(text) {
-                statusText.textContent = text;
-                statusText.classList.remove('rl-swap');
-                void statusText.offsetWidth; // restart animasi
-                statusText.classList.add('rl-swap');
-            }
+            function renderProgress(val) {
+                const rounded = Math.round(val);
+                if (progressText) progressText.textContent = rounded;
+                if (progressBar) progressBar.style.width = `${val}%`;
 
-            function typeOperator() {
-                idRow.classList.add('show');
-                idText.textContent = '';
-                let k = 0;
-                const t = setInterval(() => {
-                    idText.textContent = operator.slice(0, ++k);
-                    if (k >= operator.length) clearInterval(t);
-                }, 70);
-            }
+                if (ringFill) {
+                    const offset = CIRCUMFERENCE - (val / 100) * CIRCUMFERENCE;
+                    ringFill.style.strokeDashoffset = offset;
+                }
 
-            function render() {
-                percentEl.textContent = Math.round(progress);
-                ringFill.style.strokeDashoffset = RING_LEN * (1 - progress / 100);
-                barFill.style.transform = 'scaleX(' + (progress / 100) + ')';
-
-                while (stageIdx + 1 < stages.length && progress >= stages[stageIdx + 1].at) {
-                    stageIdx++;
-                    if (stageIdx > 0) setStatus(stages[stageIdx].status);
-                    if (stages[stageIdx].showId) typeOperator();
+                // Dynamic Terminal Output
+                if (val < 30) {
+                    if (centerText) centerText.textContent = "ACCESS PERMISSION REQUIRED";
+                    if (consoleOutput) consoleOutput.textContent = "ID_CHECK";
+                    if (statusText) statusText.textContent = "INITIALIZING SYSTEM...";
+                } else if (val < 65) {
+                    if (centerText) centerText.textContent = `ID CONFIRMED // ${username}`;
+                    if (consoleOutput) consoleOutput.textContent = "VERIFIED";
+                    if (statusText) statusText.textContent = "AUTHENTICATING...";
+                } else if (val < 95) {
+                    if (centerText) centerText.textContent = "REQUEST RECEIVED // START PROCESSING";
+                    if (consoleOutput) consoleOutput.textContent = "PROCESSING";
+                    if (statusText) statusText.textContent = "DECRYPTING ARCHIVES...";
+                } else {
+                    if (centerText) {
+                        centerText.textContent = "PERMISSION AUTHORIZED";
+                        centerText.classList.add('text-[#48AA8C]');
+                    }
+                    if (consoleOutput) {
+                        consoleOutput.textContent = "GRANTED";
+                        consoleOutput.classList.remove('text-[#EA7645]');
+                        consoleOutput.classList.add('text-[#48AA8C]');
+                    }
+                    if (statusText) {
+                        statusText.textContent = "ACCESS GRANTED";
+                        statusText.classList.add('text-[#48AA8C]');
+                    }
+                    if (statusDot) {
+                        statusDot.classList.remove('bg-[#EA7645]', 'animate-ping');
+                        statusDot.classList.add('bg-[#48AA8C]');
+                    }
+                    if (ringFill) {
+                        ringFill.style.stroke = '#48AA8C';
+                    }
                 }
             }
 
-            function finish() {
+            function finishLoading() {
                 finished = true;
-                setStatus('ACCESS GRANTED');
-                statusBox.classList.add('is-done');
-                statusDot.classList.add('is-done');
-                barEl.classList.add('is-done');
-                ringFill.style.stroke = '#48AA8C';
-                ringFill.style.filter = 'drop-shadow(0 0 5px rgba(72,170,140,.7))';
 
+                // Transisi Smooth Pembukaan Loader
                 setTimeout(() => {
-                    loader.classList.add('rl-open');
-                    setTimeout(revealMain, 450);
-                    setTimeout(() => loader.remove(), 1100);
-                }, 900);
+                    loaderUI.classList.add('opacity-0');
+                    
+                    setTimeout(() => {
+                        sTop.classList.add('shutter-open-top');
+                        sBottom.classList.add('shutter-open-bottom');
+                        
+                        setTimeout(revealMain, 400);
+                        setTimeout(() => loader.remove(), 1200);
+                    }, 350);
+                }, 800);
             }
 
-            function start() {
-                const timer = setInterval(() => {
-                    // Tahan di 92% sampai semua aset halaman selesai dimuat
-                    const cap = pageReady ? 100 : 92;
-                    if (Math.random() > 0.14) {
-                        progress = Math.min(progress + (Math.random() * 3.2 + 0.5), cap);
-                    }
-                    render();
-                    if (progress >= 100 && !finished) {
-                        clearInterval(timer);
-                        finish();
-                    }
-                }, 70);
-            }
+            const progressTimer = setInterval(() => {
+                const cap = pageReady ? 100 : 92;
+                let step = Math.floor(Math.random() * 5) + 2;
+                progressValue = Math.min(progressValue + step, cap);
 
-            render();
-            // Jeda sebentar supaya "ACCESS PERMISSION REQUIRED" sempat terbaca
-            setTimeout(start, 700);
+                renderProgress(progressValue);
+
+                if (progressValue >= 100 && !finished) {
+                    clearInterval(progressTimer);
+                    finishLoading();
+                }
+            }, 50);
+
+            renderProgress(0);
 
         } else if (wrapper) {
             revealMain();
         }
 
-        // Animasi elemen halaman utama setelah loading selesai
         function triggerDelayedAnimations() {
             if (!delayedAnimateElems.length) return;
             delayedAnimateElems.forEach((elem, index) => {
@@ -444,7 +420,7 @@
             }
         }
 
-        // Perbaikan stuck loading saat tombol Back browser (BFCache)
+        // BFCache Navigation Fix
         window.addEventListener('pageshow', function (event) {
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                 const activeLoader = document.getElementById('pageLoader');
