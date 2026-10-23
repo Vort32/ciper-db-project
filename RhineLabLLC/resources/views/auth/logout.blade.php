@@ -11,6 +11,17 @@
     $divName   = $selectedDivision?->name ?? ($user?->division?->name ?? 'RHINE RESEARCH SECTION');
     $divCode   = $selectedDivision?->code ?? ($user?->division?->code ?? 'SECTOR-01');
     $usrId     = 'USR-' . str_pad($user?->id ?? '001', 3, '0', STR_PAD_LEFT);
+
+    // Pusat Admin hanya tampil untuk akun admin.
+    // Sesuaikan satu baris ini dengan cara cek admin di project Anda
+    // (mis. $user->is_admin, $user->role === 'admin', atau Gate::allows('access-admin')).
+    $canAdmin = (bool) (
+        $user && (
+            (method_exists($user, 'isAdmin') && $user->isAdmin())
+            || ($user->is_admin ?? false)
+            || (($user->role ?? null) === 'admin')
+        )
+    );
 @endphp
 
 {{-- ==============================================
@@ -92,10 +103,6 @@
         </header>
 
         <section class="en-panel rv" style="--d:.3s" aria-labelledby="logoutHeadline">
-            <i class="en-br en-br--tl" aria-hidden="true"></i>
-            <i class="en-br en-br--tr" aria-hidden="true"></i>
-            <i class="en-br en-br--bl" aria-hidden="true"></i>
-            <i class="en-br en-br--br" aria-hidden="true"></i>
 
             <p class="en-tag">Operative termination node</p>
             <h1 id="logoutHeadline" class="en-title" aria-label="Session Termination"></h1>
@@ -137,7 +144,9 @@
                 </button>
 
                 <nav class="en-links" aria-label="Pintasan">
-                    <a href="{{ route('admin.dashboard') }}" class="en-link en-link--accent">Pusat Admin</a>
+                    @if ($canAdmin)
+                        <a href="{{ route('admin.dashboard') }}" class="en-link en-link--accent">Pusat Admin</a>
+                    @endif
                     <a href="{{ route('research-records.index') }}" class="en-link">Catatan Riset</a>
                     <a href="{{ route('research.ledger') }}" class="en-link">Direktori</a>
                 </nav>
@@ -180,13 +189,14 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    /* Latar statis: gradient + garis grid tipis, tanpa blur layer */
+    /* Latar statis: orb warna di balik panel supaya efek kaca terlihat */
     .en-bg {
         position: fixed; inset: 0; z-index: 0; pointer-events: none;
         background:
-            radial-gradient(50rem 36rem at 100% 0%, rgba(255, 255, 255, .85), transparent 60%),
-            radial-gradient(36rem 28rem at 0% 100%, rgba(234, 118, 69, .12), transparent 62%),
-            linear-gradient(var(--en-line), var(--en-line)) 0 0 / 100% 1px no-repeat,
+            radial-gradient(26rem 26rem at 78% 28%, rgba(234, 118, 69, .30), transparent 66%),
+            radial-gradient(24rem 24rem at 58% 88%, rgba(72, 170, 140, .26), transparent 66%),
+            radial-gradient(22rem 22rem at 96% 64%, rgba(255, 255, 255, .95), transparent 62%),
+            radial-gradient(50rem 36rem at 100% 0%, rgba(255, 255, 255, .8), transparent 60%),
             var(--en-bg);
     }
     .en-bg::after {
@@ -224,7 +234,7 @@
     .en-cross--b { right: 16px; top: 16px; }
 
     .en-caption { position: absolute; z-index: 2; left: 20px; right: 20px; bottom: 52px; color: #fff; }
-    .en-id { display: inline-block; padding: 3px 8px; margin-bottom: 10px; font: 700 10px/1.4 var(--en-mono); letter-spacing: .22em; color: var(--en-ink); background: #fff; }
+    .en-id { display: inline-block; padding: 4px 12px; margin-bottom: 10px; border-radius: 999px; font: 700 10px/1.4 var(--en-mono); letter-spacing: .22em; color: #fff; background: rgba(255, 255, 255, .2); border: 1px solid rgba(255, 255, 255, .55); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5); }
     .en-role { margin: 0; font-size: 10px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--en-accent); }
     .en-name { margin: 4px 0 0; font-size: clamp(24px, 7vw, 34px); font-weight: 800; line-height: 1.1; }
     .en-pos { margin: 4px 0 0; font-size: 12px; opacity: .8; }
@@ -240,24 +250,29 @@
     .en-live { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--en-mute); }
     .en-live i { width: 7px; height: 7px; border-radius: 50%; background: var(--en-ok); animation: enPulse 2.4s ease-out infinite; }
 
+    /* Liquid glass: tepi terang, highlight dalam, kilau diagonal, blur + saturasi */
     .en-panel {
-        position: relative; padding: 24px 20px 22px;
-        background: linear-gradient(145deg, rgba(255, 255, 255, .7), rgba(255, 255, 255, .34));
-        border: 1px solid rgba(255, 255, 255, .9);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 24px 48px -28px rgba(0, 0, 0, .18);
-        -webkit-backdrop-filter: blur(10px) saturate(1.1);
-                backdrop-filter: blur(10px) saturate(1.1);
+        position: relative; isolation: isolate; padding: 24px 20px 22px; border-radius: 28px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, .52), rgba(255, 255, 255, .16) 55%, rgba(255, 255, 255, .32));
+        border: 1px solid rgba(255, 255, 255, .72);
+        box-shadow:
+            inset 0 1.5px 0 rgba(255, 255, 255, .95),
+            inset 1px 0 0 rgba(255, 255, 255, .55),
+            inset 0 -1px 0 rgba(255, 255, 255, .35),
+            inset 0 -18px 28px -18px rgba(234, 118, 69, .14),
+            0 28px 56px -24px rgba(70, 45, 30, .30);
+        -webkit-backdrop-filter: blur(12px) saturate(1.5);
+                backdrop-filter: blur(12px) saturate(1.5);
+    }
+    .en-panel::before {
+        content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+        background:
+            linear-gradient(118deg, rgba(255, 255, 255, .7) 0%, rgba(255, 255, 255, 0) 34%),
+            radial-gradient(90% 50% at 100% 100%, rgba(255, 255, 255, .35), transparent 70%);
     }
     @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
         .en-panel { background: rgba(250, 248, 246, .94); }
     }
-
-    /* siku sudut ala HUD */
-    .en-br { position: absolute; width: 12px; height: 12px; border: 0 solid var(--en-ink); pointer-events: none; }
-    .en-br--tl { left: -1px; top: -1px; border-left-width: 2px; border-top-width: 2px; }
-    .en-br--tr { right: -1px; top: -1px; border-right-width: 2px; border-top-width: 2px; }
-    .en-br--bl { left: -1px; bottom: -1px; border-left-width: 2px; border-bottom-width: 2px; }
-    .en-br--br { right: -1px; bottom: -1px; border-right-width: 2px; border-bottom-width: 2px; border-color: var(--en-accent); }
 
     .en-tag { margin: 0; font: 700 10px/1.4 var(--en-mono); letter-spacing: .24em; text-transform: uppercase; color: var(--en-accent); }
     .en-title { min-height: 1.15em; margin: 10px 0 0; font-size: clamp(26px, 8vw, 44px); font-weight: 900; letter-spacing: .06em; line-height: 1.1; }
@@ -267,8 +282,9 @@
     .en-sub { margin: 0; font-size: 13px; color: var(--en-mute); }
 
     /* Data rows: label kiri, nilai kanan, garis tipis */
-    .en-data { margin: 20px 0 0; border-top: 1px solid var(--en-line); }
-    .en-row { display: flex; flex-direction: column; gap: 6px; padding: 12px 0; border-bottom: 1px solid var(--en-line); }
+    .en-data { margin: 20px 0 0; padding: 0 16px; border-radius: 20px; background: rgba(255, 255, 255, .34); border: 1px solid rgba(255, 255, 255, .75); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 8px 18px -14px rgba(70, 45, 30, .25); }
+    .en-row { display: flex; flex-direction: column; gap: 6px; padding: 13px 0; border-bottom: 1px solid var(--en-line); }
+    .en-row:last-child { border-bottom: 0; }
     .en-row dt { font: 700 10px/1.4 var(--en-mono); letter-spacing: .2em; text-transform: uppercase; color: var(--en-mute); }
     .en-row dd { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; font-size: 14px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
     .en-row dd small { display: block; margin-top: 2px; font: 600 10px/1.4 var(--en-mono); letter-spacing: .14em; text-transform: none; color: var(--en-accent); }
@@ -277,21 +293,25 @@
     /* Aksi */
     .en-actions { display: flex; flex-direction: column; gap: 16px; margin: 22px 0 0; }
     .en-btn {
-        display: flex; align-items: stretch; width: 100%; padding: 0; border: 0; cursor: pointer; color: #fff; background: var(--en-ink);
-        clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
-        transition: background-color .2s ease;
+        display: flex; align-items: center; width: 100%; padding: 6px; border: 1px solid rgba(255, 255, 255, .22); border-radius: 999px; cursor: pointer; color: #fff;
+        background: linear-gradient(180deg, #3b3b3b, #1c1c1c);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), inset 0 -8px 14px -10px rgba(234, 118, 69, .45), 0 14px 24px -12px rgba(0, 0, 0, .55);
+        transition: transform .2s ease, box-shadow .2s ease;
     }
-    .en-btn-label { flex: 1; padding: 17px 20px; text-align: left; font-size: 12px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; }
-    .en-btn-icon { display: flex; align-items: center; justify-content: center; width: 56px; background: var(--en-accent); transition: background-color .2s ease; }
-    .en-btn:hover { background: #2b2b2b; }
-    .en-btn:hover .en-btn-icon { background: #d66031; }
+    .en-btn-label { flex: 1; padding: 0 20px; text-align: left; font-size: 12px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; }
+    .en-btn-icon { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(160deg, #f08a5b, #d66031); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), 0 4px 10px -4px rgba(234, 118, 69, .7); }
+    .en-btn:hover { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .32), inset 0 -8px 14px -10px rgba(234, 118, 69, .7), 0 16px 28px -12px rgba(234, 118, 69, .5); }
     .en-btn:active { transform: scale(.985); }
-    .en-links { display: flex; flex-wrap: wrap; gap: 8px 0; }
-    .en-link { padding: 6px 14px 6px 0; margin-right: 14px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-decoration: none; color: var(--en-ink); border-right: 1px solid var(--en-line); transition: color .2s ease; }
-    .en-link:last-child { border-right: 0; margin-right: 0; padding-right: 0; }
-    .en-link:hover { color: var(--en-ok); }
-    .en-link--accent { color: var(--en-accent); }
-    .en-link--accent:hover { color: var(--en-accent); text-decoration: underline; text-underline-offset: 4px; }
+    .en-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .en-link {
+        padding: 9px 16px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: .05em; text-decoration: none; color: var(--en-ink);
+        background: rgba(255, 255, 255, .38); border: 1px solid rgba(255, 255, 255, .8);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 6px 14px -10px rgba(70, 45, 30, .3);
+        transition: color .2s ease, background-color .2s ease, border-color .2s ease;
+    }
+    .en-link:hover { color: var(--en-ok); background: rgba(255, 255, 255, .7); border-color: var(--en-ok); }
+    .en-link--accent { color: var(--en-accent); border-color: rgba(234, 118, 69, .4); }
+    .en-link--accent:hover { color: var(--en-accent); border-color: var(--en-accent); }
     .en-btn:focus-visible, .en-link:focus-visible { outline: 2px solid var(--en-accent); outline-offset: 3px; }
 
     .en-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 12px; margin-top: auto; font: 500 10px/1.4 var(--en-mono); letter-spacing: .08em; color: var(--en-mute); }
@@ -312,7 +332,8 @@
 
         .en-side { margin-top: 0; padding: 32px clamp(32px, 5vw, 80px) 28px 8px; gap: 0; justify-content: space-between; overflow-y: auto; }
         .en-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
-        .en-panel { align-self: stretch; max-width: 640px; width: 100%; margin: auto 0; padding: 36px 36px 32px; -webkit-backdrop-filter: blur(18px) saturate(1.15); backdrop-filter: blur(18px) saturate(1.15); }
+        .en-panel { align-self: stretch; max-width: 640px; width: 100%; margin: auto 0; padding: 36px 36px 32px; border-radius: 32px; -webkit-backdrop-filter: blur(22px) saturate(1.6); backdrop-filter: blur(22px) saturate(1.6); }
+        .en-data { padding: 0 24px; }
         .en-row { flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; }
         .en-row dt { flex: none; width: 110px; }
         .en-row dd { flex: 1; }
