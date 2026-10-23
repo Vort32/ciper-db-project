@@ -15,7 +15,7 @@ Route::get('/', function () {
 });
 
 Route::get('/rhineinfo', function () {
-    $files = Material::all(); // ambil semua data dari tabel materials
+    $files = Material::all();
     return view('rhineinfo', compact('files'));
 });
 
@@ -28,10 +28,7 @@ Route::get('/research-ledger', [ResearchOverviewController::class, 'index'])->na
 // ==============================================
 // ROUTE MATERIAL
 // ==============================================
-Route::get('/materials', [MaterialController::class, 'index'])->name('materials.index');
-Route::post('/materials', [MaterialController::class, 'store'])->name('materials.store');
-Route::put('/materials/{material}', [MaterialController::class, 'update'])->name('materials.update');
-Route::delete('/materials/{material}', [MaterialController::class, 'destroy'])->name('materials.destroy');
+Route::resource('materials', MaterialController::class);
 
 // ==============================================
 // AUTHENTICATION & PROTECTED ROUTES
