@@ -48,19 +48,19 @@
 
             @forelse($records as $index => $record)
                 @php
-                    // PENENTUAN IKON FILE
+                    // PENENTUAN IKON FILE MINIMALIS
                     $fileExt = strtolower(pathinfo($record->file_path ?? '', PATHINFO_EXTENSION));
                     $iconData = match(true) {
-                        in_array($fileExt, ['pdf']) => ['label' => 'PDF', 'bg' => 'bg-red-600'],
-                        in_array($fileExt, ['doc', 'docx']) => ['label' => 'DOCX', 'bg' => 'bg-blue-600'],
-                        in_array($fileExt, ['xls', 'xlsx', 'csv']) => ['label' => 'XLSX', 'bg' => 'bg-emerald-600'],
-                        in_array($fileExt, ['ppt', 'pptx']) => ['label' => 'PPTX', 'bg' => 'bg-orange-600'],
-                        in_array($fileExt, ['zip', 'rar', '7z']) => ['label' => 'ZIP', 'bg' => 'bg-purple-600'],
-                        in_array($fileExt, ['png', 'jpg', 'jpeg', 'webp']) => ['label' => 'IMG', 'bg' => 'bg-teal-600'],
-                        default => ['label' => 'FILE', 'bg' => 'bg-gray-600']
+                        in_array($fileExt, ['pdf']) => ['label' => 'PDF', 'bg' => 'bg-[#b91c1c] text-white border-[#991b1b]'],
+                        in_array($fileExt, ['doc', 'docx']) => ['label' => 'DOCX', 'bg' => 'bg-[#1d4ed8] text-white border-[#1e40af]'],
+                        in_array($fileExt, ['xls', 'xlsx', 'csv']) => ['label' => 'XLSX', 'bg' => 'bg-[#047857] text-white border-[#065f46]'],
+                        in_array($fileExt, ['ppt', 'pptx']) => ['label' => 'PPTX', 'bg' => 'bg-[#c2410c] text-white border-[#9a3412]'],
+                        in_array($fileExt, ['zip', 'rar', '7z']) => ['label' => 'ZIP', 'bg' => 'bg-[#6b21a8] text-white border-[#581c87]'],
+                        in_array($fileExt, ['png', 'jpg', 'jpeg', 'webp']) => ['label' => 'IMG', 'bg' => 'bg-[#0f766e] text-white border-[#115e59]'],
+                        default => ['label' => 'FILE', 'bg' => 'bg-[#374151] text-white border-[#1f2937]']
                     };
 
-                    // HELPER PENGECEKAN URL SUPABASE VS LOCALHOST
+                    // HELPER PENGECEKAN URL
                     $resolveUrl = function(?string $path) {
                         if (!$path) return null;
                         return \Illuminate\Support\Str::startsWith($path, ['http://', 'https://']) 
@@ -100,8 +100,8 @@
                     class="relative group cursor-pointer h-[32rem] flex flex-col justify-end opacity-0 animate-fade-scale"
                     style="animation-delay: {{ 0.8 + ($index * 0.1) }}s;">
                     
-                    <!-- LAYER 1: BASE FOLDER -->
-                    <div class="absolute inset-0 rounded-md border border-[#2f4424]/70 transform scale-95 group-hover:scale-100 transition-all duration-700 cubic-bloop shadow-[0_25px_50px_rgba(45,65,35,0.35)] overflow-hidden"
+                    <!-- LAYER 1: BASE FOLDER (TANPA SHADOW) -->
+                    <div class="absolute inset-0 rounded-md border border-[#2f4424]/70 transform scale-95 group-hover:scale-100 transition-all duration-700 cubic-bloop overflow-hidden"
                          style="background: linear-gradient(160deg,#6d8c55 0%,#506e3c 45%,#3f5a30 100%);">
                         <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 40% 35%, rgba(255,255,255,0.10) 0%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.30) 100%);"></div>
                         <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] skew-x-[-25deg] group-hover:animate-water-shine"></div>
@@ -112,13 +112,13 @@
                         <p class="absolute bottom-1.5 left-4 text-[5px] tracking-[0.6em] font-bold uppercase text-white/30 pointer-events-none">Rhine Lab Archive</p>
                     </div>
 
-                    <!-- LAYER 2a & 2b: LEMBAR HIJAU -->
-                    <div class="absolute left-[10%] right-[2%] top-[9%] bottom-[5%] bg-[#c6d6b4] border border-[#a9c08f] rotate-[1.4deg] shadow-md transition-transform duration-700 cubic-bloop group-hover:rotate-[3deg] group-hover:translate-x-1 pointer-events-none"></div>
-                    <div class="absolute left-[7%] right-[5%] top-[6%] bottom-[7%] border border-[#8fab74] shadow-lg -rotate-[0.8deg] transition-transform duration-700 cubic-bloop group-hover:-rotate-[2.5deg] group-hover:-translate-x-1 pointer-events-none"
+                    <!-- LAYER 2a & 2b: LEMBAR HIJAU (TANPA SHADOW) -->
+                    <div class="absolute left-[10%] right-[2%] top-[9%] bottom-[5%] bg-[#c6d6b4] border border-[#a9c08f] rotate-[1.4deg] transition-transform duration-700 cubic-bloop group-hover:rotate-[3deg] group-hover:translate-x-1 pointer-events-none"></div>
+                    <div class="absolute left-[7%] right-[5%] top-[6%] bottom-[7%] border border-[#8fab74] -rotate-[0.8deg] transition-transform duration-700 cubic-bloop group-hover:-rotate-[2.5deg] group-hover:-translate-x-1 pointer-events-none"
                          style="background-color:#a9c08f; background-image: repeating-linear-gradient(to bottom, rgba(45,65,35,0.26) 0, rgba(45,65,35,0.26) 1px, transparent 1px, transparent 4px), linear-gradient(to right, rgba(255,255,255,0.02), rgba(255,255,255,0.22));"></div>
 
                     <!-- NOMOR BERKAS -->
-                    <div class="absolute top-3 left-4 z-[5] flex items-start gap-2 text-white drop-shadow-md pointer-events-none font-condensed">
+                    <div class="absolute top-3 left-4 z-[5] flex items-start gap-2 text-white pointer-events-none font-condensed">
                         <div class="leading-none">
                             <div class="text-[2.6rem] font-bold tracking-tight leading-[0.9]">NO.</div>
                             <div class="mt-1 text-[9px] font-semibold tracking-[0.12em] uppercase leading-[1.2]">
@@ -129,18 +129,18 @@
                         <span class="text-[5.6rem] font-bold leading-[0.8] -ml-1">{{ $loop->iteration }}</span>
                     </div>
 
-                    <!-- LAYER 3: TUMPUKAN KERTAS -->
-                    <div class="absolute left-[18%] right-[1%] top-[22%] bottom-[0.8%] bg-[#d5dac9] border border-[#b9c1a9] shadow-md pointer-events-none"></div>
-                    <div class="absolute left-[17%] right-[2%] top-[20%] bottom-[2.2%] bg-[#e9eadf] border border-[#c9ccbc] shadow-md pointer-events-none"></div>
+                    <!-- LAYER 3: TUMPUKAN KERTAS (TANPA SHADOW) -->
+                    <div class="absolute left-[18%] right-[1%] top-[22%] bottom-[0.8%] bg-[#d5dac9] border border-[#b9c1a9] pointer-events-none"></div>
+                    <div class="absolute left-[17%] right-[2%] top-[20%] bottom-[2.2%] bg-[#e9eadf] border border-[#c9ccbc] pointer-events-none"></div>
 
-                    <!-- LAYER 4: DOKUMEN UTAMA (KERTAS PUTIH GADING) -->
-                    <div class="absolute left-[16%] right-[3%] top-[18%] bottom-[3.5%] z-10 border border-gray-300/90 shadow-[0_22px_44px_rgba(0,0,0,0.28)] px-3.5 sm:px-4 pt-3.5 sm:pt-4 pb-3 flex flex-col text-left transform transition-transform duration-700 cubic-bloop group-hover:-translate-y-3 pointer-events-none overflow-hidden font-report"
+                    <!-- LAYER 4: DOKUMEN UTAMA (TANPA SHADOW) -->
+                    <div class="absolute left-[16%] right-[3%] top-[18%] bottom-[3.5%] z-10 border border-gray-300/90 px-3.5 sm:px-4 pt-3.5 sm:pt-4 pb-3 flex flex-col text-left transform transition-transform duration-700 cubic-bloop group-hover:-translate-y-3 pointer-events-none overflow-hidden font-report"
                          style="background-color:#f8f8f1;
                                 background-image: radial-gradient(rgba(0,0,0,0.035) 1px, transparent 1px), linear-gradient(100deg, rgba(0,0,0,0.05) 0%, transparent 5%, transparent 95%, rgba(0,0,0,0.035) 100%);
                                 background-size: 3px 3px, 100% 100%;">
 
-                        <!-- Kop Surat Rhine Lab + Lencana Format File yang Ditingkatkan -->
-                        <div class="flex items-center justify-between pb-2 border-b border-gray-300 relative" style="box-shadow: 0 2px 0 #ebebe2;">
+                        <!-- Kop Surat Rhine Lab -->
+                        <div class="flex items-center justify-between pb-2 border-b border-gray-300 relative" style="box-shadow: 0 1px 0 #ebebe2;">
                             <div class="flex items-center gap-2 sm:gap-3">
                                 <img src="{{ asset('images/logo.png') }}" class="h-6 sm:h-8 object-contain filter grayscale contrast-125 opacity-90">
                                 <div class="text-[5.5px] sm:text-[6.5px] uppercase leading-[1.35] text-gray-500 tracking-[0.12em] font-semibold text-left">
@@ -148,13 +148,6 @@
                                     <p>T1 Oxford St., Columbia</p>
                                 </div>
                             </div>
-
-                            <!-- Lencana Format File (Posisi Rapi di Header Kop Surat) -->
-                            @if($record->file_path)
-                                <div class="px-2 py-0.5 rounded text-white font-black text-[6.5px] sm:text-[7.5px] tracking-widest shadow-sm border border-white/40 shrink-0 uppercase {{ $iconData['bg'] }}">
-                                    {{ $iconData['label'] }}
-                                </div>
-                            @endif
                         </div>
 
                         <!-- Judul Utama Dokumen -->
@@ -201,13 +194,13 @@
                         <!-- Dua Figur -->
                         <div class="mt-2 grid grid-cols-2 gap-2 flex-1 min-h-0">
                             <div class="flex flex-col min-h-0">
-                                <div class="relative flex-1 min-h-0 border border-gray-500/70 bg-white p-[2px] shadow-[0_1px_3px_rgba(0,0,0,0.12)]">
+                                <div class="relative flex-1 min-h-0 border border-gray-500/70 bg-white p-[2px]">
                                     <img src="{{ $fig1Path }}" class="w-full h-full object-cover filter grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
                                 </div>
                                 <p class="mt-0.5 text-center text-[5.5px] text-gray-500 tracking-[0.15em] font-semibold"><span class="font-bold text-gray-700">Fig. 1</span> — Dokumentasi</p>
                             </div>
                             <div class="flex flex-col min-h-0">
-                                <div class="relative flex-1 min-h-0 border border-gray-500/70 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.12)]">
+                                <div class="relative flex-1 min-h-0 border border-gray-500/70 bg-white">
                                     @if($fig2Path)
                                         <div class="p-[2px] w-full h-full">
                                             <img src="{{ $fig2Path }}" class="w-full h-full object-cover filter grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
@@ -244,7 +237,7 @@
                             
                             @if($record->file_path)
                                 <div class="mt-1.5 relative z-20 pointer-events-auto">
-                                    <a href="{{ route('research-records.download', $record->id) }}" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 bg-[#3f5a30] hover:bg-[#EA7645] text-white px-2 py-0.5 rounded shadow-sm transition-colors text-[5px] font-bold uppercase tracking-widest">
+                                    <a href="{{ route('research-records.download', $record->id) }}" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 bg-[#3f5a30] hover:bg-[#EA7645] text-white px-2 py-0.5 rounded transition-colors text-[5px] font-bold uppercase tracking-widest">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                         Download Dokumen
                                     </a>
@@ -257,14 +250,21 @@
                         </div>
                     </div>
 
-                    <!-- LAYER 5: STICKY NOTE DINAMIS -->
-                    <div class="absolute right-[1%] top-[10%] z-20 w-[4.5rem] h-[4.5rem] sm:w-[5rem] sm:h-[5rem] border border-[#86a85c] text-[#1f3a93] shadow-[0_8px_16px_rgba(0,0,0,0.25)] transform -rotate-[3deg] group-hover:-rotate-[9deg] group-hover:-translate-y-2 group-hover:scale-105 transition-all duration-700 cubic-bloop flex flex-col items-center justify-center overflow-hidden pointer-events-none"
+                    <!-- LAYER 5: STICKY NOTE DINAMIS (TANPA SHADOW) -->
+                    <div class="absolute right-[1%] top-[8%] z-20 w-[4.5rem] h-[4.5rem] sm:w-[5rem] sm:h-[5rem] border border-[#86a85c] text-[#1f3a93] transform -rotate-[3deg] group-hover:-rotate-[9deg] group-hover:-translate-y-2 group-hover:scale-105 transition-all duration-700 cubic-bloop flex flex-col items-center justify-center overflow-hidden pointer-events-none"
                          style="background: linear-gradient(145deg,#a8cc80 0%,#8fb566 100%);">
                         <img src="{{ asset('images/logo.png') }}" class="absolute -right-3 bottom-1 w-12 opacity-20 brightness-0 invert">
                         <span class="font-signature text-[1.2rem] sm:text-[1.35rem] leading-none transform -rotate-12">Check</span>
                         <span class="font-signature text-xs sm:text-sm leading-none transform -rotate-6 mt-0.5 break-words max-w-full text-center">{{ $statusText }}</span>
                         <span class="absolute bottom-1 left-0 right-0 text-center text-[4px] sm:text-[4.5px] tracking-[0.5em] font-bold uppercase text-[#3d5e20]/70">Rhine Lab</span>
                     </div>
+
+                    <!-- IKON FORMAT FILE MINIMALIS DI SAMPING STICKY NOTE -->
+                    @if($record->file_path)
+                        <div class="absolute right-[22%] sm:right-[20%] top-[9%] z-20 px-2 py-0.5 rounded-[3px] border font-mono text-[7px] font-extrabold tracking-wider uppercase transition-transform duration-700 cubic-bloop group-hover:-translate-y-1 pointer-events-none {{ $iconData['bg'] }}">
+                            <span>{{ $iconData['label'] }}</span>
+                        </div>
+                    @endif
 
                 </div>
             @empty
@@ -282,10 +282,10 @@
         Internal Database
     </div>
     
-    <!-- Tombol Back Stabil di Mobile HP (Satu-satunya Tombol Navigasi Utama) -->
+    <!-- Tombol Back Utama -->
     <div class="fixed bottom-6 left-5 z-50">
-        <a href="{{ url('/') }}" class="group relative flex items-center justify-center p-2.5 sm:p-3 px-3.5 sm:px-4 bg-[#ECE8E5]/90 sm:bg-transparent backdrop-blur-md sm:backdrop-blur-none rounded-full border border-gray-400/40 sm:border-transparent shadow-md sm:shadow-none transition-all duration-300">
-            <div class="absolute inset-0 bg-[#dcd9d2]/60 backdrop-blur-md border border-white/60 opacity-0 transform scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-700 cubic-bloop rounded-full pointer-events-none z-0 shadow-lg"></div>
+        <a href="{{ url('/') }}" class="group relative flex items-center justify-center p-2.5 sm:p-3 px-3.5 sm:px-4 bg-[#ECE8E5]/90 sm:bg-transparent backdrop-blur-md sm:backdrop-blur-none rounded-full border border-gray-400/40 sm:border-transparent transition-all duration-300">
+            <div class="absolute inset-0 bg-[#dcd9d2]/60 backdrop-blur-md border border-white/60 opacity-0 transform scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-700 cubic-bloop rounded-full pointer-events-none z-0"></div>
             <div class="relative z-10 flex items-center text-gray-900 font-extrabold uppercase tracking-[0.2em] text-[10px] sm:text-xs transition-colors duration-300 group-hover:text-[#2c2c2c]">
                 <span class="mr-1.5 sm:mr-2 inline-block transform transition-all duration-700 cubic-bloop group-hover:-translate-x-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m6 6l-6-6 6-6" /></svg>
@@ -300,7 +300,7 @@
 <div id="imageModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-8" style="perspective: 1000px;">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-md pointer-events-none transition-opacity duration-500" id="modalBackdrop"></div>
 
-    <div id="akAdvancedModal" class="relative z-10 w-full max-w-[62rem] min-h-[50vh] sm:min-h-[55vh] bg-[#f8f7f4] rounded-[20px] shadow-[0_30px_60px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col transform scale-95 opacity-0 transition-all duration-700 cubic-bloop border border-white/80">
+    <div id="akAdvancedModal" class="relative z-10 w-full max-w-[62rem] min-h-[50vh] sm:min-h-[55vh] bg-[#f8f7f4] rounded-[20px] overflow-hidden flex flex-col transform scale-95 opacity-0 transition-all duration-700 cubic-bloop border border-white/80">
         
         <!-- Modal Header -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-10 py-3 sm:py-4 border-b border-gray-300/60 relative bg-white/60 backdrop-blur-sm z-20">
@@ -325,14 +325,14 @@
         <div class="flex flex-col md:flex-row flex-1 relative hex-bg">
             <!-- Left Info Panel -->
             <div class="w-full md:w-[35%] p-5 sm:p-8 flex flex-col relative z-20 border-r border-gray-300/40 bg-white/40 backdrop-blur-sm pointer-events-none">
-                <div class="absolute left-6 top-8 w-1 h-6 bg-[#C4FF00] shadow-[0_0_8px_#C4FF00]"></div> 
+                <div class="absolute left-6 top-8 w-1 h-6 bg-[#C4FF00]"></div> 
                 <div class="pl-4 mb-4 sm:mb-8">
                     <h3 class="text-lg sm:text-xl font-black leading-none text-gray-900 tracking-widest">RHINE LAB</h3>
                     <p class="text-[6.5px] sm:text-[7px] font-extrabold tracking-[0.25em] mt-1 text-gray-500">SYNTHESIZE INFORMATION</p>
                     <p class="text-[11px] sm:text-xs tracking-[0.2em] font-medium text-gray-700 mt-1">ANALYSIS <span class="font-black text-gray-900">OS</span></p>
                 </div>
                 <div class="mt-auto md:mt-10 relative pointer-events-auto">
-                    <div class="bg-[#242424] text-white p-4 sm:p-6 shadow-2xl relative border-l-4 border-[#9b968c] z-10">
+                    <div class="bg-[#242424] text-white p-4 sm:p-6 relative border-l-4 border-[#9b968c] z-10">
                         <h1 id="modalTitle" class="text-base sm:text-xl font-black uppercase leading-[1.3] tracking-widest text-white">JUDUL DOKUMEN</h1>
                         <p id="modalCategory" class="text-[7px] sm:text-[7.5px] tracking-[0.25em] text-gray-400 uppercase font-bold mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-600">REFERENCE SECTION</p>
                     </div>
@@ -364,7 +364,7 @@
 
                 <!-- Container Utama Gambar -->
                 <div class="relative z-10 w-[80%] sm:w-[70%] h-[80%] sm:h-[70%] flex items-center justify-center transition-all duration-[800ms] cubic-bloop opacity-40 grayscale-[50%] scale-90 mg-img-wrap">
-                    <div class="relative bg-white p-2 border border-gray-200 shadow-xl transition-all duration-[800ms] mg-img-inner">
+                    <div class="relative bg-white p-2 border border-gray-200 transition-all duration-[800ms] mg-img-inner">
                         <img id="modalImg" src="" class="max-h-[30vh] sm:max-h-[35vh] w-auto object-contain">
                     </div>
                 </div>
@@ -405,12 +405,10 @@
     @media (hover: hover) {
         .modal-group:hover .mg-bg { opacity: 0.1; }
         .modal-group:hover .mg-img-wrap { z-index: 30; opacity: 1; filter: grayscale(0); transform: scale(1.1); }
-        .modal-group:hover .mg-img-inner { box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
     }
     
     .modal-group.is-highlighted .mg-bg { opacity: 0.1; }
     .modal-group.is-highlighted .mg-img-wrap { z-index: 30; opacity: 1; filter: grayscale(0); transform: scale(1.1); }
-    .modal-group.is-highlighted .mg-img-inner { box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
 </style>
 
 <script>
