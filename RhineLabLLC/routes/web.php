@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DivisionProjectController;
 use App\Http\Controllers\GalleryController;
@@ -25,7 +26,7 @@ Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
 Route::get('/research-ledger', [ResearchOverviewController::class, 'index'])->name('research.ledger');
 
 // ==============================================
-// ROUTE MATERIAL (SUDAH DIPERBAIKI)
+// ROUTE MATERIAL
 // ==============================================
 Route::get('/materials', [MaterialController::class, 'index'])->name('materials.index');
 Route::post('/materials', [MaterialController::class, 'store'])->name('materials.store');
@@ -49,4 +50,14 @@ Route::middleware('auth')->group(function () {
     Route::post('research-records/{researchRecord}/reject', [ResearchRecordController::class, 'reject'])->name('research-records.reject');
     Route::resource('research-records', ResearchRecordController::class);
     Route::resource('division-projects', DivisionProjectController::class)->except(['show']);
+
+    // ==============================================
+    // ROUTE ADMIN PANEL
+    // ==============================================
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::delete('/users/{user}', [AdminDashboardController::class, 'destroyUser'])->name('users.destroy');
+        Route::delete('/research-records/{record}', [AdminDashboardController::class, 'destroyResearch'])->name('research.destroy');
+        Route::delete('/materials/{material}', [AdminDashboardController::class, 'destroyMaterial'])->name('materials.destroy');
+    });
 });
