@@ -5,6 +5,11 @@
 @section('content')
 @php
     $showLoginOverlay = session()->has('status');
+    $roleLabel = $user?->is_division_head ? 'Kepala Divisi' : 'Operatif Riset';
+    $orgName   = $selectedOrganization['name'] ?? $user?->affiliation ?? 'RHINE LAB LLC';
+    $orgLogo   = !empty($selectedOrganization['logo']) ? $selectedOrganization['logo'] : 'images/logo.png';
+    $divName   = $selectedDivision?->name ?? ($user?->division?->name ?? 'RHINE RESEARCH SECTION');
+    $divCode   = $selectedDivision?->code ?? ($user?->division?->code ?? 'SECTOR-01');
 @endphp
 
 {{-- ==============================================
@@ -18,14 +23,12 @@
         <div class="ov-photo" style="background-image: url('{{ asset('images/Rhine_Lab_HQ1.png') }}');"></div>
         <div class="ov-hex hex-bg"></div>
 
-        <!-- Header kiri atas -->
         <div class="ov-head">
             <div class="ov-h1">RHINE LAB</div>
             <div class="ov-h2">SYNTHESIZE INFORMATION</div>
             <div class="ov-h3"><span>ANALYSIS</span><b>OS</b></div>
         </div>
 
-        <!-- Logo + ID -->
         <div class="ov-stage">
             <div class="ov-logo">
                 <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab">
@@ -40,179 +43,260 @@
             </div>
         </div>
 
-        <!-- Status kiri bawah -->
         <div class="ov-status">
             <span class="ov-dot" data-overlay-dot></span>
             <span data-overlay-status>VERIFYING CREDENTIALS</span>
         </div>
 
-        <!-- Footer kanan bawah -->
         <div class="ov-foot">POWERED BY <b>RHINE LAB</b><span class="ov-foot-dash"></span></div>
 
-        <!-- Garis progress tipis -->
         <div class="ov-progress"><i data-overlay-progress></i></div>
     </div>
 @endif
 
-{{-- HALAMAN UTAMA TERMINASI SESI --}}
-<div id="pageWrapper"
-    class="min-h-screen flex flex-col items-center justify-center bg-[#ECE8E5] text-[#1c1c1c] relative overflow-hidden transition-opacity duration-700 opacity-0 select-none py-12 px-4">
-    
-    <!-- Ambient Glow & Watermark BG -->
-    <div class="fixed w-[45rem] h-[45rem] bg-white/60 rounded-full blur-[130px] -top-20 -left-20 pointer-events-none z-0"></div>
-    <div class="fixed w-[35rem] h-[35rem] bg-[#EA7645]/15 rounded-full blur-[100px] bottom-0 right-0 pointer-events-none z-0"></div>
-    <div class="fixed inset-0 bg-cover bg-center opacity-5 pointer-events-none z-0"
-        style="background-image: url('{{ asset('images/Rhine_Lab_HQ1.png') }}');"></div>
+{{-- ==============================================
+     HALAMAN TERMINASI SESI
+     ============================================== --}}
+<div id="pageWrapper" class="st-page">
+    <div class="st-bg" aria-hidden="true"></div>
 
-    <!-- Top Left HUD Header -->
-    <div class="absolute top-6 left-6 leading-tight select-none space-y-1 z-20">
-        <h1 class="text-2xl font-black tracking-wider pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.2s;">RHINE LAB</h1>
-        <p class="text-[9px] tracking-[0.3em] uppercase font-bold text-gray-500 pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.4s;">
-            SYNTHESIZE INFORMATION
-        </p>
-        <p class="text-xs sm:text-sm md:text-base font-semibold tracking-widest text-gray-700 pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.6s;">
-            ANALYSIS <span class="font-black text-[#EA7645]">OS</span>
-        </p>
-    </div>
+    {{-- Bar atas --}}
+    <header class="st-top">
+        <div class="st-brand rv" style="--d:.1s">
+            <span class="st-brand-1">RHINE LAB</span>
+            <span class="st-brand-2">SYNTHESIZE INFORMATION</span>
+            <span class="st-brand-3">ANALYSIS <b>OS</b></span>
+        </div>
+        <div class="st-live rv" style="--d:.2s">
+            <i class="st-live-dot"></i>Sesi aktif
+        </div>
+    </header>
 
-    <!-- Top Right Status HUD -->
-    <div class="absolute top-6 right-6 z-20 flex items-center gap-3 text-[10px] sm:text-xs tracking-[0.35em] font-bold uppercase text-gray-700 select-none">
-        <span class="pre-animate flex items-center gap-2" data-animate="animate-slide-fade" style="animation-delay: 0.8s;">
-            <span class="h-2 w-2 rounded-full bg-[#48AA8C] animate-pulse"></span>
-            SESSION ACTIVE
-        </span>
-    </div>
+    {{-- Kartu utama --}}
+    <main class="st-main">
+        <section class="st-card rv" style="--d:.25s" aria-labelledby="logoutHeadline">
 
-    <!-- CARD UTAMA (LIQUID GLASS) -->
-    <div class="relative z-20 w-full max-w-4xl px-4 sm:px-6 my-auto">
-        <div class="relative rounded-[32px] glass-card p-6 sm:p-10 opacity-0 pre-animate overflow-hidden"
-            data-animate="animate-fade-up" style="animation-delay: 0.9s;">
-            
-            <div class="absolute inset-0 hex-bg opacity-20 pointer-events-none"></div>
-
-            <!-- Header Card -->
-            <div class="flex flex-col items-center text-center space-y-2 select-none relative z-10 border-b border-white/60 pb-6">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#EA7645]/40 bg-[#EA7645]/10 text-[9px] font-black uppercase tracking-[0.3em] text-[#EA7645]">
-                    <span class="h-1.5 w-1.5 rounded-full bg-[#EA7645]"></span>
-                    OPERATIVE TERMINATION NODE
-                </div>
-                <h2 id="logoutHeadline" class="text-2xl sm:text-4xl font-black tracking-[0.22em] text-[#1f1f1f] pre-animate min-h-[2.5rem] flex items-center justify-center"></h2>
-                <p class="text-[10px] sm:text-xs uppercase tracking-[0.35em] text-gray-500 font-bold pre-animate"
-                    data-animate="animate-slide-fade">Konfirmasi otorisasi untuk mengakhiri sesi kerja operatif</p>
+            <div class="st-card-head">
+                <span class="st-badge">Operative termination node</span>
+                <h2 id="logoutHeadline" class="st-title" aria-label="Session Termination"></h2>
+                <p class="st-sub">Konfirmasi untuk mengakhiri sesi kerja operatif.</p>
             </div>
 
-            <!-- Body Grid: Avatar & Info Status -->
-            <div class="mt-8 grid gap-8 lg:grid-cols-[220px_1fr] relative z-10">
-                
-                <!-- Kiri: Profile HUD -->
-                <div class="flex flex-col items-center gap-4 pre-animate" data-animate="animate-fade-up" style="animation-delay: 1.1s;">
-                    <div class="glass-avatar relative h-44 w-44 overflow-hidden rounded-3xl p-1.5">
-                        <div class="h-full w-full overflow-hidden rounded-[20px] relative">
-                            <img src="{{ asset($user?->photo_path ?? 'images/users/Silence.png') }}" alt="Foto {{ $user?->name }}"
-                                class="h-full w-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                            <span class="absolute bottom-2 left-2 right-2 text-center text-[8px] font-black tracking-widest text-white/90 uppercase bg-black/40 backdrop-blur-sm py-1 rounded-md border border-white/20">
-                                USR-{{ str_pad($user?->id ?? '001', 3, '0', STR_PAD_LEFT) }}
-                            </span>
-                        </div>
+            <div class="st-body">
+                {{-- Profil --}}
+                <div class="st-profile rv" style="--d:.4s">
+                    <div class="st-avatar">
+                        <img src="{{ asset($user?->photo_path ?? 'images/users/Silence.png') }}"
+                             alt="Foto {{ $user?->name }}" width="144" height="144" loading="eager" decoding="async">
+                        <span class="st-avatar-id">USR-{{ str_pad($user?->id ?? '001', 3, '0', STR_PAD_LEFT) }}</span>
                     </div>
-                    
-                    <div class="text-center space-y-1">
-                        <p class="text-[9px] uppercase font-extrabold tracking-[0.35em] text-[#EA7645]">
-                            {{ $user?->is_division_head ? 'Kepala Divisi' : 'Operatif Riset' }}
-                        </p>
-                        <p class="text-lg font-black tracking-wide text-[#1f1f1f] leading-snug">{{ $user?->name }}</p>
-                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ $user?->position ?? 'RESEARCHER' }}</p>
+                    <div class="st-who">
+                        <p class="st-role">{{ $roleLabel }}</p>
+                        <p class="st-name">{{ $user?->name }}</p>
+                        <p class="st-pos">{{ $user?->position ?? 'Researcher' }}</p>
                     </div>
                 </div>
 
-                <!-- Kanan: Status Organisasi & Tombol Aksi -->
-                <div class="space-y-4">
-                    
-                    <!-- Panel Organisasi -->
-                    <div class="glass-panel rounded-2xl px-5 py-4 pre-animate transition-transform duration-300 hover:scale-[1.01]" data-animate="animate-fade-up" style="animation-delay: 1.2s;">
-                        <p class="text-[9px] font-black uppercase tracking-[0.35em] text-gray-500">Affiliation / Organisasi</p>
-                        <div class="mt-2 flex items-center justify-between gap-4">
-                            <div class="space-y-0.5">
-                                <p class="text-sm font-black tracking-wider text-[#1f1f1f] uppercase">
-                                    {{ $selectedOrganization['name'] ?? $user?->affiliation ?? 'RHINE LAB LLC' }}
-                                </p>
-                                <p class="text-[9px] font-bold uppercase tracking-widest text-gray-500">SEC-PRIMARY SECTOR</p>
+                {{-- Info + aksi --}}
+                <div class="st-side">
+                    <dl class="st-info rv" style="--d:.5s">
+                        <div class="st-row">
+                            <div>
+                                <dt>Organisasi</dt>
+                                <dd>{{ $orgName }}</dd>
                             </div>
-                            @if (!empty($selectedOrganization['logo']))
-                                <img src="{{ asset($selectedOrganization['logo']) }}" alt="Logo Organisasi" class="h-10 w-10 object-contain filter grayscale opacity-80">
-                            @else
-                                <img src="{{ asset('images/logo.png') }}" alt="Logo Rhine Lab" class="h-8 object-contain filter grayscale opacity-70">
-                            @endif
+                            <img src="{{ asset($orgLogo) }}" alt="Logo organisasi" class="st-logo" loading="lazy" decoding="async">
                         </div>
-                    </div>
-
-                    <!-- Panel Divisi -->
-                    <div class="glass-panel rounded-2xl px-5 py-4 pre-animate transition-transform duration-300 hover:scale-[1.01]" data-animate="animate-fade-up" style="animation-delay: 1.3s;">
-                        <p class="text-[9px] font-black uppercase tracking-[0.35em] text-gray-500">Assigned Division</p>
-                        <div class="mt-2 flex items-center justify-between">
-                            <div class="space-y-0.5">
-                                <p class="text-sm font-black tracking-wider text-[#1f1f1f] uppercase">
-                                    {{ $selectedDivision?->name ?? ($user?->division?->name ?? 'RHINE RESEARCH SECTION') }}
-                                </p>
-                                <p class="text-[9px] font-extrabold uppercase tracking-[0.3em] text-[#EA7645]">
-                                    CODE: {{ $selectedDivision?->code ?? ($user?->division?->code ?? 'SECTOR-01') }}
-                                </p>
+                        <div class="st-row">
+                            <div>
+                                <dt>Divisi</dt>
+                                <dd>{{ $divName }}</dd>
+                                <dd class="st-code">{{ $divCode }}</dd>
                             </div>
                             @if (!empty($selectedDivision?->photo_path))
-                                <span class="flex h-11 w-11 items-center justify-center rounded-xl border border-white/80 bg-white/60 shadow-sm overflow-hidden">
-                                    <img src="{{ asset($selectedDivision->photo_path) }}" alt="Logo Divisi" class="h-8 w-8 object-contain">
-                                </span>
+                                <img src="{{ asset($selectedDivision->photo_path) }}" alt="Logo divisi" class="st-logo" loading="lazy" decoding="async">
                             @endif
                         </div>
-                    </div>
+                    </dl>
 
-                    <!-- Actions Form -->
-                    <form action="{{ route('logout') }}" method="post" class="space-y-2.5 pt-2 pre-animate" data-animate="animate-fade-up" style="animation-delay: 1.45s;">
+                    <form action="{{ route('logout') }}" method="post" class="st-actions rv" style="--d:.6s">
                         @csrf
-                        <button type="submit"
-                            class="glass-button glass-button--danger inline-flex w-full items-center justify-center gap-3 rounded-full py-3.5 px-6 text-xs font-black tracking-[0.3em] uppercase transition-all duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <button type="submit" class="st-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
-                            Log Out / Akhiri Sesi
+                            Akhiri sesi
                         </button>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                            <a href="{{ route('admin.dashboard') }}"
-                                class="glass-link inline-flex w-full items-center justify-center rounded-full py-3 px-3 text-[9px] font-black uppercase tracking-[0.2em] text-center transition-all duration-300 text-[#EA7645] border-[#EA7645]/40">
-                                Pusat Admin
-                            </a>
-                            <a href="{{ route('research-records.index') }}"
-                                class="glass-link inline-flex w-full items-center justify-center rounded-full py-3 px-3 text-[9px] font-bold uppercase tracking-[0.2em] text-center transition-all duration-300">
-                                Catatan Riset
-                            </a>
-                            <a href="{{ route('research.ledger') }}"
-                                class="glass-link inline-flex w-full items-center justify-center rounded-full py-3 px-3 text-[9px] font-bold uppercase tracking-[0.2em] text-center transition-all duration-300">
-                                Direktori
-                            </a>
-                        </div>
+                        <nav class="st-links" aria-label="Pintasan">
+                            <a href="{{ route('admin.dashboard') }}" class="st-link st-link--accent">Pusat Admin</a>
+                            <a href="{{ route('research-records.index') }}" class="st-link">Catatan Riset</a>
+                            <a href="{{ route('research.ledger') }}" class="st-link">Direktori</a>
+                        </nav>
                     </form>
-
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <!-- Footer HUD -->
-    <div class="absolute bottom-4 right-6 text-[9px] sm:text-xs font-light tracking-widest text-gray-600 select-none z-20 pre-animate" data-animate="animate-fade-up" style="animation-delay: 1.6s;">
-        POWERED BY <span class="font-black text-[#1c1c1c]">RHINE LAB</span>
-    </div>
-    <div class="absolute bottom-4 left-6 text-[9px] font-mono tracking-[0.3em] uppercase text-gray-500 select-none z-20 pre-animate" data-animate="animate-fade-up" style="animation-delay: 1.8s;">
-        RHINE OS v3.2.0 · RESTRICTED ACCESS
-    </div>
+    {{-- Footer --}}
+    <footer class="st-foot rv" style="--d:.7s">
+        <span>RHINE OS v3.2.0 · Restricted access</span>
+        <span>POWERED BY <b>RHINE LAB</b></span>
+    </footer>
 </div>
 
+<noscript><style>.rv{opacity:1!important;transform:none!important}</style></noscript>
+
 <style>
+    :root {
+        --st-bg: #ECE8E5;
+        --st-ink: #1c1c1c;
+        --st-mute: #7a766f;
+        --st-line: rgba(28, 28, 28, .09);
+        --st-accent: #EA7645;
+        --st-ok: #48AA8C;
+    }
+
     .hex-bg {
-        background-color: transparent;
         background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L20 0 0 11.547v23.094l20 11.547 20-11.547V11.547zM20 45.034L1.155 34.148V12.376L20 1.49l18.845 10.886v21.772L20 45.034z' fill='%23000000' fill-opacity='0.04' fill-rule='evenodd'/%3E%3Cpath d='M40 46.188L20 34.641 0 46.188v23.094l20 11.547 20-11.547V46.188zM20 79.675L1.155 68.789V47.017L20 36.13l18.845 10.886v21.772L20 79.675z' fill='%23000000' fill-opacity='0.04' fill-rule='evenodd'/%3E%3C/svg%3E");
         background-size: 60px 103.923px;
+    }
+
+    /* =========================================
+       HALAMAN UTAMA
+       ========================================= */
+    .st-page {
+        position: relative; min-height: 100vh; min-height: 100dvh;
+        display: flex; flex-direction: column;
+        padding: clamp(16px, 3vw, 32px);
+        padding-bottom: max(clamp(16px, 3vw, 32px), env(safe-area-inset-bottom));
+        color: var(--st-ink); background: var(--st-bg);
+        font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+        overflow-x: hidden; -webkit-font-smoothing: antialiased;
+    }
+
+    /* Latar statis: gradient murah, tanpa blur layer besar */
+    .st-bg {
+        position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background:
+            radial-gradient(60rem 40rem at 0% 0%, rgba(255, 255, 255, .85), transparent 60%),
+            radial-gradient(40rem 32rem at 100% 100%, rgba(234, 118, 69, .14), transparent 62%),
+            var(--st-bg);
+    }
+    .st-bg::after {
+        content: ""; position: absolute; inset: 0; opacity: .7;
+        background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L20 0 0 11.547v23.094l20 11.547 20-11.547V11.547zM20 45.034L1.155 34.148V12.376L20 1.49l18.845 10.886v21.772L20 45.034z' fill='%23000000' fill-opacity='0.035' fill-rule='evenodd'/%3E%3C/svg%3E");
+        background-size: 60px 103.923px;
+        -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+                mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+    }
+
+    /* Reveal: satu urutan masuk, murni CSS */
+    .rv { opacity: 0; transform: translateY(8px); transition: opacity .6s ease var(--d, 0s), transform .6s cubic-bezier(.16, 1, .3, 1) var(--d, 0s); }
+    .st-page.is-in .rv { opacity: 1; transform: none; }
+
+    /* Bar atas */
+    .st-top { position: relative; z-index: 2; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+    .st-brand { display: flex; flex-direction: column; width: max-content; line-height: 1; }
+    .st-brand-1 { font-size: 22px; font-weight: 800; letter-spacing: .01em; }
+    .st-brand-2 { margin-top: 3px; font-size: 7.5px; font-weight: 500; letter-spacing: .02em; text-align-last: justify; }
+    .st-brand-3 { display: flex; justify-content: space-between; margin-top: 3px; font-size: 16px; letter-spacing: .02em; }
+    .st-brand-3 b { font-weight: 800; color: var(--st-accent); }
+    .st-live { display: inline-flex; align-items: center; gap: 8px; padding-top: 4px; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--st-mute); }
+    .st-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--st-ok); box-shadow: 0 0 0 0 rgba(72, 170, 140, .5); animation: stPulse 2.4s ease-out infinite; }
+
+    /* Layout tengah */
+    .st-main { position: relative; z-index: 2; flex: 1; display: flex; align-items: center; justify-content: center; padding: clamp(20px, 4vh, 40px) 0; }
+
+    /* Kartu: satu-satunya layer backdrop-filter di halaman */
+    .st-card {
+        position: relative; width: 100%; max-width: 760px;
+        padding: clamp(22px, 4vw, 40px); border-radius: 28px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, .62), rgba(255, 255, 255, .28));
+        border: 1px solid rgba(255, 255, 255, .85);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .95), 0 24px 48px -24px rgba(0, 0, 0, .12);
+        -webkit-backdrop-filter: blur(18px) saturate(1.15);
+                backdrop-filter: blur(18px) saturate(1.15);
+    }
+    /* kilau tipis ala liquid glass, statis */
+    .st-card::before {
+        content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+        background: linear-gradient(115deg, rgba(255, 255, 255, .5) 0%, rgba(255, 255, 255, 0) 38%);
+    }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        .st-card { background: rgba(250, 248, 246, .92); }
+    }
+
+    .st-card-head { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding-bottom: 24px; border-bottom: 1px solid var(--st-line); }
+    .st-badge { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 999px; border: 1px solid rgba(234, 118, 69, .35); background: rgba(234, 118, 69, .08); color: var(--st-accent); font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+    .st-badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--st-accent); }
+    .st-title { min-height: 1.2em; margin: 0; font-size: clamp(22px, 5.4vw, 38px); font-weight: 800; letter-spacing: .14em; line-height: 1.2; }
+    .st-title.is-typing::after { content: ""; display: inline-block; width: 2px; height: .9em; margin-left: 4px; vertical-align: -.08em; background: var(--st-accent); animation: stBlink .8s steps(2, jump-none) infinite; }
+    .st-sub { margin: 0; font-size: 13px; color: var(--st-mute); }
+
+    .st-body { position: relative; display: grid; gap: 24px; margin-top: 24px; grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .st-body { grid-template-columns: 200px 1fr; gap: 32px; align-items: start; } }
+
+    /* Profil */
+    .st-profile { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .st-avatar { position: relative; width: 144px; height: 144px; padding: 5px; border-radius: 28px; background: rgba(255, 255, 255, .6); border: 1px solid rgba(255, 255, 255, .9); box-shadow: 0 12px 24px -14px rgba(0, 0, 0, .2); }
+    @media (min-width: 760px) { .st-avatar { width: 168px; height: 168px; } }
+    .st-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 23px; }
+    .st-avatar-id { position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 3px 0; border-radius: 8px; text-align: center; font: 700 9px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .2em; color: #fff; background: rgba(0, 0, 0, .45); }
+    .st-who { text-align: center; }
+    .st-role { margin: 0; font-size: 10px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--st-accent); }
+    .st-name { margin: 4px 0 0; font-size: 18px; font-weight: 800; line-height: 1.25; }
+    .st-pos { margin: 2px 0 0; font-size: 12px; color: var(--st-mute); }
+
+    /* Info: satu panel, dua baris, tanpa blur tambahan */
+    .st-info { margin: 0; border-radius: 18px; background: rgba(255, 255, 255, .5); border: 1px solid rgba(255, 255, 255, .85); }
+    .st-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; }
+    .st-row + .st-row { border-top: 1px solid var(--st-line); }
+    .st-row dt { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--st-mute); }
+    .st-row dd { margin: 4px 0 0; font-size: 14px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+    .st-row dd.st-code { margin-top: 2px; font: 600 10px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .2em; color: var(--st-accent); }
+    .st-logo { flex: none; width: 36px; height: 36px; object-fit: contain; filter: grayscale(1); opacity: .75; }
+
+    /* Aksi */
+    .st-actions { display: flex; flex-direction: column; gap: 12px; margin: 16px 0 0; }
+    .st-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+        padding: 14px 24px; border: 1px solid var(--st-ink); border-radius: 999px; cursor: pointer;
+        font: 700 12px/1 inherit; letter-spacing: .22em; text-transform: uppercase; color: #fff; background: var(--st-ink);
+        transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
+    }
+    .st-btn:hover { background: var(--st-accent); border-color: var(--st-accent); }
+    .st-btn:active { transform: scale(.98); }
+    .st-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .st-link {
+        display: flex; align-items: center; justify-content: center; min-height: 42px; padding: 8px 6px; border-radius: 999px;
+        font-size: 11px; font-weight: 600; letter-spacing: .06em; text-align: center; text-decoration: none; color: var(--st-ink);
+        background: rgba(255, 255, 255, .5); border: 1px solid rgba(255, 255, 255, .9);
+        transition: color .2s ease, border-color .2s ease, background-color .2s ease;
+    }
+    .st-link:hover { color: var(--st-ok); border-color: var(--st-ok); background: rgba(255, 255, 255, .85); }
+    .st-link--accent { color: var(--st-accent); border-color: rgba(234, 118, 69, .35); }
+    .st-link--accent:hover { color: var(--st-accent); border-color: var(--st-accent); }
+    .st-btn:focus-visible, .st-link:focus-visible { outline: 2px solid var(--st-accent); outline-offset: 3px; }
+
+    /* Footer */
+    .st-foot { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 10px; letter-spacing: .08em; color: var(--st-mute); }
+    .st-foot b { font-weight: 800; color: var(--st-ink); }
+
+    @media (max-width: 480px) {
+        .st-card { border-radius: 24px; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+        .st-links { grid-template-columns: 1fr; }
+        .st-foot { justify-content: center; text-align: center; }
+        .st-bg::after { display: none; }
+    }
+
+    @keyframes stPulse { 0% { box-shadow: 0 0 0 0 rgba(72, 170, 140, .5); } 70%, 100% { box-shadow: 0 0 0 7px rgba(72, 170, 140, 0); } }
+    @keyframes stBlink { 50% { opacity: .2; } }
+
+    @media (prefers-reduced-motion: reduce) {
+        .rv { transition-duration: .01s; transition-delay: 0s; transform: none; }
+        .st-live-dot, .st-title.is-typing::after { animation: none; }
     }
 
     /* =========================================
@@ -230,7 +314,6 @@
     .ov-photo { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .06; }
     .ov-hex { position: absolute; inset: 0; opacity: .7; }
 
-    /* Header kiri atas */
     .ov-head {
         position: absolute; top: clamp(24px, 6vh, 60px); left: clamp(20px, 5vw, 72px);
         display: flex; flex-direction: column; width: max-content; line-height: 1;
@@ -241,7 +324,6 @@
     .ov-h3 { display: flex; justify-content: space-between; gap: .6em; margin-top: 3px; font-size: clamp(17px, 1.7vw, 23px); font-weight: 400; letter-spacing: .02em; animation-delay: .45s; }
     .ov-h3 b { font-weight: 800; }
 
-    /* Logo + ID */
     .ov-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 24px; }
     .ov-logo { flex: none; width: clamp(150px, 18vw, 230px); animation: ovWipe 1.1s .45s cubic-bezier(.65, 0, .2, 1) both; }
     .ov-logo img { display: block; width: 100%; height: auto; }
@@ -265,7 +347,6 @@
     }
     .ov.is-done .ov-role { opacity: 1; transform: none; }
 
-    /* Status kiri bawah */
     .ov-status {
         position: absolute; left: clamp(20px, 5vw, 72px); bottom: clamp(20px, 4vh, 40px);
         display: flex; align-items: center; gap: 10px;
@@ -276,7 +357,6 @@
     .ov-dot { width: 7px; height: 7px; background: #EA7645; transform: rotate(45deg); animation: ovBlink .7s steps(2, jump-none) infinite; transition: background .3s; }
     .ov-dot.is-done { background: #48AA8C; animation: none; box-shadow: 0 0 8px #48AA8C; }
 
-    /* Footer kanan bawah */
     .ov-foot {
         position: absolute; right: clamp(20px, 5vw, 72px); bottom: clamp(20px, 4vh, 40px);
         display: flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: .03em; opacity: 0;
@@ -285,7 +365,6 @@
     .ov-foot b { font-weight: 800; }
     .ov-foot-dash { display: block; height: 4px; width: 0; background: #1c1c1c; animation: ovGrow .7s 1.4s cubic-bezier(.16, 1, .3, 1) forwards; }
 
-    /* Garis progress tipis */
     .ov-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(28, 28, 28, .08); }
     .ov-progress i { position: absolute; inset: 0; background: #1c1c1c; transform-origin: left; transform: scaleX(0); transition: transform .6s cubic-bezier(.16, 1, .3, 1), background .4s; }
     .ov-progress i.is-done { background: #48AA8C; }
@@ -308,126 +387,41 @@
         .ov-h1, .ov-h2, .ov-h3, .ov-logo { animation-duration: .01s; animation-delay: 0s; }
         .ov, .ov-text { transition-duration: .01s; }
     }
-
-    /* =========================================
-       HALAMAN UTAMA
-       ========================================= */
-    @keyframes fadeUp {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-    @keyframes slideFade {
-        0% { opacity: 0; transform: translateX(-20px); }
-        100% { opacity: 1; transform: translateX(0); }
-    }
-
-    .animate-slide-fade { animation: slideFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-    .glass-card {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.25));
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        box-shadow: inset 0 1px 1px rgba(255,255,255,0.95), 0 30px 60px -20px rgba(0,0,0,0.08);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-    }
-
-    .glass-panel {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.15));
-        border: 1px solid rgba(255, 255, 255, 0.7);
-        box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), 0 10px 20px -10px rgba(0,0,0,0.04);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-    }
-
-    .glass-avatar {
-        border: 1px solid rgba(255, 255, 255, 0.85);
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
-        box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), 0 15px 30px -15px rgba(0,0,0,0.12);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-    }
-
-    .glass-button--danger {
-        color: #ffffff;
-        background: linear-gradient(135deg, #1c1c1c, #2b2b2b);
-        border: 1px solid #1c1c1c;
-        box-shadow: 0 10px 20px -8px rgba(0,0,0,0.3);
-    }
-
-    .glass-button--danger:hover {
-        background: linear-gradient(135deg, #EA7645, #d66031);
-        border-color: #EA7645;
-        box-shadow: 0 12px 25px -8px rgba(234, 118, 69, 0.4);
-        transform: translateY(-2px);
-    }
-
-    .glass-link {
-        color: #1f1f1f;
-        background: rgba(255, 255, 255, 0.45);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-    }
-
-    .glass-link:hover {
-        color: #48AA8C;
-        border-color: #48AA8C;
-        background: rgba(255, 255, 255, 0.85);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px -8px rgba(72, 170, 140, 0.3);
-    }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const wrapper = document.getElementById('pageWrapper');
+        const page = document.getElementById('pageWrapper');
         const overlay = document.getElementById('loginCompletionOverlay');
-        const animatedElems = Array.from(document.querySelectorAll('.pre-animate'));
+        const headline = document.getElementById('logoutHeadline');
         const headlineText = 'SESSION TERMINATION';
-        const headlineElem = document.getElementById('logoutHeadline');
-        let typeIndex = 0;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         const typewriter = () => {
-            if (!headlineElem) return;
+            if (!headline) return;
+            if (reduce) { headline.textContent = headlineText; return; }
 
-            if (typeIndex < headlineText.length) {
-                headlineElem.innerHTML += headlineText.charAt(typeIndex);
-                typeIndex += 1;
-                setTimeout(typewriter, 100);
-            }
-        };
-
-        const activateAnimatedElems = () => {
-            if (!animatedElems.length) return;
-
-            animatedElems.forEach((elem, index) => {
-                const animationClass = elem.getAttribute('data-animate');
-                const baseDelay = parseFloat(elem.style.animationDelay || 0);
-                elem.classList.remove('pre-animate');
-                elem.style.animationDelay = `${baseDelay + 0.2 + index * 0.1}s`;
-                if (animationClass) {
-                    requestAnimationFrame(() => elem.classList.add(animationClass));
+            let i = 0;
+            headline.classList.add('is-typing');
+            const tick = () => {
+                headline.textContent = headlineText.slice(0, ++i);
+                if (i < headlineText.length) {
+                    setTimeout(tick, 70);
+                } else {
+                    headline.classList.remove('is-typing');
                 }
-            });
-
-            setTimeout(typewriter, 400);
+            };
+            tick();
         };
 
         const revealPage = () => {
-            if (!wrapper) return;
-            wrapper.classList.remove('opacity-0');
-            requestAnimationFrame(() => wrapper.classList.add('opacity-100'));
+            if (!page) return;
+            requestAnimationFrame(() => page.classList.add('is-in'));
+            setTimeout(typewriter, 450);
         };
 
         const runOverlaySequence = async () => {
-            if (!overlay) {
-                revealPage();
-                activateAnimatedElems();
-                return;
-            }
+            if (!overlay) { revealPage(); return; }
 
             const nameEl = overlay.querySelector('[data-overlay-name]');
             const statusEl = overlay.querySelector('[data-overlay-status]');
@@ -435,7 +429,6 @@
             const barEl = overlay.querySelector('[data-overlay-progress]');
             const name = (overlay.dataset.name || '').toUpperCase();
 
-            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             const wait = (ms) => new Promise((r) => setTimeout(r, reduce ? ms * 0.3 : ms));
             const setProgress = (p) => { if (barEl) barEl.style.transform = `scaleX(${p})`; };
             const setStatus = (t) => { if (statusEl) statusEl.textContent = t; };
@@ -462,7 +455,7 @@
             await wait(1100);
 
             overlay.classList.add('is-out');
-            setTimeout(() => { revealPage(); activateAnimatedElems(); }, 350);
+            setTimeout(revealPage, 350);
             setTimeout(() => overlay.remove(), 1100);
         };
 
