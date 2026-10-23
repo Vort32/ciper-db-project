@@ -4,13 +4,13 @@
 
 @section('content')
     <!-- ==============================================
-         RHINE LAB // ULTRA-MINIMALIST LIQUID TECH BOOT
+         RHINE LAB // PURE MINIMALIST TECH BOOT
          ============================================== -->
     <div id="pageLoader" class="fixed inset-0 z-50 overflow-hidden bg-[#ECE8E5] font-sans text-[#1c1c1c] select-none flex items-center justify-center">
         
-        <!-- Ambient Glass Glow -->
-        <div class="absolute w-[32rem] h-[32rem] bg-white/70 rounded-full blur-[110px] -top-20 -left-20 z-0 pointer-events-none"></div>
-        <div class="absolute w-[28rem] h-[28rem] bg-[#EA7645]/12 rounded-full blur-[100px] bottom-0 right-0 z-0 pointer-events-none"></div>
+        <!-- Ambient Glow (Very Subtle) -->
+        <div class="absolute w-[32rem] h-[32rem] bg-white/50 rounded-full blur-[110px] -top-20 -left-20 z-0 pointer-events-none"></div>
+        <div class="absolute w-[28rem] h-[28rem] bg-[#EA7645]/10 rounded-full blur-[100px] bottom-0 right-0 z-0 pointer-events-none"></div>
 
         <!-- Shutter Top -->
         <div id="shutterTop" class="absolute top-0 left-0 w-full h-[50.1%] bg-[#ECE8E5] z-10 border-b border-black/10 transition-transform duration-[1100ms] cubic-bezier-shutter">
@@ -45,7 +45,7 @@
                 </div>
             </header>
 
-            <!-- Center Core: Fine Precision Ring & Logo -->
+            <!-- Center Core: Fine Precision Ring & Pure Logo -->
             <main class="relative z-10 flex flex-col items-center justify-center my-auto">
                 
                 <div class="relative w-[260px] h-[260px] sm:w-[300px] sm:h-[300px] flex items-center justify-center">
@@ -68,13 +68,13 @@
                                 stroke-linecap="round" class="transition-all duration-150 ease-out" />
                     </svg>
 
-                    <!-- Center Glass Card Logo -->
-                    <div class="w-28 h-28 sm:w-32 sm:h-32 p-6 rounded-3xl bg-white/40 border border-white/80 shadow-[0_20px_40px_rgba(0,0,0,0.04)] backdrop-blur-md flex items-center justify-center z-10">
-                        <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain filter contrast-125" />
+                    <!-- Center Pure Logo (No Background) -->
+                    <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center z-10">
+                        <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain filter contrast-125 drop-shadow-sm" />
                     </div>
 
                     <!-- Small Percentage Indicator in Corner -->
-                    <div class="absolute bottom-3 right-3 font-mono text-[10px] font-bold tracking-widest text-gray-500 bg-white/60 px-2 py-0.5 rounded border border-white/80 backdrop-blur-sm">
+                    <div class="absolute bottom-4 right-4 font-mono text-[9px] font-bold tracking-widest text-gray-500 px-2 py-0.5">
                         <span id="akProgressText">0</span>%
                     </div>
                 </div>
