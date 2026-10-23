@@ -4,98 +4,104 @@
 
 @section('content')
     <!-- ==============================================
-         RHINE LAB // LIQUID GLASS BOOT LOADER
+         RHINE LAB // ULTRA-MINIMALIST LIQUID TECH BOOT
          ============================================== -->
     <div id="pageLoader" class="fixed inset-0 z-50 overflow-hidden bg-[#ECE8E5] font-sans text-[#1c1c1c] select-none flex items-center justify-center">
         
-        <!-- Ambient Liquid Glow Background -->
-        <div class="absolute w-[36rem] h-[36rem] bg-white/60 rounded-full blur-[100px] -top-20 -left-20 z-0 pointer-events-none"></div>
-        <div class="absolute w-[30rem] h-[30rem] bg-[#EA7645]/15 rounded-full blur-[90px] bottom-0 right-0 z-0 pointer-events-none"></div>
-        <div class="absolute w-80 h-80 bg-[#48AA8C]/15 rounded-full blur-[90px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none"></div>
+        <!-- Ambient Glass Glow -->
+        <div class="absolute w-[32rem] h-[32rem] bg-white/70 rounded-full blur-[110px] -top-20 -left-20 z-0 pointer-events-none"></div>
+        <div class="absolute w-[28rem] h-[28rem] bg-[#EA7645]/12 rounded-full blur-[100px] bottom-0 right-0 z-0 pointer-events-none"></div>
 
-        <!-- Shutter Panel (Efek Pintu Terbuka Liquid Glass) -->
-        <div id="shutterTop" class="absolute top-0 left-0 w-full h-[50.1%] bg-[#ECE8E5] z-10 border-b border-white/60 transition-transform duration-[1200ms] cubic-bezier-shutter">
-            <div class="absolute inset-0 opacity-[0.12] pointer-events-none" style="background-image: linear-gradient(to right, #1c1c1c 1px, transparent 1px), linear-gradient(to bottom, #1c1c1c 1px, transparent 1px); background-size: 36px 36px;"></div>
-        </div>
-        <div id="shutterBottom" class="absolute bottom-0 left-0 w-full h-[50.1%] bg-[#ECE8E5] z-10 border-t border-white/60 transition-transform duration-[1200ms] cubic-bezier-shutter">
-            <div class="absolute inset-0 opacity-[0.12] pointer-events-none" style="background-image: linear-gradient(to right, #1c1c1c 1px, transparent 1px), linear-gradient(to bottom, #1c1c1c 1px, transparent 1px); background-size: 36px 36px;"></div>
-        </div>
-
-        <!-- Layer UI Utama (Liquid Glass Dashboard) -->
-        <div id="loaderUI" class="absolute inset-0 z-20 flex flex-col justify-between items-center p-8 sm:p-12 transition-opacity duration-500">
+        <!-- Shutter Top -->
+        <div id="shutterTop" class="absolute top-0 left-0 w-full h-[50.1%] bg-[#ECE8E5] z-10 border-b border-black/10 transition-transform duration-[1100ms] cubic-bezier-shutter">
+            <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image: linear-gradient(to right, #1c1c1c 1px, transparent 1px), linear-gradient(to bottom, #1c1c1c 1px, transparent 1px); background-size: 40px 40px;"></div>
             
-            <!-- Top Left & Right Liquid Glass Cards -->
-            <header class="w-full max-w-5xl flex justify-between items-center font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-[#1c1c1c] uppercase">
-                <div class="glass-pill px-4 py-2 rounded-full flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-[#EA7645] animate-pulse"></span>
-                    <span class="font-bold">RHINE LAB LLC</span>
-                    <span class="text-gray-400 font-normal">// SYSTEM_BOOT</span>
+            <!-- Corner Accents -->
+            <div class="absolute top-8 left-8 w-8 h-8 border-t border-l border-[#1c1c1c]/30"></div>
+            <div class="absolute top-8 right-8 w-8 h-8 border-t border-r border-[#1c1c1c]/30"></div>
+        </div>
+
+        <!-- Shutter Bottom -->
+        <div id="shutterBottom" class="absolute bottom-0 left-0 w-full h-[50.1%] bg-[#ECE8E5] z-10 border-t border-black/10 transition-transform duration-[1100ms] cubic-bezier-shutter">
+            <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image: linear-gradient(to right, #1c1c1c 1px, transparent 1px), linear-gradient(to bottom, #1c1c1c 1px, transparent 1px); background-size: 40px 40px;"></div>
+            
+            <!-- Corner Accents -->
+            <div class="absolute bottom-8 left-8 w-8 h-8 border-b border-l border-[#1c1c1c]/30"></div>
+            <div class="absolute bottom-8 right-8 w-8 h-8 border-b border-r border-[#1c1c1c]/30"></div>
+        </div>
+
+        <!-- Layer UI Utama -->
+        <div id="loaderUI" class="absolute inset-0 z-20 flex flex-col justify-between items-center p-8 sm:p-14 transition-opacity duration-500">
+            
+            <!-- Header Top HUD -->
+            <header class="w-full max-w-5xl flex justify-between items-center font-mono text-[9px] sm:text-[10px] tracking-[0.3em] text-[#1c1c1c] uppercase">
+                <div class="flex items-center gap-3">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#EA7645] animate-pulse"></span>
+                    <span class="font-extrabold tracking-[0.35em]">RHINE LAB LLC</span>
+                    <span class="text-gray-400 font-normal hidden sm:inline">// OS_BOOT</span>
                 </div>
-                <div class="glass-pill px-4 py-2 rounded-full flex items-center gap-2">
-                    <span class="text-gray-500">CLEARANCE:</span>
-                    <span class="font-extrabold text-[#EA7645]">LEVEL-4</span>
+                <div class="text-gray-500 text-[8px] sm:text-[9px] tracking-[0.3em]">
+                    TRIMOUNTS / COLUMBIA
                 </div>
             </header>
 
-            <!-- Pusat: Glassmorphism Floating Core & Ring Loader -->
+            <!-- Center Core: Fine Precision Ring & Logo -->
             <main class="relative z-10 flex flex-col items-center justify-center my-auto">
                 
-                <!-- Liquid Glass Ring Container -->
-                <div class="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] flex items-center justify-center">
+                <div class="relative w-[260px] h-[260px] sm:w-[300px] sm:h-[300px] flex items-center justify-center">
                     
-                    <!-- SVG Rings (Inner & Outer Motion) -->
+                    <!-- SVG Ultra-Thin Minimalist Reticle Ring -->
                     <svg class="absolute inset-0 w-full h-full" viewBox="0 0 300 300">
-                        <!-- Outer Rotating Arc -->
-                        <g class="origin-[150px_150px] animate-[spin_16s_linear_infinite]">
-                            <path d="M 60 210 A 110 110 0 1 1 250 120" fill="none" stroke="rgba(28,28,28,0.3)" stroke-width="1.5" stroke-linecap="round"/>
-                            <circle cx="250" cy="120" r="4" fill="#EA7645" />
+                        <!-- Outer Fine Track -->
+                        <circle cx="150" cy="150" r="110" stroke="rgba(28,28,28,0.12)" stroke-width="1" fill="none" stroke-dasharray="2 6" />
+
+                        <!-- Counter Rotating Thin Arc -->
+                        <g class="origin-[150px_150px] animate-[spin_20s_linear_infinite_reverse]">
+                            <path d="M 40 150 A 110 110 0 0 1 230 70" stroke="#1c1c1c" stroke-width="1.2" stroke-linecap="round" fill="none" class="opacity-40" />
+                            <circle cx="230" cy="70" r="3" fill="#EA7645" />
                         </g>
 
-                        <!-- Inner Dash Ring -->
-                        <g class="origin-[150px_150px] animate-[spin_12s_linear_infinite_reverse]">
-                            <circle cx="150" cy="150" r="70" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-dasharray="80 70" />
-                        </g>
-
-                        <!-- Dynamic Glowing Progress Circle -->
-                        <circle id="rlRingFill" cx="150" cy="150" r="92" 
-                                fill="none" stroke="#EA7645" stroke-width="3" 
-                                stroke-dasharray="578.05" stroke-dashoffset="578.05" 
+                        <!-- Main Gauge Ring -->
+                        <circle id="rlRingFill" cx="150" cy="150" r="95" 
+                                fill="none" stroke="#EA7645" stroke-width="2" 
+                                stroke-dasharray="596.9" stroke-dashoffset="596.9" 
                                 stroke-linecap="round" class="transition-all duration-150 ease-out" />
                     </svg>
 
-                    <!-- Core Logo Glass Sphere -->
-                    <div class="glass-core w-28 h-28 sm:w-36 sm:h-36 p-5 rounded-full flex items-center justify-center z-10 shadow-2xl backdrop-blur-md border border-white/80">
+                    <!-- Center Glass Card Logo -->
+                    <div class="w-28 h-28 sm:w-32 sm:h-32 p-6 rounded-3xl bg-white/40 border border-white/80 shadow-[0_20px_40px_rgba(0,0,0,0.04)] backdrop-blur-md flex items-center justify-center z-10">
                         <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain filter contrast-125" />
+                    </div>
+
+                    <!-- Small Percentage Indicator in Corner -->
+                    <div class="absolute bottom-3 right-3 font-mono text-[10px] font-bold tracking-widest text-gray-500 bg-white/60 px-2 py-0.5 rounded border border-white/80 backdrop-blur-sm">
+                        <span id="akProgressText">0</span>%
                     </div>
                 </div>
 
-                <!-- Teks Dynamic Console Di Bawah Cincin -->
-                <div class="mt-8 text-center flex flex-col items-center font-mono">
+                <!-- Terminal Log Line -->
+                <div class="mt-8 text-center font-mono">
                     <div id="centerText" class="text-xs sm:text-sm font-black tracking-[0.3em] text-[#1c1c1c] uppercase min-h-[1.5rem] transition-all duration-300">
                         ACCESS PERMISSION REQUIRED
-                    </div>
-                    <div class="flex items-center gap-2 mt-2 text-[9px] sm:text-[10px] font-bold tracking-[0.35em] text-gray-500 uppercase">
-                        <span>SYSTEM SYNC:</span>
-                        <span id="akProgressText" class="text-[#EA7645] font-black">0</span>%
                     </div>
                 </div>
             </main>
 
-            <!-- Bottom Terminal Bar Glass -->
+            <!-- Bottom Console Line -->
             <footer class="w-full max-w-5xl z-10 flex flex-col gap-2 font-mono">
-                <div class="flex justify-between items-center text-[9px] sm:text-[10px] tracking-[0.2em] text-gray-600 uppercase px-1">
+                <div class="flex justify-between items-center text-[9px] sm:text-[10px] tracking-[0.25em] text-gray-500 uppercase px-0.5">
                     <div class="flex items-center gap-2">
-                        <span id="akStatusDot" class="w-2 h-2 rounded-full bg-[#EA7645] animate-ping"></span>
-                        <span id="akStatusText" class="font-bold text-[#1c1c1c]">INITIALIZING...</span>
+                        <span id="akStatusDot" class="w-1.5 h-1.5 rounded-full bg-[#EA7645] animate-ping"></span>
+                        <span id="akStatusText" class="font-bold text-[#1c1c1c]">SYSTEM_BOOT</span>
                     </div>
-                    <div id="akConsoleOutput" class="text-[#EA7645] font-bold text-right">
-                        BOOT_SEQ
+                    <div id="akConsoleOutput" class="text-[#EA7645] font-bold">
+                        VERIFYING
                     </div>
                 </div>
 
-                <!-- Thin Modern Liquid Progress Bar -->
-                <div class="w-full h-[3px] bg-white/60 backdrop-blur-sm rounded-full overflow-hidden border border-white/80">
-                    <div id="akProgressBar" class="h-full bg-gradient-to-r from-[#EA7645] to-[#48AA8C] w-0 transition-all duration-150 ease-out"></div>
+                <!-- Ultra Thin Line -->
+                <div class="w-full h-[1.5px] bg-black/10 rounded-full overflow-hidden">
+                    <div id="akProgressBar" class="h-full bg-[#1c1c1c] w-0 transition-all duration-150 ease-out"></div>
                 </div>
             </footer>
 
@@ -200,24 +206,6 @@
     </div>
 
     <style>
-        /* =========================================
-           LIQUID GLASS STYLING & ANIMATIONS
-           ========================================= */
-        .glass-pill {
-            background: rgba(255, 255, 255, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-        }
-
-        .glass-core {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.35));
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 0 20px 40px rgba(0, 0, 0, 0.08);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-
         /* Exponential Ease Out Shutter Curve */
         .cubic-bezier-shutter {
             transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
@@ -291,7 +279,7 @@
         }
 
         /* =========================================
-           LIQUID GLASS LOADER LOGIC
+           ULTRA-MINIMALIST LOADER LOGIC
            ========================================= */
         if (loader) {
             const centerText = document.getElementById('centerText');
@@ -306,7 +294,7 @@
             const sTop = document.getElementById('shutterTop');
             const sBottom = document.getElementById('shutterBottom');
 
-            const CIRCUMFERENCE = 578.05; // 2 * PI * 92
+            const CIRCUMFERENCE = 596.9; // 2 * PI * 95
             const username = "{{ auth()->check() ? auth()->user()->name : 'OPERATIVE' }}".toUpperCase();
 
             let progressValue = 0;
@@ -325,19 +313,18 @@
                     ringFill.style.strokeDashoffset = offset;
                 }
 
-                // Dynamic Terminal Output
-                if (val < 30) {
+                if (val < 35) {
                     if (centerText) centerText.textContent = "ACCESS PERMISSION REQUIRED";
                     if (consoleOutput) consoleOutput.textContent = "ID_CHECK";
-                    if (statusText) statusText.textContent = "INITIALIZING SYSTEM...";
-                } else if (val < 65) {
+                    if (statusText) statusText.textContent = "SYSTEM_BOOT";
+                } else if (val < 70) {
                     if (centerText) centerText.textContent = `ID CONFIRMED // ${username}`;
                     if (consoleOutput) consoleOutput.textContent = "VERIFIED";
-                    if (statusText) statusText.textContent = "AUTHENTICATING...";
+                    if (statusText) statusText.textContent = "AUTHENTICATING";
                 } else if (val < 95) {
                     if (centerText) centerText.textContent = "REQUEST RECEIVED // START PROCESSING";
                     if (consoleOutput) consoleOutput.textContent = "PROCESSING";
-                    if (statusText) statusText.textContent = "DECRYPTING ARCHIVES...";
+                    if (statusText) statusText.textContent = "DECRYPTING_DATA";
                 } else {
                     if (centerText) {
                         centerText.textContent = "PERMISSION AUTHORIZED";
@@ -349,7 +336,7 @@
                         consoleOutput.classList.add('text-[#48AA8C]');
                     }
                     if (statusText) {
-                        statusText.textContent = "ACCESS GRANTED";
+                        statusText.textContent = "ACCESS_GRANTED";
                         statusText.classList.add('text-[#48AA8C]');
                     }
                     if (statusDot) {
@@ -365,7 +352,6 @@
             function finishLoading() {
                 finished = true;
 
-                // Transisi Smooth Pembukaan Loader
                 setTimeout(() => {
                     loaderUI.classList.add('opacity-0');
                     
@@ -374,9 +360,9 @@
                         sBottom.classList.add('shutter-open-bottom');
                         
                         setTimeout(revealMain, 400);
-                        setTimeout(() => loader.remove(), 1200);
-                    }, 350);
-                }, 800);
+                        setTimeout(() => loader.remove(), 1100);
+                    }, 300);
+                }, 700);
             }
 
             const progressTimer = setInterval(() => {
@@ -390,7 +376,7 @@
                     clearInterval(progressTimer);
                     finishLoading();
                 }
-            }, 50);
+            }, 45);
 
             renderProgress(0);
 
