@@ -3,7 +3,7 @@
 @section('title', 'ADMIN PANEL - RHINE LAB.LLC')
 
 @section('content')
-<div id="pageWrapper" class="relative min-h-screen bg-[#ECE8E5] text-[#1c1c1c] py-12 px-4 sm:px-8 overflow-hidden transition-opacity duration-700 opacity-0" x-data="{ activeTab: 'users' }">
+<div id="pageWrapper" class="relative min-h-screen bg-[#ECE8E5] text-[#1c1c1c] py-12 px-4 sm:px-8 overflow-x-hidden transition-opacity duration-700 opacity-0">
     
     <!-- Ambient Glass Background Glow & Grid -->
     <div class="fixed w-[50rem] h-[50rem] bg-white/70 rounded-full blur-[140px] -top-32 -left-32 z-0 pointer-events-none"></div>
@@ -31,7 +31,7 @@
     </div>
 
     <!-- MAIN CONTENT -->
-    <div class="relative z-10 max-w-7xl mx-auto mt-20 space-y-8">
+    <div class="relative z-10 max-w-7xl mx-auto mt-20 space-y-8 pb-12">
         
         <!-- TITLE BAR & TAB SWITCHER -->
         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-l-4 border-[#EA7645] pl-5 select-none pre-animate" data-animate="animate-fade-up">
@@ -40,21 +40,15 @@
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter text-[#1c1c1c] uppercase drop-shadow-sm">Pusat Kendali Admin</h1>
             </div>
             
-            <!-- Tab Buttons (HUD Style) -->
-            <div class="flex flex-wrap items-center gap-2 bg-white/30 p-1.5 rounded-full border border-white/60 backdrop-blur-md shadow-sm">
-                <button @click="activeTab = 'users'" 
-                        :class="activeTab === 'users' ? 'bg-[#1c1c1c] text-white shadow-md' : 'text-gray-600 hover:bg-white/60'" 
-                        class="px-5 py-2.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-300">
+            <!-- Tab Buttons (HUD Style) - VANILLA JS -->
+            <div class="flex flex-wrap items-center gap-2 bg-white/30 p-1.5 rounded-full border border-white/60 backdrop-blur-md shadow-sm" id="tabContainer">
+                <button onclick="switchTab('users')" id="btn-users" class="tab-btn bg-[#1c1c1c] text-white shadow-md px-5 py-2.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-300">
                     Operatif <span class="ml-1 opacity-70">({{ $users->count() }})</span>
                 </button>
-                <button @click="activeTab = 'research'" 
-                        :class="activeTab === 'research' ? 'bg-[#1c1c1c] text-white shadow-md' : 'text-gray-600 hover:bg-white/60'" 
-                        class="px-5 py-2.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-300">
+                <button onclick="switchTab('research')" id="btn-research" class="tab-btn text-gray-600 hover:bg-white/60 px-5 py-2.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-300">
                     Riset <span class="ml-1 opacity-70">({{ $records->count() }})</span>
                 </button>
-                <button @click="activeTab = 'materials'" 
-                        :class="activeTab === 'materials' ? 'bg-[#1c1c1c] text-white shadow-md' : 'text-gray-600 hover:bg-white/60'" 
-                        class="px-5 py-2.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-300">
+                <button onclick="switchTab('materials')" id="btn-materials" class="tab-btn text-gray-600 hover:bg-white/60 px-5 py-2.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-300">
                     Material <span class="ml-1 opacity-70">({{ $materials->count() }})</span>
                 </button>
             </div>
@@ -79,23 +73,25 @@
             </div>
         @endif
 
-        <!-- TAB 1: MANAJEMEN AKUN OPERATIF (USERS) -->
-        <div x-show="activeTab === 'users'" x-transition.opacity.duration.500ms class="space-y-4" x-cloak>
+        <!-- ============================================== -->
+        <!-- TAB 1: MANAJEMEN AKUN OPERATIF (USERS)         -->
+        <!-- ============================================== -->
+        <div id="tab-users" class="tab-content block space-y-4 pre-animate" data-animate="animate-fade-up">
             <div class="glass-panel p-2 sm:p-6 overflow-x-auto rounded-[2rem]">
-                <table class="w-full text-left text-xs font-semibold text-gray-700 whitespace-nowrap">
+                <table class="w-full text-left text-xs font-semibold text-gray-700 whitespace-nowrap min-w-[700px]">
                     <thead class="text-[9px] font-black uppercase tracking-[0.3em] text-gray-400 border-b-2 border-gray-300/40">
                         <tr>
                             <th class="pb-4 pl-4">Data Operatif</th>
                             <th class="pb-4">Jabatan</th>
                             <th class="pb-4">Organisasi</th>
-                            <th class="pb-4 text-right pr-4">Otorisasi</th>
+                            <th class="pb-4 text-right pr-4">Otorisasi / Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-300/30">
                         @forelse ($users as $u)
                             <tr class="hover:bg-white/40 transition-colors duration-300 group">
                                 <td class="py-4 pl-4 flex items-center gap-4">
-                                    <div class="relative h-11 w-11 rounded-xl overflow-hidden border border-white/80 shadow-sm group-hover:scale-105 transition-transform duration-300">
+                                    <div class="relative h-11 w-11 rounded-xl overflow-hidden border border-white/80 shadow-sm group-hover:scale-105 transition-transform duration-300 flex-shrink-0">
                                         <img src="{{ asset($u->photo_path ?? 'images/users/Silence.png') }}" class="h-full w-full object-cover">
                                         <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
                                     </div>
@@ -137,8 +133,10 @@
             </div>
         </div>
 
-        <!-- TAB 2: MANAJEMEN CATATAN RISET -->
-        <div x-show="activeTab === 'research'" x-transition.opacity.duration.500ms class="space-y-6" x-cloak>
+        <!-- ============================================== -->
+        <!-- TAB 2: MANAJEMEN CATATAN RISET                 -->
+        <!-- ============================================== -->
+        <div id="tab-research" class="tab-content hidden space-y-6">
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 border-l-2 border-gray-400 pl-3">Direktori Riset Global</p>
                 <a href="{{ route('research-records.create') }}" class="glass-btn glass-btn--primary">
@@ -183,8 +181,10 @@
             </div>
         </div>
 
-        <!-- TAB 3: MANAJEMEN MATERIAL -->
-        <div x-show="activeTab === 'materials'" x-transition.opacity.duration.500ms class="space-y-6" x-cloak>
+        <!-- ============================================== -->
+        <!-- TAB 3: MANAJEMEN MATERIAL                      -->
+        <!-- ============================================== -->
+        <div id="tab-materials" class="tab-content hidden space-y-6">
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 border-l-2 border-gray-400 pl-3">Inventaris Logistik & Material</p>
                 <a href="{{ route('materials.create') }}" class="glass-btn glass-btn--primary">
@@ -208,14 +208,14 @@
                             </div>
                             
                             <div class="space-y-1.5 flex-1">
-                                <p class="text-[9px] font-black uppercase tracking-widest text-[#48AA8C]">{{ $mat->category ?? 'MATERIAL' }}</p>
-                                <h3 class="text-base font-black text-[#1c1c1c] uppercase tracking-wide leading-tight">{{ $mat->name }}</h3>
+                                <p class="text-[9px] font-black uppercase tracking-widest text-[#48AA8C] line-clamp-1">{{ $mat->category ?? 'MATERIAL' }}</p>
+                                <h3 class="text-base font-black text-[#1c1c1c] uppercase tracking-wide leading-tight line-clamp-2">{{ $mat->name }}</h3>
                                 <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Tipe: {{ $mat->type ?? 'N/A' }} | Ukuran: {{ $mat->size ?? 'N/A' }}</p>
                             </div>
                         </div>
 
                         <div class="pt-4 border-t border-gray-300/50 mt-auto">
-                            <!-- Aksi Edit & Hapus (SEKARANG SUDAH ADA EDIT) -->
+                            <!-- Aksi Edit & Hapus Material -->
                             <div class="flex items-center gap-2">
                                 <a href="{{ route('materials.edit', $mat) }}" class="glass-btn flex-1 text-center justify-center !py-2 text-[9px]">Edit Data</a>
                                 <form action="{{ route('admin.materials.destroy', $mat) }}" method="post" class="flex-1" onsubmit="return confirm('Peringatan: Buang material {{ $mat->name }} dari inventaris?')">
@@ -238,8 +238,6 @@
 </div>
 
 <style>
-    [x-cloak] { display: none !important; }
-    
     /* Background Pattern */
     .bg-grid {
         background-size: 35px 35px;
@@ -248,7 +246,11 @@
             linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
     }
 
-    /* Animasi Masuk */
+    /* Base Utility for Vanilla JS Tabs */
+    .hidden { display: none !important; }
+    .block { display: block !important; }
+
+    /* Animasi Masuk Bawaan CSS */
     .pre-animate { opacity: 0; }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
@@ -297,6 +299,42 @@
 </style>
 
 <script>
+    // FUNGSI VANILLA JS UNTUK SWITCH TAB
+    function switchTab(targetId) {
+        // 1. Sembunyikan semua konten Tab
+        const contents = document.querySelectorAll('.tab-content');
+        contents.forEach(content => {
+            content.classList.add('hidden');
+            content.classList.remove('block', 'animate-fade-up');
+        });
+
+        // 2. Reset style semua tombol
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => {
+            btn.classList.remove('bg-[#1c1c1c]', 'text-white', 'shadow-md');
+            btn.classList.add('text-gray-600', 'hover:bg-white/60');
+        });
+
+        // 3. Tampilkan konten yang dipilih dengan animasi
+        const activeContent = document.getElementById('tab-' + targetId);
+        if(activeContent) {
+            activeContent.classList.remove('hidden');
+            activeContent.classList.add('block');
+            
+            // Trigger reflow untuk re-run CSS animation
+            void activeContent.offsetWidth; 
+            activeContent.classList.add('animate-fade-up');
+        }
+
+        // 4. Ubah style tombol yang aktif
+        const activeBtn = document.getElementById('btn-' + targetId);
+        if(activeBtn) {
+            activeBtn.classList.remove('text-gray-600', 'hover:bg-white/60');
+            activeBtn.classList.add('bg-[#1c1c1c]', 'text-white', 'shadow-md');
+        }
+    }
+
+    // ANIMASI HALAMAN SAAT PERTAMA LOAD
     document.addEventListener('DOMContentLoaded', () => {
         const wrapper = document.getElementById('pageWrapper');
         if (wrapper) {
@@ -304,7 +342,6 @@
             wrapper.classList.add('opacity-100');
         }
 
-        // Delay animasi untuk elemen pre-animate
         const animatedElems = document.querySelectorAll('.pre-animate');
         animatedElems.forEach((elem, index) => {
             const animationClass = elem.getAttribute('data-animate');
