@@ -72,6 +72,32 @@
             .pf-name { max-width: 220px; font-size: 13px; }
         }
 
+        /* DESKTOP: awalnya hanya avatar; saat diarahkan, pil terbuka dari avatar ke kiri */
+        @media (min-width: 900px) and (hover: hover) {
+            .pf:not(.pf--guest) {
+                padding: 4px; gap: 0;
+                background: rgba(255, 255, 255, 0); border-color: rgba(255, 255, 255, 0);
+                box-shadow: none;
+                -webkit-backdrop-filter: none; backdrop-filter: none;
+                transition: background-color .45s ease, border-color .45s ease, box-shadow .45s ease, transform .25s ease;
+            }
+            .pf:not(.pf--guest) .pf-text {
+                max-width: 0; padding-left: 0; opacity: 0; overflow: hidden;
+                transition: max-width .65s cubic-bezier(.16, 1, .3, 1), padding-left .65s cubic-bezier(.16, 1, .3, 1), opacity .25s ease;
+            }
+            .pf:not(.pf--guest):hover,
+            .pf:not(.pf--guest):focus-visible {
+                background: rgba(255, 255, 255, .62); border-color: rgba(255, 255, 255, .9);
+                box-shadow: inset 0 1px 0 #fff, 0 14px 30px -16px rgba(70, 45, 30, .4);
+                -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
+            }
+            .pf:not(.pf--guest):hover .pf-text,
+            .pf:not(.pf--guest):focus-visible .pf-text {
+                max-width: 260px; padding-left: 16px; opacity: 1;
+                transition-delay: 0s, 0s, .12s;
+            }
+        }
+
         /* ==========================================================
            LOADER  (class rl-*, tidak bergantung pada Tailwind)
            ========================================================== */
@@ -156,6 +182,15 @@
         }
         .rl-logo-ink.is-full { -webkit-mask-image: none; mask-image: none; }
 
+        /* Isi logo: gradasi oranye -> hijau, dipotong mengikuti bentuk logo */
+        .rl-logo-fill {
+            display: block; width: 100%; height: 100%;
+            background: linear-gradient(90deg, #EA7645 0%, #48AA8C 100%);
+            background: linear-gradient(in oklab 90deg, #EA7645 0%, #48AA8C 100%);
+            -webkit-mask: url('{{ asset('images/logo.png') }}') center / 100% 100% no-repeat;
+                    mask: url('{{ asset('images/logo.png') }}') center / 100% 100% no-repeat;
+        }
+
         .rl-state { margin-top: 36px; width: 100%; max-width: 320px; text-align: center; min-height: 3.4rem; }
         .rl-headline {
             font-size: 11px; font-weight: 500; letter-spacing: .32em; text-transform: uppercase; line-height: 1.6;
@@ -227,7 +262,7 @@
             <main class="rl-core">
                 <div class="rl-logo">
                     <img class="rl-logo-ghost" src="{{ asset('images/logo.png') }}" alt="Rhine Lab" decoding="async">
-                    <img id="rlLogoInk" class="rl-logo-ink" src="{{ asset('images/logo.png') }}" alt="" aria-hidden="true" decoding="async">
+                    <div id="rlLogoInk" class="rl-logo-ink" aria-hidden="true"><span class="rl-logo-fill"></span></div>
                 </div>
 
                 <div class="rl-state">
