@@ -22,10 +22,54 @@
         #pageWrapper { transition: opacity 1.2s ease, filter 1.6s cubic-bezier(.16, 1, .3, 1); }
         #pageWrapper.opacity-0 { filter: blur(10px); }
 
-        /* GLASS LOGIN BUTTON */
-        .glass-login {
-            color: #1f1f1f; background-color: rgba(255, 255, 255, 0.28); border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 8px 32px rgba(31, 31, 31, 0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        /* PROFIL / LOGIN (kanan atas) */
+        .pf-wrap {
+            position: absolute; z-index: 10; user-select: none; -webkit-user-select: none;
+            top: calc(18px + env(safe-area-inset-top, 0px)); right: 18px;
+        }
+        .pf {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 5px 5px 5px 18px; border-radius: 999px;
+            color: #1c1c1c; text-decoration: none; -webkit-tap-highlight-color: transparent;
+            background: rgba(255, 255, 255, .5); border: 1px solid rgba(255, 255, 255, .85);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 10px 26px -16px rgba(70, 45, 30, .38);
+            -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
+            transition: background-color .25s ease, box-shadow .25s ease, transform .25s ease;
+        }
+        .pf:hover { background: rgba(255, 255, 255, .78); box-shadow: inset 0 1px 0 #fff, 0 14px 30px -16px rgba(70, 45, 30, .45); }
+        .pf:active { transform: scale(.97); }
+        .pf:focus-visible { outline: 2px solid #EA7645; outline-offset: 3px; }
+
+        .pf-text { display: flex; flex-direction: column; align-items: flex-end; min-width: 0; line-height: 1.15; }
+        .pf-name { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 600; letter-spacing: .01em; }
+        .pf-meta { margin-top: 3px; font-size: 8.5px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: #8a857e; transition: color .25s ease; }
+        .pf:hover .pf-meta { color: #EA7645; }
+
+        .pf-avatar { position: relative; flex: none; width: 38px; height: 38px; }
+        .pf-avatar img { display: block; width: 100%; height: 100%; box-sizing: border-box; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, .12); }
+        .pf-live { position: absolute; right: -1px; bottom: -1px; width: 11px; height: 11px; box-sizing: border-box; border-radius: 50%; background: #48AA8C; border: 2px solid #ECE8E5; }
+
+        .pf--guest { padding: 11px 20px; }
+        .pf-login { font-size: 11px; font-weight: 600; letter-spacing: .32em; text-transform: uppercase; transition: color .25s ease; }
+        .pf--guest:hover .pf-login { color: #EA7645; }
+
+        /* Mobile kecil: hanya avatar (nama tetap tersedia untuk pembaca layar) */
+        @media (max-width: 479.98px) {
+            .pf:not(.pf--guest) { padding: 4px; gap: 0; }
+            .pf-text {
+                position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+                clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+            }
+            .pf-avatar { width: 40px; height: 40px; }
+            .pf--guest { padding: 10px 16px; }
+            .pf-login { font-size: 10px; letter-spacing: .28em; }
+        }
+        @media (min-width: 480px) and (max-width: 639.98px) {
+            .pf-name { max-width: 120px; }
+        }
+        @media (min-width: 640px) {
+            .pf-wrap { top: 24px; right: 24px; }
+            .pf-name { max-width: 220px; font-size: 13px; }
         }
 
         /* ==========================================================
@@ -239,24 +283,23 @@
             </p>
         </div>
 
-        <!-- Tombol login kanan atas -->
-        <div class="absolute top-6 right-6 z-10 select-none flex flex-col items-end space-y-2">
+        <!-- Profil / login kanan atas -->
+        <div class="pf-wrap">
             @auth
-                <a href="{{ route('logout.view') }}"
-                    class="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-black transition hover:text-[#EA7645]">
-                    Session
-                </a>
-                <div class="glass-login flex items-center gap-2 rounded-xl px-3 py-1">
-                    <span class="text-[10px] sm:text-xs font-semibold tracking-wide text-black">{{ auth()->user()->name }}</span>
-                    <span class="h-8 w-8 overflow-hidden rounded-full border border-white shadow">
-                        <img src="{{ asset(auth()->user()->photo_path ?? 'images/users/Silence.png') }}" alt="{{ auth()->user()->name }}"
-                            class="h-full w-full object-cover">
+                <a href="{{ route('logout.view') }}" class="pf" aria-label="Session: {{ auth()->user()->name }}">
+                    <span class="pf-text">
+                        <span class="pf-name">{{ auth()->user()->name }}</span>
+                        <span class="pf-meta">Session</span>
                     </span>
-                </div>
+                    <span class="pf-avatar">
+                        <img src="{{ asset(auth()->user()->photo_path ?? 'images/users/Silence.png') }}"
+                            alt="" decoding="async">
+                        <i class="pf-live" aria-hidden="true"></i>
+                    </span>
+                </a>
             @else
-                <a href="{{ route('login') }}"
-                    class="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-black transition hover:text-[#EA7645]">
-                    Login
+                <a href="{{ route('login') }}" class="pf pf--guest">
+                    <span class="pf-login">Login</span>
                 </a>
             @endauth
         </div>
