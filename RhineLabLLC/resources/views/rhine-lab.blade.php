@@ -3,151 +3,6 @@
 @section('title', 'RHINE LAB.LLC')
 
 @section('content')
-    <!-- ==============================================
-         RHINE LAB // MINIMAL BOOT
-         Satu elemen utama: logo terisi tinta mengikuti progres.
-         ============================================== -->
-    <div id="pageLoader" class="rl" role="status" aria-live="off" aria-label="Memuat Rhine Lab OS">
-
-        <!-- Shutter -->
-        <div id="shutterTop" class="rl-shutter rl-shutter--t"></div>
-        <div id="shutterBottom" class="rl-shutter rl-shutter--b"></div>
-
-        <!-- Garis celah: muncul sesaat sebelum shutter terbuka -->
-        <div class="rl-seam" aria-hidden="true"></div>
-
-        <!-- Layer UI -->
-        <div id="loaderUI" class="rl-ui">
-
-            <header class="rl-head">
-                <div class="rl-brand">
-                    <span class="rl-dot" id="akStatusDot"></span>
-                    <b>RHINE LAB LLC</b>
-                </div>
-                <div class="rl-loc">TRIMOUNTS / COLUMBIA</div>
-            </header>
-
-            <main class="rl-core">
-                <div class="rl-logo">
-                    <img class="rl-logo-ghost" src="{{ asset('images/logo.png') }}" alt="Rhine Lab" decoding="async">
-                    <img id="rlLogoInk" class="rl-logo-ink" src="{{ asset('images/logo.png') }}" alt="" aria-hidden="true" decoding="async">
-                </div>
-
-                <div class="rl-state">
-                    <div id="centerText" class="rl-headline">Access permission required</div>
-                    <div id="rlSub" class="rl-sub">&nbsp;</div>
-                </div>
-            </main>
-
-            <footer class="rl-foot">
-                <div class="rl-foot-row">
-                    <span id="akStatusText">Boot</span>
-                    <span class="rl-pct"><span id="akProgressText">0</span>%</span>
-                </div>
-                <div class="rl-line" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="rlLine">
-                    <i id="akProgressBar"></i>
-                </div>
-            </footer>
-        </div>
-    </div>
-
-    <!-- ==============================================
-         MAIN PAGE WRAPPER
-         ============================================== -->
-    <div id="pageWrapper"
-        class="min-h-screen flex flex-col justify-center items-center bg-[#ECE8E5] text-black relative overflow-hidden transition-opacity duration-[1200ms] opacity-0">
-
-        <!-- Background image dengan opacity -->
-        <div class="absolute inset-0 bg-cover bg-center"
-            style="opacity: .07; background-image: url('{{ asset('images/Rhine_Lab_HQ1.png') }}');">
-        </div>
-
-        <!-- Header kiri atas -->
-        <div class="absolute top-6 left-6 leading-tight select-none space-y-1 z-10">
-            <h1 class="text-2xl font-bold pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.2s;">RHINE LAB</h1>
-            <p class="text-[10px] tracking-[0.2em] uppercase pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.4s;">
-                SYNTHESIZE INFORMATION
-            </p>
-            <p class="text-base sm:text-lg md:text-xl pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.6s;">
-                ANALYSIS <span class="font-bold">OS</span>
-            </p>
-        </div>
-
-        <!-- Tombol login kanan atas -->
-        <div class="absolute top-6 right-6 z-10 select-none flex flex-col items-end space-y-2">
-            @auth
-                <a href="{{ route('logout.view') }}"
-                    class="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-black transition hover:text-[#EA7645]">
-                    Session
-                </a>
-                <div class="glass-login flex items-center gap-2 rounded-xl px-3 py-1">
-                    <span class="text-[10px] sm:text-xs font-semibold tracking-wide text-black">{{ auth()->user()->name }}</span>
-                    <span class="h-8 w-8 overflow-hidden rounded-full border border-white shadow">
-                        <img src="{{ asset(auth()->user()->photo_path ?? 'images/users/Silence.png') }}" alt="{{ auth()->user()->name }}"
-                            class="h-full w-full object-cover">
-                    </span>
-                </div>
-            @else
-                <a href="{{ route('login') }}"
-                    class="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-black transition hover:text-[#EA7645]">
-                    Login
-                </a>
-            @endauth
-        </div>
-
-        <!-- Konten tengah -->
-        <div class="relative z-10 flex flex-col items-center text-center space-y-6 select-none">
-
-            <!-- WELCOME TO (typewriter effect) -->
-            <h2 id="welcomeText" class="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-wide pre-animate"
-                data-animate="animate-slide-fade" style="color:black;"></h2>
-
-            <!-- RHINE LAB.LLC. -->
-            <h3 class="text-3xl sm:text-4xl md:text-5xl font-bold bg-black text-white px-5 py-1 tracking-wider shadow opacity-0 pre-animate"
-                data-animate="animate-fade-up" style="animation-delay: 1s;">
-                RHINE LAB.LLC.
-            </h3>
-
-            <!-- Navigasi minimalis -->
-            <nav class="flex space-x-8 mt-4 opacity-0 pre-animate" data-animate="animate-fade-up" style="animation-delay: 1.2s;">
-                <a href="{{ url('/rhineinfo') }}"
-                    class="nav-link relative text-gray-700 font-light tracking-wide hover:text-black transition">
-                    INFO
-                    <span class="absolute left-0 -bottom-1 w-0 h-[1px] bg-black transition-all duration-300 hover:w-full"></span>
-                </a>
-                <a href="{{ url('/gallery') }}"
-                    class="nav-link relative text-gray-700 font-light tracking-wide hover:text-black transition">
-                    RESEARCH
-                    <span class="absolute left-0 -bottom-1 w-0 h-[1px] bg-black transition-all duration-300 hover:w-full"></span>
-                </a>
-                <a href="{{ route('research.ledger') }}"
-                    class="nav-link relative text-gray-700 font-light tracking-wide hover:text-black transition">
-                    USER
-                    <span class="absolute left-0 -bottom-1 w-0 h-[1px] bg-black transition-all duration-300 hover:w-full"></span>
-                </a>
-            </nav>
-
-            <!-- Logo Tengah dengan zoom out -->
-            <div class="flex flex-col items-center mt-6 select-none opacity-0 pre-animate"
-                data-animate="animate-zoom-out" style="animation-delay: 1.4s;">
-                <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab Logo"
-                    class="w-44 h-44 sm:w-52 sm:h-52 object-contain" />
-            </div>
-        </div>
-
-        <!-- Footer kanan bawah  -->
-        <div class="absolute bottom-3 right-3 text-[10px] sm:text-xs md:text-sm lg:text-base font-light select-none opacity-0 pre-animate z-10"
-            data-animate="animate-fade-up" style="animation-delay: 1.6s;">
-            POWERED BY <span class="font-bold">RHINE LAB</span>
-        </div>
-
-        <!-- Footer tengah bawah -->
-        <div class="absolute bottom-2 w-full text-center text-xs text-gray-600 select-none opacity-0 pre-animate z-10"
-            data-animate="animate-fade-up" style="animation-delay: 1.8s;">
-            Internal Database
-        </div>
-    </div>
-
     <style>
         /* ==========================================================
            PAGE ANIMATIONS
@@ -301,6 +156,163 @@
         }
     </style>
 
+    <!-- ==============================================
+         RHINE LAB // MINIMAL BOOT
+         Satu elemen utama: logo terisi tinta mengikuti progres.
+         ============================================== -->
+    <div id="pageLoader" class="rl" role="status" aria-live="off" aria-label="Memuat Rhine Lab OS">
+
+        <!-- Shutter -->
+        <div id="shutterTop" class="rl-shutter rl-shutter--t"></div>
+        <div id="shutterBottom" class="rl-shutter rl-shutter--b"></div>
+
+        <!-- Garis celah: muncul sesaat sebelum shutter terbuka -->
+        <div class="rl-seam" aria-hidden="true"></div>
+
+        <!-- Layer UI -->
+        <div id="loaderUI" class="rl-ui">
+
+            <header class="rl-head">
+                <div class="rl-brand">
+                    <span class="rl-dot" id="akStatusDot"></span>
+                    <b>RHINE LAB LLC</b>
+                </div>
+                <div class="rl-loc">TRIMOUNTS / COLUMBIA</div>
+            </header>
+
+            <main class="rl-core">
+                <div class="rl-logo">
+                    <img class="rl-logo-ghost" src="{{ asset('images/logo.png') }}" alt="Rhine Lab" decoding="async">
+                    <img id="rlLogoInk" class="rl-logo-ink" src="{{ asset('images/logo.png') }}" alt="" aria-hidden="true" decoding="async">
+                </div>
+
+                <div class="rl-state">
+                    <div id="centerText" class="rl-headline">Access permission required</div>
+                    <div id="rlSub" class="rl-sub">&nbsp;</div>
+                </div>
+            </main>
+
+            <footer class="rl-foot">
+                <div class="rl-foot-row">
+                    <span id="akStatusText">Boot</span>
+                    <span class="rl-pct"><span id="akProgressText">0</span>%</span>
+                </div>
+                <div class="rl-line" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="rlLine">
+                    <i id="akProgressBar"></i>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Loader hanya tampil sekali per sesi browser. Bila sudah pernah, hapus sebelum dirender. -->
+    <script>
+        (function () {
+            try {
+                if (sessionStorage.getItem('rl_boot_seen') === '1') {
+                    var l = document.getElementById('pageLoader');
+                    if (l) l.remove();
+                }
+            } catch (e) {}
+        })();
+    </script>
+
+
+    <!-- ==============================================
+         MAIN PAGE WRAPPER
+         ============================================== -->
+    <div id="pageWrapper"
+        class="min-h-screen flex flex-col justify-center items-center bg-[#ECE8E5] text-black relative overflow-hidden transition-opacity duration-[1200ms] opacity-0">
+
+        <!-- Background image dengan opacity -->
+        <div class="absolute inset-0 bg-cover bg-center"
+            style="opacity: .07; background-image: url('{{ asset('images/Rhine_Lab_HQ1.png') }}');">
+        </div>
+
+        <!-- Header kiri atas -->
+        <div class="absolute top-6 left-6 leading-tight select-none space-y-1 z-10">
+            <h1 class="text-2xl font-bold pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.2s;">RHINE LAB</h1>
+            <p class="text-[10px] tracking-[0.2em] uppercase pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.4s;">
+                SYNTHESIZE INFORMATION
+            </p>
+            <p class="text-base sm:text-lg md:text-xl pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.6s;">
+                ANALYSIS <span class="font-bold">OS</span>
+            </p>
+        </div>
+
+        <!-- Tombol login kanan atas -->
+        <div class="absolute top-6 right-6 z-10 select-none flex flex-col items-end space-y-2">
+            @auth
+                <a href="{{ route('logout.view') }}"
+                    class="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-black transition hover:text-[#EA7645]">
+                    Session
+                </a>
+                <div class="glass-login flex items-center gap-2 rounded-xl px-3 py-1">
+                    <span class="text-[10px] sm:text-xs font-semibold tracking-wide text-black">{{ auth()->user()->name }}</span>
+                    <span class="h-8 w-8 overflow-hidden rounded-full border border-white shadow">
+                        <img src="{{ asset(auth()->user()->photo_path ?? 'images/users/Silence.png') }}" alt="{{ auth()->user()->name }}"
+                            class="h-full w-full object-cover">
+                    </span>
+                </div>
+            @else
+                <a href="{{ route('login') }}"
+                    class="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-black transition hover:text-[#EA7645]">
+                    Login
+                </a>
+            @endauth
+        </div>
+
+        <!-- Konten tengah -->
+        <div class="relative z-10 flex flex-col items-center text-center space-y-6 select-none">
+
+            <!-- WELCOME TO (typewriter effect) -->
+            <h2 id="welcomeText" class="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-wide pre-animate"
+                data-animate="animate-slide-fade" style="color:black;"></h2>
+
+            <!-- RHINE LAB.LLC. -->
+            <h3 class="text-3xl sm:text-4xl md:text-5xl font-bold bg-black text-white px-5 py-1 tracking-wider shadow opacity-0 pre-animate"
+                data-animate="animate-fade-up" style="animation-delay: 1s;">
+                RHINE LAB.LLC.
+            </h3>
+
+            <!-- Navigasi minimalis -->
+            <nav class="flex space-x-8 mt-4 opacity-0 pre-animate" data-animate="animate-fade-up" style="animation-delay: 1.2s;">
+                <a href="{{ url('/rhineinfo') }}"
+                    class="nav-link relative text-gray-700 font-light tracking-wide hover:text-black transition">
+                    INFO
+                    <span class="absolute left-0 -bottom-1 w-0 h-[1px] bg-black transition-all duration-300 hover:w-full"></span>
+                </a>
+                <a href="{{ url('/gallery') }}"
+                    class="nav-link relative text-gray-700 font-light tracking-wide hover:text-black transition">
+                    RESEARCH
+                    <span class="absolute left-0 -bottom-1 w-0 h-[1px] bg-black transition-all duration-300 hover:w-full"></span>
+                </a>
+                <a href="{{ route('research.ledger') }}"
+                    class="nav-link relative text-gray-700 font-light tracking-wide hover:text-black transition">
+                    USER
+                    <span class="absolute left-0 -bottom-1 w-0 h-[1px] bg-black transition-all duration-300 hover:w-full"></span>
+                </a>
+            </nav>
+
+            <!-- Logo Tengah dengan zoom out -->
+            <div class="flex flex-col items-center mt-6 select-none opacity-0 pre-animate"
+                data-animate="animate-zoom-out" style="animation-delay: 1.4s;">
+                <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab Logo"
+                    class="w-44 h-44 sm:w-52 sm:h-52 object-contain" />
+            </div>
+        </div>
+
+        <!-- Footer kanan bawah  -->
+        <div class="absolute bottom-3 right-3 text-[10px] sm:text-xs md:text-sm lg:text-base font-light select-none opacity-0 pre-animate z-10"
+            data-animate="animate-fade-up" style="animation-delay: 1.6s;">
+            POWERED BY <span class="font-bold">RHINE LAB</span>
+        </div>
+
+        <!-- Footer tengah bawah -->
+        <div class="absolute bottom-2 w-full text-center text-xs text-gray-600 select-none opacity-0 pre-animate z-10"
+            data-animate="animate-fade-up" style="animation-delay: 1.8s;">
+            Internal Database
+        </div>
+    </div>
     <script>
         const wrapper = document.getElementById('pageWrapper');
         const loader = document.getElementById('pageLoader');
@@ -424,6 +436,7 @@
 
             function finishLoading() {
                 finished = true;
+                try { sessionStorage.setItem('rl_boot_seen', '1'); } catch (e) {}
 
                 const k = reduce ? 0.3 : 1; // percepat bila reduced-motion
 
