@@ -13,6 +13,9 @@
         <div id="shutterTop" class="rl-shutter rl-shutter--t"></div>
         <div id="shutterBottom" class="rl-shutter rl-shutter--b"></div>
 
+        <!-- Garis celah: muncul sesaat sebelum shutter terbuka -->
+        <div class="rl-seam" aria-hidden="true"></div>
+
         <!-- Layer UI -->
         <div id="loaderUI" class="rl-ui">
 
@@ -160,6 +163,10 @@
 
         .fade-out { opacity: 0; }
 
+        /* Halaman utama: mulai agak kabur, lalu menajam saat shutter terbuka */
+        #pageWrapper { transition: opacity 1.2s ease, filter 1.6s cubic-bezier(.16, 1, .3, 1); }
+        #pageWrapper.opacity-0 { filter: blur(10px); }
+
         /* GLASS LOGIN BUTTON */
         .glass-login {
             color: #1f1f1f; background-color: rgba(255, 255, 255, 0.28); border: 1px solid rgba(255, 255, 255, 0.6);
@@ -197,6 +204,20 @@
         .shutter-open-top { transform: translateY(-101%); }
         .shutter-open-bottom { transform: translateY(101%); }
 
+        /* Bayangan lembut di tepi shutter saat membuka */
+        .rl-shutter { transition: transform 1.2s cubic-bezier(.76, 0, .18, 1), box-shadow .8s ease; }
+        .rl.is-opening .rl-shutter--t { box-shadow: 0 30px 70px -24px rgba(70, 45, 30, .28); }
+        .rl.is-opening .rl-shutter--b { box-shadow: 0 -30px 70px -24px rgba(70, 45, 30, .28); }
+
+        /* Garis celah di tengah */
+        .rl-seam {
+            position: absolute; left: 0; right: 0; top: 50%; height: 1px; z-index: 15; pointer-events: none;
+            background: linear-gradient(90deg, transparent, var(--rl-accent) 25%, var(--rl-accent) 75%, transparent);
+            opacity: 0; transform: scaleX(0);
+        }
+        .rl.is-seam .rl-seam { opacity: .85; transform: scaleX(1); transition: transform .55s cubic-bezier(.65, 0, .2, 1), opacity .3s ease; }
+        .rl.is-opening .rl-seam { opacity: 0; transition: opacity .35s ease; }
+
         /* Layer UI */
         .rl-ui {
             position: absolute; inset: 0; z-index: 20;
@@ -204,7 +225,10 @@
             padding: calc(28px + env(safe-area-inset-top, 0px)) 28px calc(28px + env(safe-area-inset-bottom, 0px));
             transition: opacity .5s ease;
         }
-        .rl-ui.is-hidden { opacity: 0; }
+        .rl-ui.is-hidden {
+            opacity: 0; transform: scale(.98); filter: blur(3px);
+            transition: opacity .6s ease, transform .9s cubic-bezier(.16, 1, .3, 1), filter .6s ease;
+        }
 
         .rl-head, .rl-core, .rl-foot { opacity: 0; animation: rlIn 1s cubic-bezier(.16, 1, .3, 1) forwards; }
         .rl-head { animation-delay: .15s; }
@@ -343,7 +367,7 @@
             // Tahapan boot
             const STAGES = [
                 { at: 0,  head: 'Access permission required', sub: '',         stat: 'Boot' },
-                { at: 35, head: 'ID confirmed',               sub: username,   stat: 'Auth' },
+                { at: 35, head: 'ID confirmed // ' + username, sub: '',       stat: 'Auth' },
                 { at: 70, head: 'Processing request',         sub: '',         stat: 'Decrypt' },
                 { at: 95, head: 'Access granted',             sub: '',         stat: 'Ready' },
             ];
@@ -401,17 +425,28 @@
             function finishLoading() {
                 finished = true;
 
+                const k = reduce ? 0.3 : 1; // percepat bila reduced-motion
+
+                // 1) tahan sebentar di 100%
                 setTimeout(() => {
+                    // 2) UI memudar halus
                     loaderUI.classList.add('is-hidden');
 
                     setTimeout(() => {
-                        sTop.classList.add('shutter-open-top');
-                        sBottom.classList.add('shutter-open-bottom');
+                        // 3) garis celah muncul di tengah
+                        loader.classList.add('is-seam');
 
-                        setTimeout(revealMain, 400);
-                        setTimeout(() => loader.remove(), 1100);
-                    }, 300);
-                }, reduce ? 300 : 700);
+                        setTimeout(() => {
+                            // 4) shutter terbuka, halaman muncul dari balik shutter
+                            loader.classList.add('is-opening');
+                            sTop.classList.add('shutter-open-top');
+                            sBottom.classList.add('shutter-open-bottom');
+
+                            setTimeout(revealMain, 150 * k);
+                            setTimeout(() => loader.remove(), 1400 * k + 100);
+                        }, 450 * k);
+                    }, 450 * k);
+                }, 700 * k);
             }
 
             // Progres: langkah acak, jeda sedikit di pergantian tahap
@@ -429,7 +464,8 @@
                 if (value >= 100) { finishLoading(); return; }
 
                 let delay = reduce ? 40 : rand(35, 80);
-                if (!reduce && ((prev < 35 && value >= 35) || (prev < 70 && value >= 70))) delay += 260;
+                if (!reduce && prev < 35 && value >= 35) delay += 900;       // tahan di "ID confirmed" agar terbaca
+                else if (!reduce && prev < 70 && value >= 70) delay += 260;
                 if (value >= cap) delay = 120; // menunggu halaman selesai dimuat
 
                 setTimeout(tick, delay);
