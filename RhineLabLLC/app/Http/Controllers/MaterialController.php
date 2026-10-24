@@ -10,24 +10,25 @@ use Illuminate\Support\Facades\Http;
 
 class MaterialController extends Controller
 {
-    public function index()
-    {
-        $materials = Material::latest()->get();
-        return view('research-records.material_create', compact('materials'));
-    }
+    // Redirect halaman standar kembali ke Dashboard karena kita pakai panel Slide-Out
+    public function index() { return redirect()->route('admin.dashboard'); }
+    public function create() { return redirect()->route('admin.dashboard'); }
+    public function edit(Material $material) { return redirect()->route('admin.dashboard'); }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'     => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'type'     => 'required|string|max:255',
-            'file'     => 'nullable|image|mimes:png,jpg,jpeg,webp|max:4096',
+            'name'        => 'required|string|max:255',
+            'category'    => 'nullable|string|max:255',
+            'type'        => 'nullable|string|max:255',
+            'size'        => 'nullable|string|max:255',
+            'file_upload' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:4096',
         ]);
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
+        if ($request->hasFile('file_upload')) {
+            $file = $request->file('file_upload');
             
+            // Kalkulasi ukuran otomatis 
             $bytes = $file->getSize();
             if ($bytes >= 1048576) {
                 $validated['size'] = number_format($bytes / 1048576, 1) . ' MB';
@@ -39,26 +40,29 @@ class MaterialController extends Controller
 
             $validated['file_path'] = $this->storeMaterialImage($file);
         } else {
-            $validated['size'] = '1.0 MB';
+            // Default jika tidak ada file (mempertahankan behavior kodemu)
+            $validated['size'] = $validated['size'] ?? '1.0 MB';
             $validated['file_path'] = 'images/materials/Module_Data_Block.png';
         }
 
+        unset($validated['file_upload']);
         Material::create($validated);
 
-        return redirect()->back()->with('status', 'Material berhasil ditambahkan!');
+        return redirect()->route('admin.dashboard')->with('status', 'Material berhasil ditambahkan!');
     }
 
     public function update(Request $request, Material $material)
     {
         $validated = $request->validate([
-            'name'     => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'type'     => 'required|string|max:255',
-            'file'     => 'nullable|image|mimes:png,jpg,jpeg,webp|max:4096',
+            'name'        => 'required|string|max:255',
+            'category'    => 'nullable|string|max:255',
+            'type'        => 'nullable|string|max:255',
+            'size'        => 'nullable|string|max:255',
+            'file_upload' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:4096',
         ]);
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
+        if ($request->hasFile('file_upload')) {
+            $file = $request->file('file_upload');
             
             $bytes = $file->getSize();
             if ($bytes >= 1048576) {
@@ -72,15 +76,16 @@ class MaterialController extends Controller
             $validated['file_path'] = $this->storeMaterialImage($file);
         }
 
+        unset($validated['file_upload']);
         $material->update($validated);
 
-        return redirect()->route('materials.index')->with('status', 'Material berhasil diperbarui!');
+        return redirect()->route('admin.dashboard')->with('status', 'Material berhasil diperbarui!');
     }
 
     public function destroy(Material $material)
     {
         $material->delete();
-        return redirect()->back()->with('status', 'Material berhasil dihapus!');
+        return redirect()->route('admin.dashboard')->with('status', 'Material berhasil dihapus!');
     }
 
     /**

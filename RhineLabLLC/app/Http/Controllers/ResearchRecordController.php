@@ -6,7 +6,6 @@ use App\Models\Division;
 use App\Models\Material;
 use App\Models\ResearchProject;
 use App\Models\ResearchRecord;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -20,9 +19,6 @@ use Illuminate\View\View;
 
 class ResearchRecordController extends Controller
 {
-    /**
-     * Menampilkan daftar catatan riset milik operatif yang sedang login.
-     */
     public function index(): View
     {
         $userId = Auth::id();
@@ -36,9 +32,6 @@ class ResearchRecordController extends Controller
         return view('research-records.index', compact('records'));
     }
 
-    /**
-     * Menampilkan formulir pembuatan catatan riset baru.
-     */
     public function create(): View
     {
         return view('research-records.create', [
@@ -49,9 +42,6 @@ class ResearchRecordController extends Controller
         ]);
     }
 
-    /**
-     * Menyimpan catatan riset baru ke database.
-     */
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
@@ -116,9 +106,6 @@ class ResearchRecordController extends Controller
         return redirect()->route('research-records.index')->with('status', 'Catatan riset berhasil dibuat!');
     }
 
-    /**
-     * Menampilkan detail catatan riset.
-     */
     public function show(ResearchRecord $researchRecord): View
     {
         $this->ensureOwnership($researchRecord);
@@ -126,9 +113,6 @@ class ResearchRecordController extends Controller
         return view('research-records.show', ['record' => $researchRecord]);
     }
 
-    /**
-     * Menampilkan formulir edit catatan riset.
-     */
     public function edit(ResearchRecord $researchRecord): View
     {
         $this->ensureOwnership($researchRecord);
@@ -141,9 +125,6 @@ class ResearchRecordController extends Controller
         ]);
     }
 
-    /**
-     * Memperbarui data catatan riset.
-     */
     public function update(Request $request, ResearchRecord $researchRecord): RedirectResponse
     {
         $this->ensureOwnership($researchRecord);
@@ -213,9 +194,6 @@ class ResearchRecordController extends Controller
         return redirect()->route('research-records.index')->with('status', 'Catatan riset berhasil diperbarui!');
     }
 
-    /**
-     * Menghapus catatan riset.
-     */
     public function destroy(ResearchRecord $researchRecord): RedirectResponse
     {
         $this->ensureOwnership($researchRecord);
@@ -227,9 +205,6 @@ class ResearchRecordController extends Controller
         return redirect()->route('research-records.index')->with('status', 'Catatan riset berhasil dihapus!');
     }
 
-    /**
-     * Mengunduh berkas riset.
-     */
     public function download(ResearchRecord $researchRecord)
     {
         if (!$researchRecord->file_path) {
@@ -247,10 +222,22 @@ class ResearchRecordController extends Controller
         return Response::download($fullPath);
     }
 
+    /**
+     * BYPASS ADMIN AUTHORIZATION
+     */
     protected function ensureOwnership(ResearchRecord $record): void
     {
-        if ($record->user_id !== Auth::id()) {
-            abort(403, 'Anda tidak memiliki akses ke catatan riset ini.');
+        $user = Auth::user();
+        
+        // Cek apakah user adalah Admin
+        $isAdmin = $user->email === 'admin@rhine-lab.com' 
+                || str_contains(strtolower($user->position ?? ''), 'admin') 
+                || ($user->is_admin ?? false)
+                || (($user->role ?? null) === 'admin');
+
+        // Jika bukan pembuat catatan dan BUKAN admin, tolak akses
+        if ($record->user_id !== $user->id && !$isAdmin) {
+            abort(403, 'ANDA TIDAK MEMILIKI AKSES KE CATATAN RISET INI.');
         }
     }
 
@@ -283,9 +270,6 @@ class ResearchRecordController extends Controller
         return $code;
     }
 
-    /**
-     * Menyimpan file dengan aman ke Supabase Storage (Bucket 'Uploads').
-     */
     protected function storeFile(UploadedFile $file, string $subfolder): string
     {
         $filename = uniqid($subfolder . '_', true) . '.' . $file->getClientOriginalExtension();
