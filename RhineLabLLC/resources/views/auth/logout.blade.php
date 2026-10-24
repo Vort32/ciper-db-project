@@ -33,6 +33,7 @@
 
         <div class="ov-photo" style="background-image: url('{{ asset('images/Rhine_Lab_HQ1.png') }}');"></div>
         <div class="ov-hex hex-bg"></div>
+        <div class="ov-glow" aria-hidden="true"></div>
 
         <div class="ov-head">
             <div class="ov-h1">RHINE LAB</div>
@@ -48,10 +49,16 @@
                 <div class="ov-line">
                     <span class="ov-dash"></span>
                     <span class="ov-label">ID CONFIRMED :</span>
-                    <span class="ov-name" data-overlay-name></span><span class="ov-caret"></span>
+                    <span class="ov-namewrap"><span class="ov-name" data-overlay-name></span><span class="ov-caret"></span></span>
                 </div>
                 <div class="ov-role">{{ $user->position ?? ($user->is_division_head ? 'Kepala Divisi' : 'Operatif') }}</div>
             </div>
+        </div>
+
+        <div class="ov-steps" aria-hidden="true">
+            <i data-overlay-step></i>
+            <i data-overlay-step></i>
+            <i data-overlay-step></i>
         </div>
 
         <div class="ov-status">
@@ -251,7 +258,7 @@
     }
 
     .en-tag { margin: 0; font: 700 10px/1.4 var(--en-mono); letter-spacing: .24em; text-transform: uppercase; color: var(--en-accent); }
-    .en-title { min-height: 1.15em; margin: 10px 0 0; font-size: clamp(26px, 8vw, 44px); font-weight: 900; letter-spacing: .06em; line-height: 1.1; }
+    .en-title { min-height: 1.15em; margin: 10px 0 0; font-size: clamp(26px, 8vw, 44px); font-weight: 900; letter-spacing: .06em; line-height: 1.1; overflow-wrap: anywhere; }
     .en-title.is-typing::after { content: ""; display: inline-block; width: 3px; height: .85em; margin-left: 6px; vertical-align: -.05em; background: var(--en-accent); animation: enBlink .8s steps(2, jump-none) infinite; }
     .en-rule { position: relative; height: 1px; margin: 16px 0 12px; background: var(--en-line); }
     .en-rule i { position: absolute; left: 0; top: -1px; width: 56px; height: 3px; background: var(--en-accent); }
@@ -275,6 +282,7 @@
     .en-btn-label { flex: 1; padding: 0 20px; text-align: left; font-size: 12px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; }
     .en-btn-icon { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(160deg, #f08a5b, #d66031); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), 0 4px 10px -4px rgba(234, 118, 69, .7); }
     .en-btn:hover { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .32), inset 0 -8px 14px -10px rgba(234, 118, 69, .7), 0 16px 28px -12px rgba(234, 118, 69, .5); }
+    .en-btn:focus-visible, .en-link:focus-visible { outline: 2px solid var(--en-accent); outline-offset: 3px; }
     .en-links { display: flex; flex-wrap: wrap; gap: 8px; }
     .en-link {
         padding: 9px 16px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: .05em; text-decoration: none; color: var(--en-ink);
@@ -312,17 +320,34 @@
     @keyframes enPulse { 0% { box-shadow: 0 0 0 0 rgba(72, 170, 140, .5); } 70%, 100% { box-shadow: 0 0 0 7px rgba(72, 170, 140, 0); } }
     @keyframes enBlink { 50% { opacity: .2; } }
 
-    /* OVERLAY ID CONFIRMED */
-    .ov { position: fixed; inset: 0; z-index: 50; overflow: hidden; background: #ECE8E5; color: #1c1c1c; font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif; clip-path: inset(0 0 0 0); transition: clip-path .9s cubic-bezier(.77, 0, .18, 1); }
+    /* ==========================================================
+       OVERLAY ID CONFIRMED  (desktop = logo kiri, teks kanan)
+       ========================================================== */
+    .ov {
+        position: fixed; inset: 0; z-index: 9999; overflow: hidden;
+        width: 100%; height: 100vh; height: 100dvh;
+        background: #ECE8E5; color: #1c1c1c;
+        font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        clip-path: inset(0 0 0 0); transition: clip-path .9s cubic-bezier(.77, 0, .18, 1);
+    }
     .ov.is-out { clip-path: inset(0 0 100% 0); }
     .ov-photo { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .06; }
     .ov-hex { position: absolute; inset: 0; opacity: .7; }
+    .ov-glow {
+        position: absolute; inset: 0; pointer-events: none;
+        background:
+            radial-gradient(28rem 28rem at 80% 20%, rgba(234, 118, 69, .16), transparent 66%),
+            radial-gradient(26rem 26rem at 20% 90%, rgba(72, 170, 140, .14), transparent 66%);
+    }
+
     .ov-head { position: absolute; top: clamp(24px, 6vh, 60px); left: clamp(20px, 5vw, 72px); display: flex; flex-direction: column; width: max-content; line-height: 1; }
     .ov-h1, .ov-h2, .ov-h3 { opacity: 0; animation: ovSlide .8s cubic-bezier(.16, 1, .3, 1) forwards; }
     .ov-h1 { font-size: clamp(22px, 2.2vw, 30px); font-weight: 800; letter-spacing: .01em; animation-delay: .15s; }
     .ov-h2 { font-size: clamp(7.5px, .68vw, 9.5px); font-weight: 500; letter-spacing: .02em; margin-top: 3px; text-align-last: justify; animation-delay: .3s; }
     .ov-h3 { display: flex; justify-content: space-between; gap: .6em; margin-top: 3px; font-size: clamp(17px, 1.7vw, 23px); font-weight: 400; letter-spacing: .02em; animation-delay: .45s; }
     .ov-h3 b { font-weight: 800; }
+
     .ov-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 24px; }
     .ov-logo { flex: none; width: clamp(150px, 18vw, 230px); animation: ovWipe 1.1s .45s cubic-bezier(.65, 0, .2, 1) both; }
     .ov-logo img { display: block; width: 100%; height: auto; }
@@ -331,11 +356,15 @@
     .ov-line { display: flex; align-items: center; gap: 10px; font-size: clamp(13px, 1.25vw, 16px); letter-spacing: .04em; }
     .ov-dash { width: 8px; height: 2px; background: #1c1c1c; flex: none; }
     .ov-label { color: #4a4743; }
+    .ov-namewrap { display: inline-flex; align-items: center; }
     .ov-name { font-weight: 700; }
-    .ov-caret { width: 2px; height: 1.15em; background: #EA7645; animation: ovBlink .8s steps(2, jump-none) infinite; transition: opacity .3s; }
+    .ov-caret { flex: none; width: 2px; height: 1.15em; background: #EA7645; animation: ovBlink .8s steps(2, jump-none) infinite; transition: opacity .3s; }
     .ov.is-done .ov-caret { opacity: 0; animation: none; }
     .ov-role { margin: 8px 0 0 18px; font-size: 10px; letter-spacing: .32em; font-weight: 700; text-transform: uppercase; color: #7a766f; opacity: 0; transform: translateY(4px); transition: opacity .6s ease, transform .6s ease; }
     .ov.is-done .ov-role { opacity: 1; transform: none; }
+
+    .ov-steps { display: none; }
+
     .ov-status { position: absolute; left: clamp(20px, 5vw, 72px); bottom: clamp(20px, 4vh, 40px); display: flex; align-items: center; gap: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 9px; letter-spacing: .3em; font-weight: 700; color: #7a766f; opacity: 0; animation: ovFade .8s .9s ease forwards; }
     .ov-dot { width: 7px; height: 7px; background: #EA7645; transform: rotate(45deg); animation: ovBlink .7s steps(2, jump-none) infinite; transition: background .3s; }
     .ov-dot.is-done { background: #48AA8C; animation: none; box-shadow: 0 0 8px #48AA8C; }
@@ -351,6 +380,178 @@
     @keyframes ovFade { to { opacity: 1; } }
     @keyframes ovBlink { 50% { opacity: .25; } }
     @keyframes ovGrow { to { width: 18px; } }
+    @keyframes ovRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+    /* ==========================================================
+       OVERLAY: MOBILE  (logo di atas, kartu identitas di bawahnya)
+       ========================================================== */
+    @media (max-width: 720px) {
+        .ov-head {
+            top: calc(22px + env(safe-area-inset-top, 0px));
+            left: 22px;
+        }
+        .ov-h1 { font-size: 20px; }
+        .ov-h2 { font-size: 7px; }
+        .ov-h3 { font-size: 15px; }
+
+        /* Susunan vertikal, sedikit di atas tengah supaya seimbang dengan footer */
+        .ov-stage {
+            flex-direction: column;
+            justify-content: center;
+            padding: 72px 22px 150px;
+        }
+        .ov-logo { width: clamp(128px, 40vw, 176px); }
+
+        /* Teks menjadi kartu kaca; animasi buka memakai tinggi, bukan lebar */
+        .ov-text {
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 340px;
+            max-height: 0;
+            margin-top: 0;
+            padding: 0 20px;
+            border-radius: 22px;
+            text-align: center;
+            white-space: normal;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .7), rgba(255, 255, 255, .28));
+            border: 1px solid rgba(255, 255, 255, .85);
+            box-shadow:
+                inset 0 1.5px 0 rgba(255, 255, 255, .95),
+                inset 0 -14px 24px -18px rgba(234, 118, 69, .25),
+                0 22px 40px -22px rgba(70, 45, 30, .35);
+            -webkit-backdrop-filter: blur(10px) saturate(1.4);
+                    backdrop-filter: blur(10px) saturate(1.4);
+            transition:
+                max-height .9s cubic-bezier(.65, 0, .2, 1),
+                margin-top .9s cubic-bezier(.65, 0, .2, 1),
+                padding .9s cubic-bezier(.65, 0, .2, 1),
+                opacity .5s .2s ease;
+        }
+        .ov.is-id .ov-text {
+            max-width: 340px;
+            max-height: 240px;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .ov-line {
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+        .ov-dash { width: 28px; height: 3px; background: #EA7645; }
+        .ov-label {
+            font-family: var(--en-mono);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .28em;
+            color: #7a766f;
+        }
+        .ov-namewrap {
+            display: block;
+            max-width: 100%;
+            min-height: 1.3em;
+            font-size: clamp(18px, 5.8vw, 24px);
+            line-height: 1.25;
+            letter-spacing: .05em;
+        }
+        .ov-name {
+            display: inline;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        .ov-caret {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            margin-left: 3px;
+            vertical-align: -.12em;
+        }
+
+        .ov-role {
+            display: inline-block;
+            margin: 14px 0 0;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 9px;
+            letter-spacing: .22em;
+            color: #4a4743;
+            background: rgba(255, 255, 255, .55);
+            border: 1px solid rgba(255, 255, 255, .9);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9);
+        }
+
+        /* Indikator 3 langkah di atas status */
+        .ov-steps {
+            position: absolute;
+            left: 22px;
+            right: 22px;
+            bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+            display: flex;
+            gap: 6px;
+        }
+        .ov-steps i {
+            position: relative;
+            flex: 1;
+            height: 3px;
+            border-radius: 3px;
+            overflow: hidden;
+            background: rgba(28, 28, 28, .1);
+        }
+        .ov-steps i::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: #EA7645;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .6s cubic-bezier(.16, 1, .3, 1), background .4s;
+        }
+        .ov-steps i.is-on::after { transform: scaleX(1); }
+        .ov.is-done .ov-steps i::after { background: #48AA8C; }
+
+        .ov-status {
+            left: 22px;
+            right: 22px;
+            bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+            justify-content: center;
+            font-size: 9px;
+            letter-spacing: .24em;
+        }
+        .ov-foot {
+            left: 22px;
+            right: 22px;
+            bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+            justify-content: center;
+            font-size: 9px;
+        }
+    }
+
+    /* HP landscape / layar pendek: pakai susunan horizontal yang lebih rapat */
+    @media (max-width: 900px) and (max-height: 480px) and (orientation: landscape) {
+        .ov-stage { flex-direction: row; padding: 0 24px; }
+        .ov-logo { width: clamp(100px, 20vw, 140px); }
+        .ov-text {
+            max-width: 0; max-height: none; padding: 0; margin-top: 0;
+            text-align: left; white-space: nowrap; border: 0; background: none;
+            box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+            transition: max-width 1s cubic-bezier(.65, 0, .2, 1), padding-left 1s cubic-bezier(.65, 0, .2, 1), opacity .5s .2s ease;
+        }
+        .ov.is-id .ov-text { max-width: 60vw; max-height: none; margin-top: 0; padding: 0 0 0 28px; }
+        .ov-line { flex-direction: row; gap: 8px; }
+        .ov-dash { width: 8px; height: 2px; background: #1c1c1c; }
+        .ov-namewrap { display: inline-flex; font-size: 15px; }
+        .ov-role { margin: 6px 0 0 16px; padding: 0; background: none; border: 0; box-shadow: none; }
+        .ov-steps { display: none; }
+        .ov-status { bottom: 14px; }
+        .ov-foot { bottom: 14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .ov-h1, .ov-h2, .ov-h3, .ov-logo, .ov-status, .ov-foot { animation-duration: .01s; animation-delay: 0s; }
+        .ov, .ov-text, .ov-progress i { transition-duration: .01s; }
+    }
 </style>
 
 <script>
@@ -391,18 +592,26 @@
             const statusEl = overlay.querySelector('[data-overlay-status]');
             const dotEl = overlay.querySelector('[data-overlay-dot]');
             const barEl = overlay.querySelector('[data-overlay-progress]');
+            const stepEls = overlay.querySelectorAll('[data-overlay-step]');
             const name = (overlay.dataset.name || '').toUpperCase();
 
             const wait = (ms) => new Promise((r) => setTimeout(r, reduce ? ms * 0.3 : ms));
             const setProgress = (p) => { if (barEl) barEl.style.transform = `scaleX(${p})`; };
             const setStatus = (t) => { if (statusEl) statusEl.textContent = t; };
+            const setStep = (n) => stepEls.forEach((el, idx) => el.classList.toggle('is-on', idx < n));
+
+            // Kunci scroll halaman selama overlay tampil
+            const prevOverflow = document.documentElement.style.overflow;
+            document.documentElement.style.overflow = 'hidden';
 
             setProgress(0.15);
+            setStep(1);
             await wait(1100);
 
             overlay.classList.add('is-id');
             setStatus('ID CONFIRMED');
             setProgress(0.45);
+            setStep(2);
             await wait(750);
 
             for (let k = 1; k <= name.length; k++) {
@@ -416,11 +625,15 @@
             dotEl?.classList.add('is-done');
             barEl?.classList.add('is-done');
             setProgress(1);
+            setStep(3);
             await wait(1100);
 
             overlay.classList.add('is-out');
             setTimeout(revealPage, 350);
-            setTimeout(() => overlay.remove(), 1100);
+            setTimeout(() => {
+                overlay.remove();
+                document.documentElement.style.overflow = prevOverflow;
+            }, 1100);
         };
 
         runOverlaySequence();
