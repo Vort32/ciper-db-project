@@ -4,107 +4,88 @@
 
 @section('content')
     <!-- ==============================================
-         RHINE LAB // PURE MINIMALIST TECH BOOT
+         RHINE LAB // BOOT SEQUENCE
+         Logo "diisi tinta" mengikuti progres, ring pengukur tipis,
+         shutter terbuka saat akses diberikan.
          ============================================== -->
-    <div id="pageLoader" class="fixed inset-0 z-50 overflow-hidden bg-[#ECE8E5] font-sans text-[#1c1c1c] select-none flex items-center justify-center">
-        
-        <!-- Ambient Glow (Very Subtle) -->
-        <div class="absolute w-[32rem] h-[32rem] bg-white/50 rounded-full blur-[110px] -top-20 -left-20 z-0 pointer-events-none"></div>
-        <div class="absolute w-[28rem] h-[28rem] bg-[#EA7645]/10 rounded-full blur-[100px] bottom-0 right-0 z-0 pointer-events-none"></div>
+    <div id="pageLoader" class="rl" role="status" aria-live="off" aria-label="Memuat Rhine Lab OS">
 
-        <!-- Shutter Top -->
-        <div id="shutterTop" class="absolute top-0 left-0 w-full h-[50.1%] bg-[#ECE8E5] z-10 border-b border-black/10 transition-transform duration-[1100ms] cubic-bezier-shutter">
-            <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image: linear-gradient(to right, #1c1c1c 1px, transparent 1px), linear-gradient(to bottom, #1c1c1c 1px, transparent 1px); background-size: 40px 40px;"></div>
-            
-            <!-- Corner Accents -->
-            <div class="absolute top-8 left-8 w-8 h-8 border-t border-l border-[#1c1c1c]/30"></div>
-            <div class="absolute top-8 right-8 w-8 h-8 border-t border-r border-[#1c1c1c]/30"></div>
+        <!-- Shutter atas -->
+        <div id="shutterTop" class="rl-shutter rl-shutter--t">
+            <i class="rl-corner rl-corner--tl"></i>
+            <i class="rl-corner rl-corner--tr"></i>
         </div>
 
-        <!-- Shutter Bottom -->
-        <div id="shutterBottom" class="absolute bottom-0 left-0 w-full h-[50.1%] bg-[#ECE8E5] z-10 border-t border-black/10 transition-transform duration-[1100ms] cubic-bezier-shutter">
-            <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image: linear-gradient(to right, #1c1c1c 1px, transparent 1px), linear-gradient(to bottom, #1c1c1c 1px, transparent 1px); background-size: 40px 40px;"></div>
-            
-            <!-- Corner Accents -->
-            <div class="absolute bottom-8 left-8 w-8 h-8 border-b border-l border-[#1c1c1c]/30"></div>
-            <div class="absolute bottom-8 right-8 w-8 h-8 border-b border-r border-[#1c1c1c]/30"></div>
+        <!-- Shutter bawah -->
+        <div id="shutterBottom" class="rl-shutter rl-shutter--b">
+            <i class="rl-corner rl-corner--bl"></i>
+            <i class="rl-corner rl-corner--br"></i>
         </div>
 
-        <!-- Layer UI Utama -->
-        <div id="loaderUI" class="absolute inset-0 z-20 flex flex-col justify-between items-center p-8 sm:p-14 transition-opacity duration-500">
-            
-            <!-- Header Top HUD -->
-            <header class="w-full max-w-5xl flex justify-between items-center font-mono text-[9px] sm:text-[10px] tracking-[0.3em] text-[#1c1c1c] uppercase">
-                <div class="flex items-center gap-3">
-                    <span class="w-1.5 h-1.5 rounded-full bg-[#EA7645] animate-pulse"></span>
-                    <span class="font-extrabold tracking-[0.35em]">RHINE LAB LLC</span>
-                    <span class="text-gray-400 font-normal hidden sm:inline">// OS_BOOT</span>
+        <!-- Garis tengah (seam) -->
+        <div id="rlSeam" class="rl-seam"></div>
+
+        <!-- Layer UI utama -->
+        <div id="loaderUI" class="rl-ui">
+
+            <!-- HUD atas -->
+            <header class="rl-head">
+                <div class="rl-brand">
+                    <span class="rl-pulse"></span>
+                    <b>RHINE LAB LLC</b>
+                    <span class="rl-dim rl-hide-xs">// OS_BOOT</span>
                 </div>
-                <div class="text-gray-500 text-[8px] sm:text-[9px] tracking-[0.3em]">
-                    TRIMOUNTS / COLUMBIA
-                </div>
+                <div class="rl-dim rl-loc">TRIMOUNTS / COLUMBIA</div>
             </header>
 
-            <!-- Center Core: Fine Precision Ring & Pure Logo -->
-            <main class="relative z-10 flex flex-col items-center justify-center my-auto">
-                
-                <div class="relative w-[260px] h-[260px] sm:w-[300px] sm:h-[300px] flex items-center justify-center">
-                    
-                    <!-- SVG Ultra-Thin Minimalist Reticle Ring -->
-                    <svg class="absolute inset-0 w-full h-full" viewBox="0 0 300 300">
-                        <!-- Outer Fine Track -->
-                        <circle cx="150" cy="150" r="110" stroke="rgba(28,28,28,0.12)" stroke-width="1" fill="none" stroke-dasharray="2 6" />
+            <!-- Inti: ring + logo -->
+            <main class="rl-core">
+                <div class="rl-ring">
+                    <svg class="rl-svg" viewBox="0 0 300 300" aria-hidden="true">
+                        <!-- Bezel bertanda (72 tick) -->
+                        <circle cx="150" cy="150" r="126" fill="none" stroke="rgba(28,28,28,.28)" stroke-width="6" stroke-dasharray="1 9.82" />
 
-                        <!-- Counter Rotating Thin Arc -->
-                        <g class="origin-[150px_150px] animate-[spin_20s_linear_infinite_reverse]">
-                            <path d="M 40 150 A 110 110 0 0 1 230 70" stroke="#1c1c1c" stroke-width="1.2" stroke-linecap="round" fill="none" class="opacity-40" />
+                        <!-- Busur berputar berlawanan arah -->
+                        <g class="rl-spin">
+                            <path d="M 40 150 A 110 110 0 0 1 230 70" stroke="#1c1c1c" stroke-width="1.2" stroke-linecap="round" fill="none" opacity=".4" />
                             <circle cx="230" cy="70" r="3" fill="#EA7645" />
                         </g>
 
-                        <!-- Main Gauge Ring -->
-                        <circle id="rlRingFill" cx="150" cy="150" r="95" 
-                                fill="none" stroke="#EA7645" stroke-width="2" 
-                                stroke-dasharray="596.9" stroke-dashoffset="596.9" 
-                                stroke-linecap="round" class="transition-all duration-150 ease-out" />
+                        <!-- Jalur + ring progres -->
+                        <circle cx="150" cy="150" r="95" fill="none" stroke="rgba(28,28,28,.08)" stroke-width="2" />
+                        <circle id="rlRingFill" class="rl-gauge" cx="150" cy="150" r="95"
+                                fill="none" stroke="#EA7645" stroke-width="2"
+                                stroke-dasharray="596.9" stroke-dashoffset="596.9" stroke-linecap="round" />
                     </svg>
 
-                    <!-- Center Pure Logo (No Background) -->
-                    <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center z-10">
-                        <img src="{{ asset('images/logo.png') }}" alt="Rhine Lab" class="w-full h-full object-contain filter contrast-125 drop-shadow-sm" />
+                    <!-- Logo: bayangan + lapisan tinta yang terisi dari kiri ke kanan -->
+                    <div class="rl-logo">
+                        <img class="rl-logo-ghost" src="{{ asset('images/logo.png') }}" alt="Rhine Lab" decoding="async">
+                        <img id="rlLogoInk" class="rl-logo-ink" src="{{ asset('images/logo.png') }}" alt="" aria-hidden="true" decoding="async">
+                        <i id="rlScan" class="rl-scan"></i>
                     </div>
 
-                    <!-- Small Percentage Indicator in Corner -->
-                    <div class="absolute bottom-4 right-4 font-mono text-[9px] font-bold tracking-widest text-gray-500 px-2 py-0.5">
-                        <span id="akProgressText">0</span>%
-                    </div>
+                    <div class="rl-pct"><span id="akProgressText">0</span>%</div>
                 </div>
 
-                <!-- Terminal Log Line -->
-                <div class="mt-8 text-center font-mono">
-                    <div id="centerText" class="text-xs sm:text-sm font-black tracking-[0.3em] text-[#1c1c1c] uppercase min-h-[1.5rem] transition-all duration-300">
-                        ACCESS PERMISSION REQUIRED
-                    </div>
+                <!-- Status saat ini -->
+                <div class="rl-state">
+                    <div id="centerText" class="rl-headline">ACCESS PERMISSION REQUIRED</div>
+                    <div id="rlSub" class="rl-sub">SESSION TOKEN // CHECKING</div>
                 </div>
             </main>
 
-            <!-- Bottom Console Line -->
-            <footer class="w-full max-w-5xl z-10 flex flex-col gap-2 font-mono">
-                <div class="flex justify-between items-center text-[9px] sm:text-[10px] tracking-[0.25em] text-gray-500 uppercase px-0.5">
-                    <div class="flex items-center gap-2">
-                        <span id="akStatusDot" class="w-1.5 h-1.5 rounded-full bg-[#EA7645] animate-ping"></span>
-                        <span id="akStatusText" class="font-bold text-[#1c1c1c]">SYSTEM_BOOT</span>
+            <!-- Konsol bawah -->
+            <footer class="rl-foot">
+                <div class="rl-foot-row">
+                    <div class="rl-stat">
+                        <span id="akStatusDot" class="rl-dot"></span>
+                        <span id="akStatusText">SYSTEM_BOOT</span>
                     </div>
-                    <div id="akConsoleOutput" class="text-[#EA7645] font-bold">
-                        VERIFYING
-                    </div>
+                    <div id="akConsoleOutput" class="rl-out">VERIFYING</div>
                 </div>
-
-                <!-- Ultra Thin Line -->
-                <div class="w-full h-[1.5px] bg-black/10 rounded-full overflow-hidden">
-                    <div id="akProgressBar" class="h-full bg-[#1c1c1c] w-0 transition-all duration-150 ease-out"></div>
-                </div>
+                <div id="rlSegs" class="rl-segs" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
             </footer>
-
         </div>
     </div>
 
@@ -115,8 +96,8 @@
         class="min-h-screen flex flex-col justify-center items-center bg-[#ECE8E5] text-black relative overflow-hidden transition-opacity duration-[1200ms] opacity-0">
 
         <!-- Background image dengan opacity -->
-        <div class="absolute inset-0 bg-cover bg-center opacity-7"
-            style="background-image: url('{{ asset('images/Rhine_Lab_HQ1.png') }}');">
+        <div class="absolute inset-0 bg-cover bg-center"
+            style="opacity: .07; background-image: url('{{ asset('images/Rhine_Lab_HQ1.png') }}');">
         </div>
 
         <!-- Header kiri atas -->
@@ -125,7 +106,7 @@
             <p class="text-[10px] tracking-[0.2em] uppercase pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.4s;">
                 SYNTHESIZE INFORMATION
             </p>
-            <p class="text-base sm:text-lg md:text-xl font- pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.6s;">
+            <p class="text-base sm:text-lg md:text-xl pre-animate" data-animate="animate-slide-fade" style="animation-delay: 0.6s;">
                 ANALYSIS <span class="font-bold">OS</span>
             </p>
         </div>
@@ -206,16 +187,9 @@
     </div>
 
     <style>
-        /* Exponential Ease Out Shutter Curve */
-        .cubic-bezier-shutter {
-            transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* Trigger Animasi Shutter Terbuka */
-        .shutter-open-top { transform: translateY(-101%); }
-        .shutter-open-bottom { transform: translateY(101%); }
-
-        /* Standard Page Animations */
+        /* ==========================================================
+           PAGE ANIMATIONS
+           ========================================================== */
         @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
         .animate-fade-up { animation: fadeUp 0.8s forwards; }
 
@@ -231,6 +205,174 @@
         .glass-login {
             color: #1f1f1f; background-color: rgba(255, 255, 255, 0.28); border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: 0 8px 32px rgba(31, 31, 31, 0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* ==========================================================
+           LOADER  (class rl-*, tidak bergantung pada Tailwind)
+           ========================================================== */
+        .rl {
+            --rl-bg: #ECE8E5; --rl-ink: #1c1c1c; --rl-mute: #7a766f;
+            --rl-accent: #EA7645; --rl-ok: #48AA8C;
+            position: fixed; inset: 0; z-index: 9999; overflow: hidden;
+            width: 100%; height: 100vh; height: 100dvh;
+            background: var(--rl-bg); color: var(--rl-ink);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            -webkit-font-smoothing: antialiased;
+            user-select: none; -webkit-user-select: none;
+        }
+        .rl::before {
+            content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+            background:
+                radial-gradient(30rem 30rem at 0% 0%, rgba(255, 255, 255, .75), transparent 65%),
+                radial-gradient(26rem 26rem at 100% 100%, rgba(234, 118, 69, .14), transparent 65%),
+                radial-gradient(22rem 22rem at 50% 50%, rgba(255, 255, 255, .45), transparent 70%);
+        }
+
+        /* Shutter */
+        .rl-shutter {
+            position: absolute; left: 0; width: 100%; height: 50.1%; z-index: 10;
+            background: var(--rl-bg);
+            transition: transform 1.1s cubic-bezier(.16, 1, .3, 1);
+        }
+        .rl-shutter::before {
+            content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .08;
+            background-image:
+                linear-gradient(to right, var(--rl-ink) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--rl-ink) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .rl-shutter--t { top: 0; border-bottom: 1px solid rgba(0, 0, 0, .1); }
+        .rl-shutter--b { bottom: 0; border-top: 1px solid rgba(0, 0, 0, .1); }
+        .rl-shutter--t::before { -webkit-mask-image: linear-gradient(to bottom, #000 25%, transparent); mask-image: linear-gradient(to bottom, #000 25%, transparent); }
+        .rl-shutter--b::before { -webkit-mask-image: linear-gradient(to top, #000 25%, transparent); mask-image: linear-gradient(to top, #000 25%, transparent); }
+        .shutter-open-top { transform: translateY(-101%); }
+        .shutter-open-bottom { transform: translateY(101%); }
+
+        .rl-corner { position: absolute; width: 22px; height: 22px; border: 0 solid rgba(28, 28, 28, .3); }
+        .rl-corner--tl { top: 20px; left: 20px; border-top-width: 1px; border-left-width: 1px; }
+        .rl-corner--tr { top: 20px; right: 20px; border-top-width: 1px; border-right-width: 1px; }
+        .rl-corner--bl { bottom: 20px; left: 20px; border-bottom-width: 1px; border-left-width: 1px; }
+        .rl-corner--br { bottom: 20px; right: 20px; border-bottom-width: 1px; border-right-width: 1px; }
+
+        /* Seam tengah: tumbuh dari titik tengah, lalu hilang saat shutter terbuka */
+        .rl-seam {
+            position: absolute; left: 0; right: 0; top: 50%; height: 1px; z-index: 15; pointer-events: none;
+            background: linear-gradient(90deg, transparent, var(--rl-accent) 30%, var(--rl-accent) 70%, transparent);
+            transform: scaleX(0); opacity: .9;
+            animation: rlSeam 1s .1s cubic-bezier(.16, 1, .3, 1) forwards;
+            transition: opacity .4s ease;
+        }
+        .rl.is-opening .rl-seam { opacity: 0; }
+
+        /* Layer UI */
+        .rl-ui {
+            position: absolute; inset: 0; z-index: 20;
+            display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+            padding: calc(26px + env(safe-area-inset-top, 0px)) 24px calc(26px + env(safe-area-inset-bottom, 0px));
+            transition: opacity .5s ease;
+        }
+        .rl-ui.is-hidden { opacity: 0; }
+
+        .rl-head, .rl-core, .rl-foot { opacity: 0; animation: rlIn .8s cubic-bezier(.16, 1, .3, 1) forwards; }
+        .rl-head { animation-delay: .2s; }
+        .rl-core { animation-delay: .35s; }
+        .rl-foot { animation-delay: .5s; }
+
+        /* Header */
+        .rl-head {
+            width: 100%; max-width: 64rem; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+            font-size: 9px; letter-spacing: .3em; text-transform: uppercase;
+        }
+        .rl-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+        .rl-brand b { font-weight: 800; letter-spacing: .35em; white-space: nowrap; }
+        .rl-dim { color: var(--rl-mute); font-weight: 400; }
+        .rl-loc { font-size: 8px; white-space: nowrap; }
+        .rl-pulse { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--rl-accent); animation: rlPulse 1.8s ease-out infinite; }
+
+        /* Core */
+        .rl-core { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; margin: auto 0; width: 100%; }
+        .rl-ring { position: relative; width: min(260px, 72vw); aspect-ratio: 1 / 1; display: grid; place-items: center; }
+        .rl-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+        .rl-spin { transform-box: view-box; transform-origin: 150px 150px; animation: rlSpin 20s linear infinite reverse; }
+        .rl-gauge { transform-box: view-box; transform-origin: 150px 150px; transform: rotate(-90deg); transition: stroke-dashoffset .12s linear, stroke .5s ease; }
+
+        .rl-logo { position: relative; width: 44%; }
+        .rl-logo img { display: block; width: 100%; height: auto; }
+        .rl-logo-ghost { opacity: .13; filter: grayscale(1); }
+        .rl-logo-ink { position: absolute; inset: 0; clip-path: inset(0 100% 0 0); will-change: clip-path; }
+        .rl-scan {
+            position: absolute; top: -10%; bottom: -10%; left: 0; width: 1px; opacity: 0;
+            background: var(--rl-accent); box-shadow: 0 0 8px 1px rgba(234, 118, 69, .6);
+            transition: opacity .3s ease;
+        }
+        .rl-scan.is-on { opacity: 1; }
+
+        .rl-pct {
+            position: absolute; right: 2%; bottom: 7%; min-width: 4ch; text-align: right;
+            font-size: 11px; font-weight: 700; letter-spacing: .1em; color: var(--rl-mute);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .rl-state { margin-top: 30px; width: 100%; max-width: 340px; text-align: center; min-height: 4.2rem; }
+        .rl-headline {
+            font-size: 12px; font-weight: 900; letter-spacing: .3em; text-transform: uppercase;
+            line-height: 1.5; text-wrap: balance;
+            transition: opacity .16s ease, transform .16s ease, color .4s ease;
+        }
+        .rl-sub {
+            margin-top: 8px; font-size: 9px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; line-height: 1.6;
+            color: var(--rl-mute); overflow-wrap: anywhere; text-wrap: balance;
+            transition: opacity .16s ease, transform .16s ease;
+        }
+        .rl-headline.is-swap, .rl-sub.is-swap { opacity: 0; transform: translateY(4px); }
+
+        /* Footer / konsol */
+        .rl-foot { width: 100%; max-width: 64rem; display: flex; flex-direction: column; gap: 10px; }
+        .rl-foot-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 9px; letter-spacing: .25em; text-transform: uppercase; }
+        .rl-stat { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 700; }
+        .rl-stat span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .rl-dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--rl-accent); animation: rlPulse 1.4s ease-out infinite; transition: background .4s; }
+        .rl-out { font-weight: 700; color: var(--rl-accent); white-space: nowrap; transition: color .4s; }
+
+        .rl-segs { display: flex; gap: 2px; height: 10px; }
+        .rl-segs i { flex: 1; border-radius: 1px; background: rgba(28, 28, 28, .12); transition: background .15s ease; }
+        .rl-segs i.is-on { background: var(--rl-ink); }
+        .rl-segs i.is-lead { background: var(--rl-accent); }
+
+        /* State selesai */
+        .rl.is-done .rl-headline { color: var(--rl-ok); }
+        .rl.is-done .rl-out { color: var(--rl-ok); }
+        .rl.is-done .rl-dot { background: var(--rl-ok); animation: none; }
+        .rl.is-done .rl-gauge { stroke: var(--rl-ok); }
+        .rl.is-done .rl-segs i.is-on { background: var(--rl-ok); }
+        .rl.is-done .rl-scan { opacity: 0; }
+
+        @media (max-width: 479.98px) {
+            .rl-hide-xs, .rl-loc { display: none; }
+        }
+        @media (min-width: 640px) {
+            .rl-ui { padding: 56px; }
+            .rl-head, .rl-foot-row { font-size: 10px; }
+            .rl-loc { font-size: 9px; }
+            .rl-ring { width: 300px; }
+            .rl-headline { font-size: 14px; }
+            .rl-sub { font-size: 10px; }
+            .rl-pct { font-size: 12px; }
+            .rl-corner { width: 32px; height: 32px; }
+            .rl-corner--tl, .rl-corner--tr { top: 32px; }
+            .rl-corner--bl, .rl-corner--br { bottom: 32px; }
+            .rl-corner--tl, .rl-corner--bl { left: 32px; }
+            .rl-corner--tr, .rl-corner--br { right: 32px; }
+        }
+
+        @keyframes rlIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+        @keyframes rlSeam { to { transform: scaleX(1); } }
+        @keyframes rlSpin { to { transform: rotate(360deg); } }
+        @keyframes rlPulse { 0% { box-shadow: 0 0 0 0 rgba(234, 118, 69, .55); } 70%, 100% { box-shadow: 0 0 0 7px rgba(234, 118, 69, 0); } }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rl-spin, .rl-pulse, .rl-dot { animation: none; }
+            .rl-head, .rl-core, .rl-foot, .rl-seam { animation-duration: .01s; animation-delay: 0s; }
         }
     </style>
 
@@ -279,73 +421,103 @@
         }
 
         /* =========================================
-           ULTRA-MINIMALIST LOADER LOGIC
+           BOOT LOADER
            ========================================= */
         if (loader) {
-            const centerText = document.getElementById('centerText');
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            const headline = document.getElementById('centerText');
+            const subline = document.getElementById('rlSub');
             const loaderUI = document.getElementById('loaderUI');
             const ringFill = document.getElementById('rlRingFill');
-            const progressBar = document.getElementById('akProgressBar');
+            const logoInk = document.getElementById('rlLogoInk');
+            const scan = document.getElementById('rlScan');
             const progressText = document.getElementById('akProgressText');
             const statusText = document.getElementById('akStatusText');
             const consoleOutput = document.getElementById('akConsoleOutput');
-            const statusDot = document.getElementById('akStatusDot');
-            
+            const segWrap = document.getElementById('rlSegs');
             const sTop = document.getElementById('shutterTop');
             const sBottom = document.getElementById('shutterBottom');
 
             const CIRCUMFERENCE = 596.9; // 2 * PI * 95
-            const username = "{{ auth()->check() ? auth()->user()->name : 'OPERATIVE' }}".toUpperCase();
+            const SEGMENTS = 40;
+            const username = @json(auth()->check() ? auth()->user()->name : 'OPERATIVE').toUpperCase();
 
-            let progressValue = 0;
+            // Tahapan boot
+            const STAGES = [
+                { at: 0,  head: 'ACCESS PERMISSION REQUIRED', sub: 'SESSION TOKEN // CHECKING',          stat: 'SYSTEM_BOOT',     out: 'ID_CHECK' },
+                { at: 35, head: 'ID CONFIRMED',               sub: 'OPERATIVE // ' + username,           stat: 'AUTHENTICATING',  out: 'VERIFIED' },
+                { at: 70, head: 'REQUEST RECEIVED',           sub: 'START PROCESSING // DECRYPTING DATA', stat: 'DECRYPTING_DATA', out: 'PROCESSING' },
+                { at: 95, head: 'PERMISSION AUTHORIZED',      sub: 'ALL SYSTEMS NOMINAL',                stat: 'ACCESS_GRANTED',  out: 'GRANTED' },
+            ];
+
+            // Bangun segmen progres
+            const segs = [];
+            for (let s = 0; s < SEGMENTS; s++) {
+                const el = document.createElement('i');
+                segWrap.appendChild(el);
+                segs.push(el);
+            }
+
             let pageReady = document.readyState === 'complete';
             let finished = false;
+            let stageIndex = -1;
+            let lastLit = -1;
 
             window.addEventListener('load', () => { pageReady = true; });
+            setTimeout(() => { pageReady = true; }, 6000); // jaring pengaman bila aset lambat
+
+            // Ganti teks dengan transisi singkat
+            function swapText(el, text) {
+                if (!el || el.textContent === text) return;
+                if (reduce) { el.textContent = text; return; }
+                el.classList.add('is-swap');
+                setTimeout(() => {
+                    el.textContent = text;
+                    el.classList.remove('is-swap');
+                }, 160);
+            }
+
+            function applyStage(idx) {
+                const st = STAGES[idx];
+                swapText(headline, st.head);
+                swapText(subline, st.sub);
+                if (statusText) statusText.textContent = st.stat;
+                if (consoleOutput) consoleOutput.textContent = st.out;
+                if (idx === STAGES.length - 1) loader.classList.add('is-done');
+            }
 
             function renderProgress(val) {
                 const rounded = Math.round(val);
                 if (progressText) progressText.textContent = rounded;
-                if (progressBar) progressBar.style.width = `${val}%`;
+                if (segWrap) segWrap.setAttribute('aria-valuenow', rounded);
 
-                if (ringFill) {
-                    const offset = CIRCUMFERENCE - (val / 100) * CIRCUMFERENCE;
-                    ringFill.style.strokeDashoffset = offset;
+                // Ring
+                if (ringFill) ringFill.style.strokeDashoffset = CIRCUMFERENCE - (val / 100) * CIRCUMFERENCE;
+
+                // Logo terisi tinta + garis pemindai
+                if (logoInk) logoInk.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+                if (scan) {
+                    scan.style.left = `${val}%`;
+                    scan.classList.toggle('is-on', val > 0 && val < 100);
                 }
 
-                if (val < 35) {
-                    if (centerText) centerText.textContent = "ACCESS PERMISSION REQUIRED";
-                    if (consoleOutput) consoleOutput.textContent = "ID_CHECK";
-                    if (statusText) statusText.textContent = "SYSTEM_BOOT";
-                } else if (val < 70) {
-                    if (centerText) centerText.textContent = `ID CONFIRMED // ${username}`;
-                    if (consoleOutput) consoleOutput.textContent = "VERIFIED";
-                    if (statusText) statusText.textContent = "AUTHENTICATING";
-                } else if (val < 95) {
-                    if (centerText) centerText.textContent = "REQUEST RECEIVED // START PROCESSING";
-                    if (consoleOutput) consoleOutput.textContent = "PROCESSING";
-                    if (statusText) statusText.textContent = "DECRYPTING_DATA";
-                } else {
-                    if (centerText) {
-                        centerText.textContent = "PERMISSION AUTHORIZED";
-                        centerText.classList.add('text-[#48AA8C]');
+                // Segmen
+                const lit = Math.floor((val / 100) * SEGMENTS);
+                if (lit !== lastLit) {
+                    for (let s = 0; s < SEGMENTS; s++) {
+                        segs[s].classList.toggle('is-on', s < lit);
+                        segs[s].classList.toggle('is-lead', s === lit && val < 100);
                     }
-                    if (consoleOutput) {
-                        consoleOutput.textContent = "GRANTED";
-                        consoleOutput.classList.remove('text-[#EA7645]');
-                        consoleOutput.classList.add('text-[#48AA8C]');
-                    }
-                    if (statusText) {
-                        statusText.textContent = "ACCESS_GRANTED";
-                        statusText.classList.add('text-[#48AA8C]');
-                    }
-                    if (statusDot) {
-                        statusDot.classList.remove('bg-[#EA7645]', 'animate-ping');
-                        statusDot.classList.add('bg-[#48AA8C]');
-                    }
-                    if (ringFill) {
-                        ringFill.style.stroke = '#48AA8C';
-                    }
+                    lastLit = lit;
+                }
+
+                // Tahap
+                let idx = 0;
+                for (let k = 0; k < STAGES.length; k++) if (val >= STAGES[k].at) idx = k;
+                if (idx !== stageIndex) {
+                    stageIndex = idx;
+                    applyStage(idx);
                 }
             }
 
@@ -353,32 +525,42 @@
                 finished = true;
 
                 setTimeout(() => {
-                    loaderUI.classList.add('opacity-0');
-                    
+                    loaderUI.classList.add('is-hidden');
+
                     setTimeout(() => {
+                        loader.classList.add('is-opening');
                         sTop.classList.add('shutter-open-top');
                         sBottom.classList.add('shutter-open-bottom');
-                        
+
                         setTimeout(revealMain, 400);
                         setTimeout(() => loader.remove(), 1100);
                     }, 300);
-                }, 700);
+                }, reduce ? 300 : 800);
             }
 
-            const progressTimer = setInterval(() => {
+            // Progres: langkah acak dengan jeda kecil di tiap pergantian tahap
+            let value = 0;
+            const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+            const tick = () => {
+                if (finished) return;
+
                 const cap = pageReady ? 100 : 92;
-                let step = Math.floor(Math.random() * 5) + 2;
-                progressValue = Math.min(progressValue + step, cap);
+                const prev = value;
+                value = Math.min(value + (reduce ? 10 : rand(1, 4)), cap);
+                renderProgress(value);
 
-                renderProgress(progressValue);
+                if (value >= 100) { finishLoading(); return; }
 
-                if (progressValue >= 100 && !finished) {
-                    clearInterval(progressTimer);
-                    finishLoading();
-                }
-            }, 45);
+                let delay = reduce ? 40 : rand(35, 80);
+                if (!reduce && ((prev < 35 && value >= 35) || (prev < 70 && value >= 70))) delay += 260;
+                if (value >= cap) delay = 120; // menunggu halaman selesai dimuat
+
+                setTimeout(tick, delay);
+            };
 
             renderProgress(0);
+            setTimeout(tick, reduce ? 0 : 450); // beri waktu animasi intro
 
         } else if (wrapper) {
             revealMain();
