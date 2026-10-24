@@ -29,7 +29,7 @@
         }
         .pf {
             display: inline-flex; align-items: center; gap: 10px;
-            padding: 5px 5px 5px 18px; border-radius: 999px;
+            padding: 3px 3px 3px 18px; border-radius: 999px;
             color: #1c1c1c; text-decoration: none; -webkit-tap-highlight-color: transparent;
             background: rgba(255, 255, 255, .5); border: 1px solid rgba(255, 255, 255, .85);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 10px 26px -16px rgba(70, 45, 30, .38);
@@ -45,9 +45,16 @@
         .pf-meta { margin-top: 3px; font-size: 8.5px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: #8a857e; transition: color .25s ease; }
         .pf:hover .pf-meta { color: #EA7645; }
 
-        .pf-avatar { position: relative; flex: none; width: 38px; height: 38px; }
-        .pf-avatar img { display: block; width: 100%; height: 100%; box-sizing: border-box; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, .12); }
-        .pf-live { position: absolute; right: -1px; bottom: -1px; width: 11px; height: 11px; box-sizing: border-box; border-radius: 50%; background: #48AA8C; border: 2px solid #ECE8E5; }
+        /* Avatar dengan cincin hijau (gaya story) */
+        .pf-avatar { position: relative; flex: none; width: 42px; height: 42px; }
+        .pf-avatar::before {
+            content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+            border: 2px solid #48AA8C;
+        }
+        .pf-avatar img {
+            position: absolute; inset: 4px; display: block; width: calc(100% - 8px); height: calc(100% - 8px);
+            border-radius: 50%; object-fit: cover; box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+        }
 
         .pf--guest { padding: 11px 20px; }
         .pf-login { font-size: 11px; font-weight: 600; letter-spacing: .32em; text-transform: uppercase; transition: color .25s ease; }
@@ -55,12 +62,12 @@
 
         /* Mobile kecil: hanya avatar (nama tetap tersedia untuk pembaca layar) */
         @media (max-width: 479.98px) {
-            .pf:not(.pf--guest) { padding: 4px; gap: 0; }
+            .pf:not(.pf--guest) { padding: 2px; gap: 0; }
             .pf-text {
                 position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
                 clip: rect(0 0 0 0); white-space: nowrap; border: 0;
             }
-            .pf-avatar { width: 40px; height: 40px; }
+            .pf-avatar { width: 44px; height: 44px; }
             .pf--guest { padding: 10px 16px; }
             .pf-login { font-size: 10px; letter-spacing: .28em; }
         }
@@ -75,7 +82,7 @@
         /* DESKTOP: awalnya hanya avatar; saat diarahkan, pil terbuka dari avatar ke kiri */
         @media (min-width: 900px) and (hover: hover) {
             .pf:not(.pf--guest) {
-                padding: 4px; gap: 0;
+                padding: 3px; gap: 0;
                 background: rgba(255, 255, 255, 0); border-color: rgba(255, 255, 255, 0);
                 box-shadow: none;
                 -webkit-backdrop-filter: none; backdrop-filter: none;
@@ -182,15 +189,6 @@
         }
         .rl-logo-ink.is-full { -webkit-mask-image: none; mask-image: none; }
 
-        /* Isi logo: gradasi oranye -> hijau, dipotong mengikuti bentuk logo */
-        .rl-logo-fill {
-            display: block; width: 100%; height: 100%;
-            background: linear-gradient(90deg, #EA7645 0%, #48AA8C 100%);
-            background: linear-gradient(in oklab 90deg, #EA7645 0%, #48AA8C 100%);
-            -webkit-mask: url('{{ asset('images/logo.png') }}') center / 100% 100% no-repeat;
-                    mask: url('{{ asset('images/logo.png') }}') center / 100% 100% no-repeat;
-        }
-
         .rl-state { margin-top: 36px; width: 100%; max-width: 320px; text-align: center; min-height: 3.4rem; }
         .rl-headline {
             font-size: 11px; font-weight: 500; letter-spacing: .32em; text-transform: uppercase; line-height: 1.6;
@@ -262,7 +260,7 @@
             <main class="rl-core">
                 <div class="rl-logo">
                     <img class="rl-logo-ghost" src="{{ asset('images/logo.png') }}" alt="Rhine Lab" decoding="async">
-                    <div id="rlLogoInk" class="rl-logo-ink" aria-hidden="true"><span class="rl-logo-fill"></span></div>
+                    <img id="rlLogoInk" class="rl-logo-ink" src="{{ asset('images/logo.png') }}" alt="" aria-hidden="true" decoding="async">
                 </div>
 
                 <div class="rl-state">
@@ -329,7 +327,6 @@
                     <span class="pf-avatar">
                         <img src="{{ asset(auth()->user()->photo_path ?? 'images/users/Silence.png') }}"
                             alt="" decoding="async">
-                        <i class="pf-live" aria-hidden="true"></i>
                     </span>
                 </a>
             @else
