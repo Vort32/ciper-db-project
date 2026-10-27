@@ -266,13 +266,6 @@
                         </div>
                     @endif
 
-                    <!-- EFEK BUKA PACK: segel sobek + kilatan -->
-                    <div class="pack-flap absolute left-[16%] right-[3%] top-[17%] h-[6%] z-[15] pointer-events-none"
-                         style="background:linear-gradient(180deg,#8fab74,#6d8c55);
-                                clip-path:polygon(0 0,100% 0,100% 75%,92% 100%,84% 75%,76% 100%,68% 75%,60% 100%,52% 75%,44% 100%,36% 75%,28% 100%,20% 75%,12% 100%,4% 75%,0 100%);"></div>
-                    <div class="pack-flash absolute inset-0 z-30 pointer-events-none opacity-0 rounded-md"
-                         style="background:radial-gradient(circle at 50% 30%,rgba(255,255,255,.95),rgba(255,220,150,.4) 40%,transparent 70%);"></div>
-
                 </div>
             @empty
                 <p class="col-span-full text-gray-500 italic opacity-0 animate-fade-up">No files available</p>
@@ -417,23 +410,22 @@
     .modal-group.is-highlighted .mg-bg { opacity: 0.1; }
     .modal-group.is-highlighted .mg-img-wrap { z-index: 30; opacity: 1; filter: grayscale(0); transform: scale(1.1); }
 
-    /* ===== ANIMASI BUKA PACK SAAT HOVER ===== */
-    @keyframes flapTear {
-        0%   { opacity: 1; transform: none; }
-        25%  { opacity: 1; transform: rotate(-3deg) translateY(-3px); }
-        100% { opacity: 0; transform: translate(60px,-90px) rotate(28deg); }
-    }
-    @keyframes packFlash {
-        0% { opacity: 0; } 35% { opacity: .9; } 100% { opacity: 0; }
-    }
+    /* ===== ANIMASI HOVER DOKUMEN ===== */
     .doc-layer {
-        transition: transform .8s cubic-bezier(.2,.9,.25,1.05) .2s, filter .6s ease .2s;
+        transition: transform .7s cubic-bezier(.22,1,.36,1), filter .7s ease;
     }
-    .group:hover .pack-flap  { animation: flapTear .8s ease-in forwards; }
-    .group:hover .pack-flash { animation: packFlash .7s ease-out .1s forwards; }
-    .group:hover .doc-layer  {
-        transform: translateY(-12%) scale(1.02) rotate(-1deg);
-        filter: drop-shadow(0 14px 24px rgba(234,118,69,.45));
+    .doc-layer::after {
+        content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 5;
+        background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.65) 50%, transparent 65%);
+        transform: translateX(-120%);
+    }
+    .group:hover .doc-layer {
+        transform: translateY(-8%) scale(1.02) rotate(-0.8deg);
+        filter: drop-shadow(0 16px 22px rgba(0,0,0,.28));
+    }
+    .group:hover .doc-layer::after {
+        transform: translateX(120%);
+        transition: transform 1.1s ease .15s;
     }
 </style>
 
