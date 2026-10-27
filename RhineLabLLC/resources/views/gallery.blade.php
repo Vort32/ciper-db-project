@@ -134,7 +134,7 @@
                     <div class="absolute left-[17%] right-[2%] top-[20%] bottom-[2.2%] bg-[#e9eadf] border border-[#c9ccbc] pointer-events-none"></div>
 
                     <!-- LAYER 4: DOKUMEN UTAMA (TANPA SHADOW) -->
-                    <div class="doc-layer absolute left-[16%] right-[3%] top-[18%] bottom-[3.5%] z-10 border border-gray-300/90 px-3.5 sm:px-4 pt-3.5 sm:pt-4 pb-3 flex flex-col text-left transform transition-transform duration-700 cubic-bloop group-hover:-translate-y-3 pointer-events-none overflow-hidden font-report"
+                    <div class="doc-layer absolute left-[16%] right-[3%] top-[18%] bottom-[3.5%] z-10 border border-gray-300/90 px-3.5 sm:px-4 pt-3.5 sm:pt-4 pb-3 flex flex-col text-left pointer-events-none overflow-hidden font-report"
                          style="background-color:#f8f8f1;
                                 background-image: radial-gradient(rgba(0,0,0,0.035) 1px, transparent 1px), linear-gradient(100deg, rgba(0,0,0,0.05) 0%, transparent 5%, transparent 95%, rgba(0,0,0,0.035) 100%);
                                 background-size: 3px 3px, 100% 100%;">
@@ -267,7 +267,7 @@
                     @endif
 
                     <!-- EFEK BUKA PACK: segel sobek + kilatan -->
-                    <div class="pack-flap absolute left-[3%] right-[3%] top-0 h-[9%] z-30 pointer-events-none opacity-0"
+                    <div class="pack-flap absolute left-[16%] right-[3%] top-[17%] h-[6%] z-[15] pointer-events-none"
                          style="background:linear-gradient(180deg,#8fab74,#6d8c55);
                                 clip-path:polygon(0 0,100% 0,100% 75%,92% 100%,84% 75%,76% 100%,68% 75%,60% 100%,52% 75%,44% 100%,36% 75%,28% 100%,20% 75%,12% 100%,4% 75%,0 100%);"></div>
                     <div class="pack-flash absolute inset-0 z-30 pointer-events-none opacity-0 rounded-md"
@@ -417,114 +417,30 @@
     .modal-group.is-highlighted .mg-bg { opacity: 0.1; }
     .modal-group.is-highlighted .mg-img-wrap { z-index: 30; opacity: 1; filter: grayscale(0); transform: scale(1.1); }
 
-    /* ===== ANIMASI BUKA PACK (ala kartu Pokemon) ===== */
-    @keyframes packShake {
-        0%,100% { transform: translate(0,0) rotate(0) scale(1); }
-        15% { transform: translate(-4px,0) rotate(-2.5deg) scale(1.03); }
-        30% { transform: translate(4px,-2px) rotate(2.5deg) scale(1.04); }
-        45% { transform: translate(-5px,0) rotate(-3deg) scale(1.05); }
-        60% { transform: translate(5px,-2px) rotate(3deg) scale(1.05); }
-        80% { transform: translate(-2px,0) rotate(-1deg) scale(1.03); }
-    }
+    /* ===== ANIMASI BUKA PACK SAAT HOVER ===== */
     @keyframes flapTear {
         0%   { opacity: 1; transform: none; }
         25%  { opacity: 1; transform: rotate(-3deg) translateY(-3px); }
-        100% { opacity: 0; transform: translate(80px,-120px) rotate(30deg); }
+        100% { opacity: 0; transform: translate(60px,-90px) rotate(28deg); }
     }
     @keyframes packFlash {
         0% { opacity: 0; } 35% { opacity: .9; } 100% { opacity: 0; }
     }
-    .is-opening .pack-flap  { animation: flapTear .7s ease-in .15s forwards; }
-    .is-opening .pack-flash { animation: packFlash .7s ease-out .1s forwards; }
-
-    /* clone dokumen yang terbang ke tengah layar */
-    .pack-clone img { filter: none !important; opacity: 1 !important; }
-    .pack-clone { will-change: transform; }
-
+    .doc-layer {
+        transition: transform .8s cubic-bezier(.2,.9,.25,1.05) .2s, filter .6s ease .2s;
+    }
+    .group:hover .pack-flap  { animation: flapTear .8s ease-in forwards; }
+    .group:hover .pack-flash { animation: packFlash .7s ease-out .1s forwards; }
+    .group:hover .doc-layer  {
+        transform: translateY(-12%) scale(1.02) rotate(-1deg);
+        filter: drop-shadow(0 14px 24px rgba(234,118,69,.45));
+    }
 </style>
 
 <script>
     let isModalOpen = false;
-    let isOpening = false;
 
-    /* ===== ENTRY POINT: dipanggil dari onclick card ===== */
-    function openModal(card) {
-        if (isOpening || isModalOpen) return;
-        playPackOpen(card, () => showModal(card));
-    }
-
-    /* ===== ANIMASI BUKA PACK ===== */
-    function playPackOpen(card, done) {
-        const doc = card.querySelector('.doc-layer');
-        if (!doc) {
-            done();
-            return;
-        }
-        isOpening = true;
-
-        // Fase 1: getar + sobek segel + kilatan
-        card.classList.add('is-opening');
-        card.style.opacity = '1';
-        card.style.animation = 'packShake .55s ease-in-out';
-
-        setTimeout(() => {
-            card.style.animation = 'none';
-
-            // Fase 2: dokumen "keluar" (clone ke fixed supaya tidak ke-clip container scroll)
-            const r = doc.getBoundingClientRect();
-            const clone = doc.cloneNode(true);
-            clone.classList.add('pack-clone');
-            Object.assign(clone.style, {
-                position: 'fixed', left: r.left + 'px', top: r.top + 'px',
-                width: r.width + 'px', height: r.height + 'px',
-                right: 'auto', bottom: 'auto', margin: '0', zIndex: '60',
-                pointerEvents: 'none', transform: 'none', opacity: '1',
-                transition: 'transform .9s cubic-bezier(.2,.9,.25,1.05), opacity .4s ease, filter .5s ease',
-                filter: 'drop-shadow(0 0 0 rgba(234,118,69,0))'
-            });
-
-            const dim = document.createElement('div');
-            Object.assign(dim.style, {
-                position: 'fixed', inset: '0', zIndex: '55', background: 'rgba(0,0,0,0)',
-                backdropFilter: 'blur(0px)', transition: 'all .6s ease', pointerEvents: 'none'
-            });
-
-            doc.style.visibility = 'hidden';
-            document.body.append(dim, clone);
-            clone.getBoundingClientRect(); // force reflow
-
-            // naik sedikit (efek kartu ditarik keluar dari pack)
-            dim.style.background = 'rgba(0,0,0,.45)';
-            dim.style.backdropFilter = 'blur(6px)';
-            clone.style.transform = 'translateY(-28px) scale(1.04) rotate(-2deg)';
-            clone.style.filter = 'drop-shadow(0 20px 35px rgba(234,118,69,.55))';
-
-            // Fase 3: terbang ke tengah layar
-            setTimeout(() => {
-                const dx = innerWidth / 2 - (r.left + r.width / 2);
-                const dy = innerHeight / 2 - (r.top + r.height / 2);
-                const s = Math.min((innerHeight * 0.75) / r.height, 1.6);
-                clone.style.transform = `translate(${dx}px, ${dy}px) scale(${s}) rotate(0deg)`;
-            }, 300);
-
-            // Fase 4: buka modal, bersihkan efek
-            setTimeout(() => {
-                done();
-                clone.style.opacity = '0';
-                dim.style.opacity = '0';
-                setTimeout(() => {
-                    clone.remove();
-                    dim.remove();
-                    doc.style.visibility = '';
-                    card.classList.remove('is-opening');
-                    isOpening = false;
-                }, 450);
-            }, 1050);
-        }, 480);
-    }
-
-    /* ===== MODAL (fungsi lama openModal, sekarang bernama showModal) ===== */
-    function showModal(element) {
+    function openModal(element) {
         const modal = document.getElementById('imageModal');
         const modalInner = document.getElementById('akAdvancedModal');
         const src = element.getAttribute('data-src');
