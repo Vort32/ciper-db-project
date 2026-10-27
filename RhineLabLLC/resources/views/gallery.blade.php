@@ -441,9 +441,6 @@
     .pack-clone img { filter: none !important; opacity: 1 !important; }
     .pack-clone { will-change: transform; }
 
-    @media (prefers-reduced-motion: reduce) {
-        .is-opening .pack-flap, .is-opening .pack-flash { animation: none; }
-    }
 </style>
 
 <script>
@@ -459,7 +456,7 @@
     /* ===== ANIMASI BUKA PACK ===== */
     function playPackOpen(card, done) {
         const doc = card.querySelector('.doc-layer');
-        if (!doc || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (!doc) {
             done();
             return;
         }
