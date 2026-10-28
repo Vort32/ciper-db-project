@@ -288,12 +288,13 @@
                 </label>
             </div>
 
-            <!-- UKURAN HANYA BISA DILIHAT SAAT EDIT (Auto-calculated dari backend) -->
+            <!-- UKURAN OTOMATIS -->
             <label class="block">
                 <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500">Ukuran</span>
                 <input type="text" name="size" id="mat_size" readonly class="glass-input mt-1 w-full bg-gray-100/50 cursor-not-allowed" placeholder="Otomatis terdeteksi">
             </label>
 
+            <!-- INPUT UPLOAD FILE (SINKRON DENGAN CONTROLLER: file_upload) -->
             <label class="block">
                 <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500">Upload Gambar/Ikon Baru</span>
                 <input type="file" name="file_upload" accept="image/*" class="mt-1 w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[9px] file:font-black file:tracking-widest file:uppercase file:bg-[#1c1c1c] file:text-white hover:file:bg-[#EA7645] file:transition-colors">
