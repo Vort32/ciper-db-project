@@ -138,7 +138,7 @@ class MaterialController extends Controller
         $supabaseKey = env('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 
         if (!empty($supabaseUrl) && !empty($supabaseKey)) {
-            $bucket = 'Uploads';
+            $bucket = 'UPLOADS';
             $objectPath = "materials/{$filename}";
 
             $response = Http::withHeaders([
