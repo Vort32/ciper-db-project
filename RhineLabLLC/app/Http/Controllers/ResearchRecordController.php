@@ -277,7 +277,7 @@ class ResearchRecordController extends Controller
         $supabaseKey = env('SUPABASE_SERVICE_ROLE_KEY');
 
         if (!empty($supabaseUrl) && !empty($supabaseKey)) {
-            $bucket = 'UPLOADS';
+            $bucket = 'Uploads';
             $objectPath = "{$subfolder}/{$filename}";
 
             $response = Http::withHeaders([
