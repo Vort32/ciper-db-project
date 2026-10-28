@@ -7,13 +7,20 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 
 class MaterialController extends Controller
 {
-    // Redirect halaman standar kembali ke Dashboard karena kita pakai panel Slide-Out
-    public function index() { return redirect()->route('admin.dashboard'); }
-    public function create() { return redirect()->route('admin.dashboard'); }
-    public function edit(Material $material) { return redirect()->route('admin.dashboard'); }
+    public function index()
+    {
+        $materials = Material::latest()->get();
+        return view('research-records.material_create', compact('materials'));
+    }
+
+    public function create()
+    {
+        return redirect()->route('materials.index');
+    }
 
     public function store(Request $request)
     {
@@ -28,7 +35,6 @@ class MaterialController extends Controller
         if ($request->hasFile('file_upload')) {
             $file = $request->file('file_upload');
             
-            // Kalkulasi ukuran otomatis 
             $bytes = $file->getSize();
             if ($bytes >= 1048576) {
                 $validated['size'] = number_format($bytes / 1048576, 1) . ' MB';
@@ -40,7 +46,6 @@ class MaterialController extends Controller
 
             $validated['file_path'] = $this->storeMaterialImage($file);
         } else {
-            // Default jika tidak ada file (mempertahankan behavior kodemu)
             $validated['size'] = $validated['size'] ?? '1.0 MB';
             $validated['file_path'] = 'images/materials/Module_Data_Block.png';
         }
@@ -48,7 +53,16 @@ class MaterialController extends Controller
         unset($validated['file_upload']);
         Material::create($validated);
 
-        return redirect()->route('admin.dashboard')->with('status', 'Material berhasil ditambahkan!');
+        if ($this->isAdmin()) {
+             return redirect()->route('admin.dashboard')->with('status', 'Material berhasil ditambahkan!');
+        }
+
+        return redirect()->back()->with('status', 'Material berhasil ditambahkan!');
+    }
+
+    public function edit(Material $material)
+    {
+        return redirect()->back();
     }
 
     public function update(Request $request, Material $material)
@@ -79,13 +93,39 @@ class MaterialController extends Controller
         unset($validated['file_upload']);
         $material->update($validated);
 
-        return redirect()->route('admin.dashboard')->with('status', 'Material berhasil diperbarui!');
+        if ($this->isAdmin()) {
+             return redirect()->route('admin.dashboard')->with('status', 'Material berhasil diperbarui!');
+        }
+
+        return redirect()->back()->with('status', 'Material berhasil diperbarui!');
     }
 
     public function destroy(Material $material)
     {
         $material->delete();
-        return redirect()->route('admin.dashboard')->with('status', 'Material berhasil dihapus!');
+        
+        if ($this->isAdmin()) {
+             return redirect()->route('admin.dashboard')->with('status', 'Material berhasil dihapus!');
+        }
+
+        return redirect()->back()->with('status', 'Material berhasil dihapus!');
+    }
+
+    /**
+     * Helper Pengecekan Akses Admin
+     */
+    protected function isAdmin(): bool
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return false;
+        }
+
+        $emailIsAdmin    = $user->email === 'admin@rhine-lab.com';
+        $positionIsAdmin = str_contains(strtolower($user->position ?? ''), 'admin');
+        $flagIsAdmin     = (bool) ($user->is_admin ?? false);
+
+        return $emailIsAdmin || $positionIsAdmin || $flagIsAdmin;
     }
 
     /**
@@ -94,8 +134,8 @@ class MaterialController extends Controller
     protected function storeMaterialImage(UploadedFile $file): string
     {
         $filename = time() . '_' . $file->getClientOriginalName();
-        $supabaseUrl = rtrim(env('SUPABASE_URL'), '/');
-        $supabaseKey = env('SUPABASE_SERVICE_ROLE_KEY');
+        $supabaseUrl = rtrim(env('SUPABASE_URL') ?? '', '/');
+        $supabaseKey = env('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 
         if (!empty($supabaseUrl) && !empty($supabaseKey)) {
             $bucket = 'Uploads';

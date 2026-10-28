@@ -255,25 +255,43 @@
                 <input type="text" name="name" id="mat_name" required class="glass-input mt-1 w-full" placeholder="Cth: Module Data">
             </label>
 
-            <label class="block">
-                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500">Kategori</span>
-                <input type="text" name="category" id="mat_category" class="glass-input mt-1 w-full" placeholder="Cth: Data, Materials">
-            </label>
-            
+            <!-- DROPDOWN KATEGORI & TIPE -->
             <div class="grid grid-cols-2 gap-4">
                 <label class="block">
-                    <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500">Tipe File/Benda</span>
-                    <input type="text" name="type" id="mat_type" class="glass-input mt-1 w-full" placeholder="Cth: Disk, PDF">
+                    <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500">Kategori</span>
+                    <div class="mt-1 relative">
+                        <select name="category" id="mat_category" required class="glass-input appearance-none w-full text-xs pr-8">
+                            <option value="Data">Data</option>
+                            <option value="Research">Research</option>
+                            <option value="Materials">Materials</option>
+                            <option value="Engineering">Engineering</option>
+                        </select>
+                        <span class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </span>
+                    </div>
                 </label>
+                
                 <label class="block">
-                    <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500">Ukuran</span>
-                    <input type="text" name="size" id="mat_size" class="glass-input mt-1 w-full" placeholder="Cth: 2 MB">
+                    <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500">Tipe File/Benda</span>
+                    <div class="mt-1 relative">
+                        <select name="type" id="mat_type" required class="glass-input appearance-none w-full text-xs pr-8">
+                            <option value="Disk">Disk</option>
+                            <option value="PDF">PDF</option>
+                            <option value="Material">Material</option>
+                            <option value="Image">Image</option>
+                        </select>
+                        <span class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </span>
+                    </div>
                 </label>
             </div>
 
+            <!-- UKURAN HANYA BISA DILIHAT SAAT EDIT (Auto-calculated dari backend) -->
             <label class="block">
-                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500">Deskripsi/Keterangan</span>
-                <textarea name="description" id="mat_desc" rows="3" class="glass-input mt-1 w-full resize-none" placeholder="Catatan opsional..."></textarea>
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500">Ukuran</span>
+                <input type="text" name="size" id="mat_size" readonly class="glass-input mt-1 w-full bg-gray-100/50 cursor-not-allowed" placeholder="Otomatis terdeteksi">
             </label>
 
             <label class="block">
@@ -325,7 +343,6 @@
 </style>
 
 <script>
-    // VANILLA JS TABS
     function switchTab(targetId) {
         const contents = document.querySelectorAll('.tab-content');
         contents.forEach(content => {
@@ -351,7 +368,6 @@
         }
     }
 
-    // SLIDE-OUT MODAL LOGIC (CREATE & EDIT)
     function openMaterialModal(mode, data = null) {
         const overlay = document.getElementById('materialModalOverlay');
         const slideOut = document.getElementById('materialSlideOut');
@@ -360,12 +376,10 @@
         const methodInput = document.getElementById('materialMethod');
         const submitBtn = document.getElementById('materialSubmitBtn');
         
-        // Populate or clear fields
         document.getElementById('mat_name').value = data ? (data.name || '') : '';
-        document.getElementById('mat_category').value = data ? (data.category || '') : '';
-        document.getElementById('mat_type').value = data ? (data.type || '') : '';
+        document.getElementById('mat_category').value = data ? (data.category || 'Data') : 'Data';
+        document.getElementById('mat_type').value = data ? (data.type || 'Disk') : 'Disk';
         document.getElementById('mat_size').value = data ? (data.size || '') : '';
-        document.getElementById('mat_desc').value = data ? (data.description || '') : '';
 
         if (mode === 'edit' && data) {
             title.textContent = 'Edit Material';
@@ -379,9 +393,8 @@
             methodInput.value = 'POST';
         }
 
-        // Tampilkan modal
         overlay.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // cegah background scrolling
+        document.body.style.overflow = 'hidden'; 
         setTimeout(() => {
             overlay.classList.remove('opacity-0');
             slideOut.classList.remove('translate-x-full');
@@ -402,7 +415,6 @@
         }, 500);
     }
 
-    // INITIAL ANIMATION
     document.addEventListener('DOMContentLoaded', () => {
         const wrapper = document.getElementById('pageWrapper');
         if (wrapper) {
